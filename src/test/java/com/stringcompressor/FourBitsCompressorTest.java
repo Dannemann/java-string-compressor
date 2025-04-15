@@ -16,7 +16,7 @@ public class FourBitsCompressorTest {
 		byte[] compressed = compressor.compress(str.getBytes(UTF_8));
 		long strSizeAfter = GraphLayout.parseInstance(compressed).totalSize();
 		byte[] decompressed = compressor.decompress(compressed);
-		assertEquals(new String(compressed, UTF_8), new String(decompressed, UTF_8));
+		assertEquals(str, new String(decompressed, UTF_8));
 //		assertEquals(strSizeAfter, strSizeBefore / 2);
 	}
 

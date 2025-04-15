@@ -19,10 +19,10 @@ public class FourBitsCompressorBenchmark {
 	public void setup() {
 		compressor = new FourBitsCompressor();
 
-		byte[] supportedChars = compressor.getSupportedChars();
-		int len = supportedChars.length;
-		byte[] inputStr = Arrays.copyOf(supportedChars, len * 2);
-		System.arraycopy(supportedChars, 0, inputStr, len, len);
+		byte[] supportedCharset = compressor.supportedCharset;
+		int len = supportedCharset.length;
+		byte[] inputStr = Arrays.copyOf(supportedCharset, len * 2);
+		System.arraycopy(supportedCharset, 0, inputStr, len, len);
 		input = inputStr;
 	}
 

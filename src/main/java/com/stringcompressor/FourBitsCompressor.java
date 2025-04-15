@@ -6,33 +6,15 @@ import java.nio.charset.StandardCharsets;
 
 public class FourBitsCompressor extends Compressor {
 
-	// Default character set supported for 4-bit compression.
-	public byte char0 = '0';
-	public byte char1 = '1';
-	public byte char2 = '2';
-	public byte char3 = '3';
-	public byte char4 = '4';
-	public byte char5 = '5';
-	public byte char6 = '6';
-	public byte char7 = '7';
-	public byte char8 = '8';
-	public byte char9 = '9';
-	public byte char10 = ';';
-	public byte char11 = '#';
-	public byte char12 = '-';
-	public byte char13 = '+';
-	public byte char14 = '.';
-	public byte char15 = ',';
+	public static final byte[] DEFAULT_4BIT_CHARSET = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ';', '#', '-', '+', '.', ','};
 
 	public FourBitsCompressor() {
-		super(4);
-		charMappingChanged();
+		super(DEFAULT_4BIT_CHARSET);
 	}
 
-//	public FourBitsCompressor(byte[] supportedChars) {
-//		super(4);
-//		charMappingChanged();
-//	}
+	public FourBitsCompressor(byte[] supported4BitCharset) {
+		super(supported4BitCharset);
+	}
 
 	/**
 	 * <p>Compresses 2 characters into 1 byte (4 bits each).
@@ -74,25 +56,11 @@ public class FourBitsCompressor extends Compressor {
 	public byte[] decompress(byte[] chars) {
 		var sb = new StringBuilder();
 
-		for (var c : chars) {
-			nibbleToAscii((byte) ((c & 0xF0) >> 4), sb); // First nibble.
-			nibbleToAscii((byte) (c & 0x0F), sb); // Second nibble.
-		}
+		for (var c : chars)
+			sb.append((char) supportedCharset[(byte) ((c & 0xF0) >> 4)])
+			  .append((char) supportedCharset[(byte) (c & 0x0F)]);
 
 		return sb.toString().getBytes(StandardCharsets.UTF_8);
 	}
-
-	protected void nibbleToAscii(byte nibble, StringBuilder stringBuilder) {
-		switch (nibble) {
-			case 0xA: stringBuilder.append(';'); break;
-			case 0xB: stringBuilder.append('#'); break;
-			case 0xC: stringBuilder.append('-'); break;
-			case 0xD: stringBuilder.append('+'); break;
-			case 0xE: stringBuilder.append('.'); break;
-			case 0xF: stringBuilder.append(','); break;
-//			default: if (throwError) throw new RuntimeException("Character " + bytes[i] + " is not supported.");
-		}
-	}
-
 
 }
