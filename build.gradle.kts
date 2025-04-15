@@ -31,6 +31,8 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+    minHeapSize = "512m"  // optional
+    maxHeapSize = "1g"    // request 2GB heap for tests
 }
 
 jmh {
