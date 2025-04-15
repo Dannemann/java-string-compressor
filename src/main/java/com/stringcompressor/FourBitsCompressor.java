@@ -29,6 +29,11 @@ public class FourBitsCompressor extends Compressor {
 		charMappingChanged();
 	}
 
+//	public FourBitsCompressor(byte[] supportedChars) {
+//		super(4);
+//		charMappingChanged();
+//	}
+
 	/**
 	 * <p>Compresses 2 characters into 1 byte (4 bits each).
 	 * Only supports a set of 16 characters (4 bits).</p>
@@ -66,7 +71,7 @@ public class FourBitsCompressor extends Compressor {
 	 * @param chars The compressed string byte array.
 	 * @return A decompressed byte array where each item is a .
 	 */
-	private byte[] decompress(byte[] chars) {
+	public byte[] decompress(byte[] chars) {
 		var sb = new StringBuilder();
 
 		for (var c : chars) {

@@ -15,6 +15,7 @@ public abstract class Compressor {
 	}
 
 	abstract public byte[] compress(byte[] bytes);
+	abstract public byte[] decompress(byte[] chars);
 
 	public void charMappingChanged() {
 		resetLookupTable();
@@ -26,8 +27,9 @@ public abstract class Compressor {
 	}
 
 	protected void fillLookupTable() {
+		byte i = 0;
 		for (byte bite : getSupportedChars())
-			lookupTable[bite] = 0;
+			lookupTable[bite] = i++;
 	}
 
 	protected byte[] getSupportedChars() {
