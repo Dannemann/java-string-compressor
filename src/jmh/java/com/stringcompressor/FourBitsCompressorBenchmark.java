@@ -12,12 +12,12 @@ import java.util.Arrays;
 @State(Scope.Benchmark)
 public class FourBitsCompressorBenchmark {
 
-	private Compressor compressor;
+	private AsciiCompressor compressor;
 	private byte[] input;
 
 	@Setup(Level.Trial)
 	public void setup() {
-		compressor = new FourBitsCompressor();
+		compressor = new FourBitsAsciiCompressor();
 
 		byte[] supportedCharset = compressor.supportedCharset;
 		int len = supportedCharset.length;
