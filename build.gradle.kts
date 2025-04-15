@@ -36,11 +36,11 @@ tasks.test {
 jmh {
     includes = listOf(".Benchmark.")
     benchmarkMode = listOf("thrpt", "avgt")
-    fork = 3
-    warmup = "5s"
-    warmupIterations = 5
-    iterations = 5
-    timeOnIteration = "5s"
+    fork = 2
+    warmup = "10s"
+    warmupIterations = 3
+    iterations = 3
+    timeOnIteration = "10s"
     threads = 1
     timeUnit = "ns"
 }

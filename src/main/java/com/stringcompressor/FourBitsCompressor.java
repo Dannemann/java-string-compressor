@@ -33,7 +33,7 @@ public class FourBitsCompressor extends Compressor {
 	 * <p>Compresses 2 characters into 1 byte (4 bits each).
 	 * Only supports a set of 16 characters (4 bits).</p>
 	 * <p>Compression rate: 50%</p>
-	 * <p>Supported symbols by default (from {@code char0} to {@code char15}): 0 1 2 3 4 5 6 7 8 9 ; # - + . ,</p>
+	 * <p>Supported characters by default (from {@code char0} to {@code char15}): 0 1 2 3 4 5 6 7 8 9 ; # - + . ,</p>
 	 * @param bytes String to be compressed.
 	 * @return A compressed byte array.
 	 */
