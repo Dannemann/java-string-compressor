@@ -41,6 +41,7 @@ public class FourBitAsciiCompressorBenchmark {
 		@Setup(Level.Iteration)
 		public void setup() {
 			compressor = new FourBitAsciiCompressor();
+			compressor.setThrowException(true);
 			inputIndex = 0;
 		}
 

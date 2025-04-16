@@ -62,7 +62,7 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 			}
 		else
 			for (int i = 0; i < len; i++)
-				strCopy[i] = lookupTable[strCopy[i]];
+				strCopy[i] = lookupTable[strCopy[i] & 0x7F];
 
 		int halfLen = len >> 1;
 		byte[] compressed = new byte[halfLen + (len & 1)];
