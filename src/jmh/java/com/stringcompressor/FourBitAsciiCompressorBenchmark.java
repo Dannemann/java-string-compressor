@@ -42,7 +42,7 @@ public class FourBitAsciiCompressorBenchmark {
 
 	@Benchmark
 	public byte[] compress() {
-		return COMPRESSOR.compress(INPUT_STRINGS[index++ & Integer.MAX_VALUE & MAX_STRINGS - 1]);
+		return COMPRESSOR.compress(INPUT_STRINGS[index++ & 0x7FFFFFFF & MAX_STRINGS - 1]);
 	}
 
 	/**
