@@ -10,7 +10,7 @@ public abstract class AsciiCompressor {
 	protected boolean throwException;
 
 	public AsciiCompressor(byte[] supportedCharset) {
-		validateSupportedCharsetSize(supportedCharset);
+		validateSupportedCharset(supportedCharset);
 		this.supportedCharset = supportedCharset;
 
 		Arrays.fill(lookupTable, (byte) -1);
@@ -28,7 +28,7 @@ public abstract class AsciiCompressor {
 	 */
 	public abstract byte[] decompress(byte[] compressed);
 
-	protected abstract void validateSupportedCharsetSize(byte[] supportedCharset);
+	protected abstract void validateSupportedCharset(byte[] supportedCharset);
 
 	public void setThrowException(boolean throwException) {
 		this.throwException = throwException;

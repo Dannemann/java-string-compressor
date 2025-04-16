@@ -94,7 +94,7 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	}
 
 	@Override
-	protected void validateSupportedCharsetSize(byte[] supportedCharset) {
+	protected void validateSupportedCharset(byte[] supportedCharset) {
 		int len = supportedCharset.length;
 		if (len == 0 || len > 16)
 			throw new CharacterNotSupportedException(
