@@ -9,6 +9,9 @@ import java.util.Random;
 
 import static com.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
 
+/**
+ * @author Jean Dannemann Carone
+ */
 public class FourBitAsciiCompressorBenchmark {
 
 	private static final AsciiCompressor COMPRESSOR = new FourBitAsciiCompressor();
