@@ -47,13 +47,13 @@ public class FourBitsAsciiCompressor extends AsciiCompressor {
 
 				if (bite < 0)
 					throw new CharacterNotSupportedException(
-						"Only ASCII characters are supported. Invalid '" + (char) bite + "' in \"" + new String(str, US_ASCII) + "\"");
+						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code " + bite + ") in \"" + new String(str, US_ASCII) + "\"");
 
 				byte nibble = lookupTable[bite];
 
 				if (nibble == -1)
 					throw new CharacterNotSupportedException(
-						"Character '" + (char) bite + "' is not defined in the supported characters array. String: \"" + new String(str, US_ASCII) + "\"");
+						"Character '" + (char) bite + "' (code " + bite + ") is not defined in the supported characters array. String: \"" + new String(str, US_ASCII) + "\"");
 
 				str[i] = nibble;
 			}
