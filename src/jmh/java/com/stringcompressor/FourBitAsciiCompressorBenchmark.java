@@ -1,0 +1,71 @@
+package com.stringcompressor;
+
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Level;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
+
+import java.util.Random;
+
+import static com.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
+
+public class FourBitAsciiCompressorBenchmark {
+
+	private static final int MAX_STRINGS = 10000;
+	private static final byte[][] INPUT_STRINGS = new byte[MAX_STRINGS][];
+	private static final Random RANDOM = new Random();
+
+	static {
+		int charSetLen = DEFAULT_4BIT_CHARSET.length;
+
+		for (int i = 0; i < MAX_STRINGS; i++) {
+			byte[] randomStrBytes = new byte[RANDOM.nextInt(30, 50)];
+
+			for (int j = 0, randomStrBytesLen = randomStrBytes.length; j < randomStrBytesLen; j++)
+				randomStrBytes[j] = DEFAULT_4BIT_CHARSET[RANDOM.nextInt(charSetLen)];
+
+			INPUT_STRINGS[i] = randomStrBytes;
+		}
+	}
+
+	@State(Scope.Thread)
+	public static class CompressorState {
+
+		public AsciiCompressor compressor;
+		public int inputIndex;
+
+		@Setup(Level.Iteration)
+		public void setup() {
+			compressor = new FourBitAsciiCompressor();
+			inputIndex = 0;
+		}
+
+	}
+
+//	@Benchmark
+//	public void baseline() {
+//	}
+
+	@Benchmark
+	public byte[] compress(CompressorState state) {
+		return state.compressor.compress(
+			INPUT_STRINGS[state.inputIndex++ % MAX_STRINGS]);
+	}
+
+	/**
+	 * For debugging (see build.gradle.kts).
+	 */
+	public static void main(String[] args) throws RunnerException {
+		new Runner(
+			new OptionsBuilder()
+				.include(FourBitAsciiCompressorBenchmark.class.getSimpleName())
+				.forks(0)
+				.build())
+			.run();
+	}
+
+}

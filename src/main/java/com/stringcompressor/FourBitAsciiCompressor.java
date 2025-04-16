@@ -11,21 +11,21 @@ import static java.nio.charset.StandardCharsets.US_ASCII;
  *
  * @author Jean Dannemann Carone
  */
-public class FourBitsAsciiCompressor extends AsciiCompressor {
+public class FourBitAsciiCompressor extends AsciiCompressor {
 
 	public static final byte[] DEFAULT_4BIT_CHARSET = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ';', '#', '-', '+', '.', ','};
 
 	/**
 	 * Creates a 4-bit-per-character compressor with the default supported characters set.
 	 */
-	public FourBitsAsciiCompressor() {
+	public FourBitAsciiCompressor() {
 		super(DEFAULT_4BIT_CHARSET);
 	}
 
 	/**
 	 * Creates a 4-bit-per-character compressor with a custom characters set.
 	 */
-	public FourBitsAsciiCompressor(byte[] supportedCharset) {
+	public FourBitAsciiCompressor(byte[] supportedCharset) {
 		super(supportedCharset);
 	}
 
@@ -40,35 +40,38 @@ public class FourBitsAsciiCompressor extends AsciiCompressor {
 	@Override
 	public byte[] compress(byte[] str) {
 		int len = str.length;
+		byte[] strCopy = new byte[len];
+
+		System.arraycopy(str, 0, strCopy, 0, len);
 
 		if (throwException)
 			for (int i = 0; i < len; i++) {
-				byte bite = str[i];
+				byte bite = strCopy[i];
 
 				if (bite < 0)
 					throw new CharacterNotSupportedException(
-						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code " + bite + ") in \"" + new String(str, US_ASCII) + "\"");
+						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code " + bite + ") in \"" + new String(strCopy, US_ASCII) + "\"");
 
 				byte nibble = lookupTable[bite];
 
 				if (nibble == -1)
 					throw new CharacterNotSupportedException(
-						"Character '" + (char) bite + "' (code " + bite + ") is not defined in the supported characters array. String: \"" + new String(str, US_ASCII) + "\"");
+						"Character '" + (char) bite + "' (code " + bite + ") is not defined in the supported characters array. String: \"" + new String(strCopy, US_ASCII) + "\"");
 
-				str[i] = nibble;
+				strCopy[i] = nibble;
 			}
 		else
 			for (int i = 0; i < len; i++)
-				str[i] = lookupTable[str[i]];
+				strCopy[i] = lookupTable[strCopy[i]];
 
 		int halfLen = len >> 1;
 		byte[] compressed = new byte[halfLen + (len & 1)];
 
 		for (int i = 0; i < halfLen; i++)
-			compressed[i] = (byte) (str[i << 1] << 4 | str[(i << 1) + 1]);
+			compressed[i] = (byte) (strCopy[i << 1] << 4 | strCopy[(i << 1) + 1]);
 
 		if ((len & 1) == 1)
-			compressed[halfLen] = str[len - 1];
+			compressed[halfLen] = strCopy[len - 1];
 
 		return compressed;
 	}

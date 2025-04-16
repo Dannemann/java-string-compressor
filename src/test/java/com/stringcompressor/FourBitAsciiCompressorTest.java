@@ -6,11 +6,11 @@ import org.openjdk.jol.info.GraphLayout;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FourBitsAsciiCompressorTest {
+public class FourBitAsciiCompressorTest {
 
 	@Test
 	public void compressDecompressTest() {
-		AsciiCompressor compressor = new FourBitsAsciiCompressor();
+		AsciiCompressor compressor = new FourBitAsciiCompressor();
 		compressor.setThrowException(true);
 		String str = createRandomString(100, compressor.supportedCharset);
 		long strSizeBefore = GraphLayout.parseInstance(str).totalSize() / 1024 / 1024;
