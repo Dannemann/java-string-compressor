@@ -15,9 +15,11 @@ import static com.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
 
 public class FourBitAsciiCompressorBenchmark {
 
-	private static final int MAX_STRINGS = 10000;
+	private static final int MAX_STRINGS = 3000;
 	private static final byte[][] INPUT_STRINGS = new byte[MAX_STRINGS][];
 	private static final Random RANDOM = new Random();
+
+	private static char index;
 
 	static {
 		int charSetLen = DEFAULT_4BIT_CHARSET.length;
@@ -36,13 +38,11 @@ public class FourBitAsciiCompressorBenchmark {
 	public static class CompressorState {
 
 		public AsciiCompressor compressor;
-		public int inputIndex;
 
 		@Setup(Level.Iteration)
 		public void setup() {
 			compressor = new FourBitAsciiCompressor();
 			compressor.setThrowException(true);
-			inputIndex = 0;
 		}
 
 	}
@@ -54,7 +54,7 @@ public class FourBitAsciiCompressorBenchmark {
 	@Benchmark
 	public byte[] compress(CompressorState state) {
 		return state.compressor.compress(
-			INPUT_STRINGS[state.inputIndex++ % MAX_STRINGS]);
+			INPUT_STRINGS[index++ & MAX_STRINGS - 1]);
 	}
 
 	/**
