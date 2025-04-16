@@ -58,7 +58,7 @@ public class FourBitAsciiCompressorBenchmark {
 	}
 
 	/**
-	 * For debugging (see build.gradle.kts).
+	 * For debugging (see JMH in build.gradle.kts).
 	 */
 	public static void main(String[] args) throws RunnerException {
 		new Runner(
