@@ -1,10 +1,6 @@
 package com.stringcompressor;
 
 import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.Level;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
@@ -15,13 +11,16 @@ import static com.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
 
 public class FourBitAsciiCompressorBenchmark {
 
-	private static final int MAX_STRINGS = 3000;
+	private static final AsciiCompressor COMPRESSOR = new FourBitAsciiCompressor();
+	private static final int MAX_STRINGS = 4096; // Must be a power of 2 for bitwise module.
 	private static final byte[][] INPUT_STRINGS = new byte[MAX_STRINGS][];
 	private static final Random RANDOM = new Random();
 
-	private static char index;
+	private static int index;
 
 	static {
+		COMPRESSOR.setThrowException(true);
+
 		int charSetLen = DEFAULT_4BIT_CHARSET.length;
 
 		for (int i = 0; i < MAX_STRINGS; i++) {
@@ -34,27 +33,13 @@ public class FourBitAsciiCompressorBenchmark {
 		}
 	}
 
-	@State(Scope.Thread)
-	public static class CompressorState {
-
-		public AsciiCompressor compressor;
-
-		@Setup(Level.Iteration)
-		public void setup() {
-			compressor = new FourBitAsciiCompressor();
-			compressor.setThrowException(true);
-		}
-
-	}
-
 //	@Benchmark
 //	public void baseline() {
 //	}
 
 	@Benchmark
-	public byte[] compress(CompressorState state) {
-		return state.compressor.compress(
-			INPUT_STRINGS[index++ & MAX_STRINGS - 1]);
+	public byte[] compress() {
+		return COMPRESSOR.compress(INPUT_STRINGS[index++ & 0x7FFF & MAX_STRINGS - 1]);
 	}
 
 	/**
