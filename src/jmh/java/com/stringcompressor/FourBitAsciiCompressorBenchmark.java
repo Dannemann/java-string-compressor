@@ -28,18 +28,18 @@ public class FourBitAsciiCompressorBenchmark {
 		int charSetLen = DEFAULT_4BIT_CHARSET.length;
 
 		for (int i = 0; i < MAX_STRINGS; i++) {
-			byte[] smallStrBytes = new byte[RANDOM.nextInt(30, 50)];
-			byte[] bigStrBytes = new byte[RANDOM.nextInt(3000, 5000)];
+			byte[] smallString = new byte[RANDOM.nextInt(30, 50)];
+			byte[] bigString = new byte[RANDOM.nextInt(30000, 50000)]; // Between 30k and 50k characters.
 
-			for (int j = 0, smallStrBytesLen = smallStrBytes.length; j < smallStrBytesLen; j++)
-				smallStrBytes[j] = DEFAULT_4BIT_CHARSET[RANDOM.nextInt(charSetLen)];
-			for (int j = 0, bigStrBytesLen = bigStrBytes.length; j < bigStrBytesLen; j++)
-				bigStrBytes[j] = DEFAULT_4BIT_CHARSET[RANDOM.nextInt(charSetLen)];
+			for (int j = 0, smallStrBytesLen = smallString.length; j < smallStrBytesLen; j++)
+				smallString[j] = DEFAULT_4BIT_CHARSET[RANDOM.nextInt(charSetLen)];
+			for (int j = 0, bigStrBytesLen = bigString.length; j < bigStrBytesLen; j++)
+				bigString[j] = DEFAULT_4BIT_CHARSET[RANDOM.nextInt(charSetLen)];
 
-			SMALL_INPUT_STRINGS[i] = smallStrBytes;
-			SMALL_COMPRESSED_STRINGS[i] = COMPRESSOR.compress(smallStrBytes);
-			BIG_INPUT_STRINGS[i] = bigStrBytes;
-			BIG_COMPRESSED_STRINGS[i] = COMPRESSOR.compress(bigStrBytes);
+			SMALL_INPUT_STRINGS[i] = smallString;
+			SMALL_COMPRESSED_STRINGS[i] = COMPRESSOR.compress(smallString);
+			BIG_INPUT_STRINGS[i] = bigString;
+			BIG_COMPRESSED_STRINGS[i] = COMPRESSOR.compress(bigString);
 		}
 	}
 
