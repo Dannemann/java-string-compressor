@@ -17,6 +17,7 @@ public class FourBitAsciiCompressorBenchmark {
 	private static final AsciiCompressor COMPRESSOR = new FourBitAsciiCompressor(true);
 	private static final int MAX_STRINGS = 4096; // Must be a power of 2 for bitwise module.
 	private static final byte[][] INPUT_STRINGS = new byte[MAX_STRINGS][];
+	private static final byte[][] COMPRESSED_STRINGS = new byte[MAX_STRINGS][];
 	private static final Random RANDOM = new Random();
 
 	private static int index;
@@ -31,6 +32,7 @@ public class FourBitAsciiCompressorBenchmark {
 				randomStrBytes[j] = DEFAULT_4BIT_CHARSET[RANDOM.nextInt(charSetLen)];
 
 			INPUT_STRINGS[i] = randomStrBytes;
+			COMPRESSED_STRINGS[i] = COMPRESSOR.compress(randomStrBytes);
 		}
 	}
 
@@ -41,6 +43,11 @@ public class FourBitAsciiCompressorBenchmark {
 	@Benchmark
 	public byte[] compress() {
 		return COMPRESSOR.compress(INPUT_STRINGS[index++ & 0x7FFFFFFF & MAX_STRINGS - 1]);
+	}
+
+	@Benchmark
+	public byte[] decompress() {
+		return COMPRESSOR.decompress(COMPRESSED_STRINGS[index++ & 0x7FFFFFFF & MAX_STRINGS - 1]);
 	}
 
 	/**
