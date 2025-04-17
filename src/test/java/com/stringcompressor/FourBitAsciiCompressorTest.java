@@ -51,27 +51,28 @@ public class FourBitAsciiCompressorTest {
 	}
 
 	@Test
-	public void compressDecompressManualTest() {
+	public void compressDecompressEdgeCasesTest() {
+		doCompressDecompressTest("");
+		doCompressDecompressTest(new String(new byte[]{DEFAULT_4BIT_CHARSET[0]}, US_ASCII));
+		doCompressDecompressTest(new String(new byte[]{DEFAULT_4BIT_CHARSET[0], DEFAULT_4BIT_CHARSET[1]}, US_ASCII));
+		doCompressDecompressTest(new String(new byte[]{DEFAULT_4BIT_CHARSET[0], DEFAULT_4BIT_CHARSET[1], DEFAULT_4BIT_CHARSET[2]}, US_ASCII));
+		doCompressDecompressTest(new String(new byte[]{DEFAULT_4BIT_CHARSET[DEFAULT_4BIT_CHARSET.length - 1]}, US_ASCII));
+		doCompressDecompressTest(new String(DEFAULT_4BIT_CHARSET, US_ASCII));
+	}
+
+	@Test
+	public void compressDecompressRandomAutoTest() {
+		for (int i = 0; i < 1000; i++)
+			doCompressDecompressTest(createRandomString(i));
+	}
+
+	private static void doCompressDecompressTest(String str) {
 		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
-		String str = new String(DEFAULT_4BIT_CHARSET, US_ASCII);
 		byte[] compressed = compressor.compress(str.getBytes(US_ASCII));
 		assertEquals(str.length() / 2 + (str.length() % 2 != 0 ? 2 : 1), compressed.length);
 		byte[] decompressed = compressor.decompress(compressed);
 		assertEquals(str.length(), decompressed.length);
 		assertEquals(str, new String(decompressed, US_ASCII));
-	}
-
-	@Test
-	public void compressDecompressAutoTest() {
-		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
-		for (int i = 0; i < 1000; i++) {
-			String str = createRandomString(i);
-			byte[] compressed = compressor.compress(str.getBytes(US_ASCII));
-			assertEquals(str.length() / 2 + (str.length() % 2 != 0 ? 2 : 1), compressed.length);
-			byte[] decompressed = compressor.decompress(compressed);
-			assertEquals(str.length(), decompressed.length);
-			assertEquals(str, new String(decompressed, US_ASCII));
-		}
 	}
 
 	@Test
