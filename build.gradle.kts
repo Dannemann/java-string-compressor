@@ -28,7 +28,7 @@ jmh {
     jmhVersion = "1.37"
     includes = listOf(".Benchmark.")
     benchmarkMode = listOf("thrpt", "avgt")
-    fork = 0
+    fork = 2
     warmup = "5s"
     warmupIterations = 3
     iterations = 3
