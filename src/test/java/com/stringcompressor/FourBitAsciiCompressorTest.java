@@ -2,7 +2,8 @@ package com.stringcompressor;
 
 import com.stringcompressor.exception.CharacterNotSupportedException;
 import org.junit.jupiter.api.Test;
-import org.openjdk.jol.info.GraphLayout;
+
+import java.util.Arrays;
 
 import static com.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
 import static java.nio.charset.StandardCharsets.US_ASCII;
@@ -12,24 +13,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class FourBitAsciiCompressorTest {
 
 	@Test
-	public void compressDecompressEvenLengthTest() {
-		doCompressDecompressTest(0);
-	}
-
-	@Test
-	public void compressDecompressOddLengthTest() {
-		doCompressDecompressTest(1);
-	}
-
-	private void doCompressDecompressTest(int oddOrEvenLength) {
+	public void compressDecompressTest() {
 		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
-		String str = createRandomString(oddOrEvenLength);
-		long sizeBeforeMb = GraphLayout.parseInstance(str).totalSize();
-		byte[] compressed = compressor.compress(str.getBytes(US_ASCII));
-		long sizeAfterMb = GraphLayout.parseInstance(compressed).totalSize();
-		byte[] decompressed = compressor.decompress(compressed);
-		assertEquals(str, new String(decompressed, US_ASCII));
-		assertEquals(sizeBeforeMb / 2, sizeAfterMb);
+
+		String strEven = new String(DEFAULT_4BIT_CHARSET, US_ASCII);
+		byte[] compressedEven = compressor.compress(strEven.getBytes(US_ASCII));
+		assertEquals(strEven.length() / 2 + (strEven.length() % 2 != 0 ? 2 : 1), compressedEven.length);
+		byte[] decompressedEven = compressor.decompress(compressedEven);
+		assertEquals(strEven.length(), decompressedEven.length);
+		assertEquals(strEven, new String(decompressedEven, US_ASCII));
+
+		byte[] strOddBytes = Arrays.copyOf(DEFAULT_4BIT_CHARSET, DEFAULT_4BIT_CHARSET.length + 1);
+		strOddBytes[strOddBytes.length - 1] = DEFAULT_4BIT_CHARSET[0];
+		String strOdd = new String(strOddBytes, US_ASCII);
+		byte[] compressedOdd = compressor.compress(strOdd.getBytes(US_ASCII));
+		assertEquals(strOdd.length() / 2 + (strOdd.length() % 2 != 0 ? 2 : 1), compressedOdd.length);
+		byte[] decompressedOdd = compressor.decompress(compressedOdd);
+		assertEquals(strOdd.length(), decompressedOdd.length);
+		assertEquals(strOdd, new String(decompressedOdd, US_ASCII));
 	}
 
 	@Test
@@ -81,7 +82,7 @@ public class FourBitAsciiCompressorTest {
 	// Utils:
 
 	private String createRandomString(int oddOrEvenLength) {
-		int bytes = 100 + oddOrEvenLength;
+		int bytes = 10 + oddOrEvenLength;
 		StringBuilder sb = new StringBuilder(bytes);
 		for (int i = 0; i < bytes; i++)
 			sb.append((char) (DEFAULT_4BIT_CHARSET[i % DEFAULT_4BIT_CHARSET.length]));

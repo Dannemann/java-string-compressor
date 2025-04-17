@@ -69,13 +69,15 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 				strCopy[i] = lookupTable[strCopy[i] & 0x7F];
 
 		int halfLen = len >> 1;
-		byte[] compressed = new byte[halfLen + (len & 1)];
+		byte[] compressed = new byte[halfLen + (len & 1) + 1];
 
 		for (int i = 0; i < halfLen; i++)
 			compressed[i] = (byte) (strCopy[i << 1] << 4 | strCopy[(i << 1) + 1]);
 
-		if ((len & 1) == 1)
+		if ((len & 1) == 1) {
 			compressed[halfLen] = strCopy[len - 1];
+			compressed[halfLen + 1] = 1;
+		}
 
 		return compressed;
 	}
@@ -85,14 +87,19 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	 */
 	@Override
 	public byte[] decompress(byte[] compressed) {
-		int len = compressed.length;
-		byte[] decompressed = new byte[len << 1];
+		int charsLen = compressed.length - 1;
+		int odd = compressed[charsLen];
+		int decompLen = odd == 1 ? (--charsLen << 1) + 1 : charsLen << 1;
+		byte[] decompressed = new byte[decompLen];
 
-		for (int i = 0, j = 0; i < len; i++) {
+		for (int i = 0, j = 0; i < charsLen; i++) {
 			byte bite = compressed[i];
 			decompressed[j++] = supportedCharset[(bite & 0xF0) >> 4];
 			decompressed[j++] = supportedCharset[bite & 0x0F];
 		}
+
+		if (odd == 1)
+			decompressed[decompLen - 1] = supportedCharset[compressed[charsLen]];
 
 		return decompressed;
 	}
