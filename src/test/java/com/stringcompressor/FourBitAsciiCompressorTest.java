@@ -66,7 +66,7 @@ public class FourBitAsciiCompressorTest {
 	@Test
 	public void ignoreInvalidCharTest() {
 		AsciiCompressor compressor = new FourBitAsciiCompressor();
-		byte[] compressed = compressor.compress(new byte[]{(byte) '0', 'A', '2', '3'});
+		byte[] compressed = compressor.compress(new byte[]{(byte) '0', (byte) 'Ç', '2', '3'});
 		byte[] decompressed = compressor.decompress(compressed);
 		assertEquals(",,23", new String(decompressed, US_ASCII));
 	}
