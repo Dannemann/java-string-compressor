@@ -28,11 +28,13 @@ jmh {
     jmhVersion = "1.37"
     includes = listOf(".Benchmark.")
     benchmarkMode = listOf("thrpt", "avgt")
-    fork = 2
+    fork = 0
     warmup = "5s"
     warmupIterations = 3
     iterations = 3
     timeOnIteration = "5s"
     threads = 1
     timeUnit = "ns"
+    resultFormat = "TEXT"
+    resultsFile = file("${layout.projectDirectory}/benchmark-results-macpro2019-inteli726g.txt")
 }
