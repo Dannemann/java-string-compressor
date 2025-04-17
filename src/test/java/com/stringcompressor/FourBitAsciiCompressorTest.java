@@ -61,7 +61,7 @@ public class FourBitAsciiCompressorTest {
 	}
 
 	@Test
-	public void compressDecompressRandomAutoTest() {
+	public void compressDecompressAutoRandomTest() {
 		for (int i = 0; i < 1000; i++)
 			doCompressDecompressTest(createRandomString(i));
 	}
