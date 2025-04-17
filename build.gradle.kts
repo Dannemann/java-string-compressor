@@ -34,5 +34,5 @@ jmh {
     iterations = 3
     timeOnIteration = "5s"
     threads = 1
-    timeUnit = "ms"
+    timeUnit = "ns"
 }
