@@ -15,18 +15,22 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 
 	public static final byte[] DEFAULT_4BIT_CHARSET = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ';', '#', '-', '+', '.', ','};
 
-	/**
-	 * Creates a 4-bit-per-character compressor with the default supported characters set.
-	 */
 	public FourBitAsciiCompressor() {
 		super(DEFAULT_4BIT_CHARSET);
 	}
 
-	/**
-	 * Creates a 4-bit-per-character compressor with a custom characters set.
-	 */
 	public FourBitAsciiCompressor(byte[] supportedCharset) {
 		super(supportedCharset);
+	}
+
+	public FourBitAsciiCompressor(byte[] supportedCharset, boolean throwException) {
+		super(supportedCharset);
+		this.throwException = throwException;
+	}
+
+	public FourBitAsciiCompressor(boolean throwException) {
+		super(DEFAULT_4BIT_CHARSET);
+		this.throwException = throwException;
 	}
 
 	/**
@@ -96,9 +100,15 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	@Override
 	protected void validateSupportedCharset(byte[] supportedCharset) {
 		int len = supportedCharset.length;
+
 		if (len == 0 || len > 16)
 			throw new CharacterNotSupportedException(
 				"4-bit compressor supports a minimum of 1 and a maximum of 16 different characters. Currently " + len + ".");
+
+		for (int i = 0; i < len; i++)
+			if (supportedCharset[i] < 0)
+				throw new CharacterNotSupportedException(
+					"Invalid character found in the custom supported charset: '" + (char) supportedCharset[i] + "' (code " + supportedCharset[i] + ")");
 	}
 
 }

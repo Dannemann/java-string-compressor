@@ -14,7 +14,7 @@ import static com.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
  */
 public class FourBitAsciiCompressorBenchmark {
 
-	private static final AsciiCompressor COMPRESSOR = new FourBitAsciiCompressor();
+	private static final AsciiCompressor COMPRESSOR = new FourBitAsciiCompressor(true);
 	private static final int MAX_STRINGS = 4096; // Must be a power of 2 for bitwise module.
 	private static final byte[][] INPUT_STRINGS = new byte[MAX_STRINGS][];
 	private static final Random RANDOM = new Random();
@@ -22,8 +22,6 @@ public class FourBitAsciiCompressorBenchmark {
 	private static int index;
 
 	static {
-		COMPRESSOR.setThrowException(true);
-
 		int charSetLen = DEFAULT_4BIT_CHARSET.length;
 
 		for (int i = 0; i < MAX_STRINGS; i++) {
