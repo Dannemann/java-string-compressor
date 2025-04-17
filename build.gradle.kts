@@ -29,10 +29,10 @@ jmh {
     includes = listOf(".Benchmark.")
     benchmarkMode = listOf("thrpt", "avgt")
     fork = 2
-    warmup = "10s"
+    warmup = "5s"
     warmupIterations = 3
     iterations = 3
-    timeOnIteration = "10s"
+    timeOnIteration = "5s"
     threads = 1
-    timeUnit = "ns"
+    timeUnit = "ms"
 }

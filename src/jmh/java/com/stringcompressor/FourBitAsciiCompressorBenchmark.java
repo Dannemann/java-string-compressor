@@ -16,8 +16,10 @@ public class FourBitAsciiCompressorBenchmark {
 
 	private static final AsciiCompressor COMPRESSOR = new FourBitAsciiCompressor(true);
 	private static final int MAX_STRINGS = 4096; // Must be a power of 2 for bitwise module.
-	private static final byte[][] INPUT_STRINGS = new byte[MAX_STRINGS][];
-	private static final byte[][] COMPRESSED_STRINGS = new byte[MAX_STRINGS][];
+	private static final byte[][] SMALL_INPUT_STRINGS = new byte[MAX_STRINGS][];
+	private static final byte[][] BIG_INPUT_STRINGS = new byte[MAX_STRINGS][];
+	private static final byte[][] SMALL_COMPRESSED_STRINGS = new byte[MAX_STRINGS][];
+	private static final byte[][] BIG_COMPRESSED_STRINGS = new byte[MAX_STRINGS][];
 	private static final Random RANDOM = new Random();
 
 	private static int index;
@@ -26,28 +28,43 @@ public class FourBitAsciiCompressorBenchmark {
 		int charSetLen = DEFAULT_4BIT_CHARSET.length;
 
 		for (int i = 0; i < MAX_STRINGS; i++) {
-			byte[] randomStrBytes = new byte[RANDOM.nextInt(30, 50)];
+			byte[] smallStrBytes = new byte[RANDOM.nextInt(30, 50)];
+			byte[] bigStrBytes = new byte[RANDOM.nextInt(3000, 5000)];
 
-			for (int j = 0, randomStrBytesLen = randomStrBytes.length; j < randomStrBytesLen; j++)
-				randomStrBytes[j] = DEFAULT_4BIT_CHARSET[RANDOM.nextInt(charSetLen)];
+			for (int j = 0, smallStrBytesLen = smallStrBytes.length; j < smallStrBytesLen; j++)
+				smallStrBytes[j] = DEFAULT_4BIT_CHARSET[RANDOM.nextInt(charSetLen)];
+			for (int j = 0, bigStrBytesLen = bigStrBytes.length; j < bigStrBytesLen; j++)
+				bigStrBytes[j] = DEFAULT_4BIT_CHARSET[RANDOM.nextInt(charSetLen)];
 
-			INPUT_STRINGS[i] = randomStrBytes;
-			COMPRESSED_STRINGS[i] = COMPRESSOR.compress(randomStrBytes);
+			SMALL_INPUT_STRINGS[i] = smallStrBytes;
+			SMALL_COMPRESSED_STRINGS[i] = COMPRESSOR.compress(smallStrBytes);
+			BIG_INPUT_STRINGS[i] = bigStrBytes;
+			BIG_COMPRESSED_STRINGS[i] = COMPRESSOR.compress(bigStrBytes);
 		}
 	}
 
-//	@Benchmark
-//	public void baseline() {
-//	}
-
 	@Benchmark
-	public byte[] compress() {
-		return COMPRESSOR.compress(INPUT_STRINGS[index++ & 0x7FFFFFFF & MAX_STRINGS - 1]);
+	public void baseline() {
 	}
 
 	@Benchmark
-	public byte[] decompress() {
-		return COMPRESSOR.decompress(COMPRESSED_STRINGS[index++ & 0x7FFFFFFF & MAX_STRINGS - 1]);
+	public byte[] compressSmallStrings() {
+		return COMPRESSOR.compress(SMALL_INPUT_STRINGS[index++ & 0x7FFFFFFF & MAX_STRINGS - 1]);
+	}
+
+	@Benchmark
+	public byte[] decompressSmallStrings() {
+		return COMPRESSOR.decompress(SMALL_COMPRESSED_STRINGS[index++ & 0x7FFFFFFF & MAX_STRINGS - 1]);
+	}
+
+	@Benchmark
+	public byte[] compressBigStrings() {
+		return COMPRESSOR.compress(BIG_INPUT_STRINGS[index++ & 0x7FFFFFFF & MAX_STRINGS - 1]);
+	}
+
+	@Benchmark
+	public byte[] decompressBigStrings() {
+		return COMPRESSOR.decompress(BIG_COMPRESSED_STRINGS[index++ & 0x7FFFFFFF & MAX_STRINGS - 1]);
 	}
 
 	/**
