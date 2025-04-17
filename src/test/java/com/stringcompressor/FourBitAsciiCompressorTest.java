@@ -51,7 +51,18 @@ public class FourBitAsciiCompressorTest {
 	}
 
 	@Test
-	public void compressDecompressTest() {
+	public void compressDecompressManualTest() {
+		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
+		String str = new String(DEFAULT_4BIT_CHARSET, US_ASCII);
+		byte[] compressed = compressor.compress(str.getBytes(US_ASCII));
+		assertEquals(str.length() / 2 + (str.length() % 2 != 0 ? 2 : 1), compressed.length);
+		byte[] decompressed = compressor.decompress(compressed);
+		assertEquals(str.length(), decompressed.length);
+		assertEquals(str, new String(decompressed, US_ASCII));
+	}
+
+	@Test
+	public void compressDecompressAutoTest() {
 		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
 		for (int i = 0; i < 1000; i++) {
 			String str = createRandomString(i);
