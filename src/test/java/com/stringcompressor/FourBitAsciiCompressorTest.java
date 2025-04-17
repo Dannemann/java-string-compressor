@@ -24,9 +24,9 @@ public class FourBitAsciiCompressorTest {
 	private void doCompressDecompressTest(int oddOrEvenLength) {
 		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
 		String str = createRandomString(oddOrEvenLength);
-		long sizeBeforeMb = GraphLayout.parseInstance(str).totalSize() / 1024 / 1024;
+		long sizeBeforeMb = GraphLayout.parseInstance(str).totalSize();
 		byte[] compressed = compressor.compress(str.getBytes(US_ASCII));
-		long sizeAfterMb = GraphLayout.parseInstance(compressed).totalSize() / 1024 / 1024;
+		long sizeAfterMb = GraphLayout.parseInstance(compressed).totalSize();
 		byte[] decompressed = compressor.decompress(compressed);
 		assertEquals(str, new String(decompressed, US_ASCII));
 		assertEquals(sizeBeforeMb / 2, sizeAfterMb);
