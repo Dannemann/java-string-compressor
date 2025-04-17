@@ -2,6 +2,9 @@ package com.stringcompressor;
 
 import java.util.Arrays;
 
+/**
+ * @author Jean Dannemann Carone
+ */
 public abstract class AsciiCompressor {
 
 	protected final byte[] supportedCharset;
