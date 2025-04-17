@@ -34,7 +34,7 @@ jmh {
     iterations = 3
     timeOnIteration = "5s"
     threads = 1
-    timeUnit = "ns"
+    timeUnit = "ms"
     resultFormat = "TEXT"
-    resultsFile = file("${layout.projectDirectory}/benchmark-results-macpro2019-inteli726g.txt")
+    resultsFile = file("${layout.projectDirectory}/benchmarks/results-macpro2019-inteli726g.txt")
 }
