@@ -18,8 +18,6 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
-    testImplementation("org.openjdk.jol:jol-core:0.17")
 }
 
 tasks.test {
