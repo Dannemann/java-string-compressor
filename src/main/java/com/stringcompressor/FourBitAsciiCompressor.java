@@ -44,43 +44,88 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	@Override
 	public byte[] compress(byte[] str) {
 		int len = str.length;
-		byte[] strCopy = new byte[len];
+		byte[] str2 = new byte[len]; // TODO: If condition to copy or change the reference. Give the option to the user.
+		str = null;
 
-		System.arraycopy(str, 0, strCopy, 0, len);
+		System.arraycopy(str, 0, str2, 0, len);
 
 		if (throwException)
 			for (int i = 0; i < len; i++) {
-				byte bite = strCopy[i];
+				byte bite = str2[i];
 
 				if (bite < 0)
 					throw new CharacterNotSupportedException(
-						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code " + bite + ") in \"" + new String(strCopy, US_ASCII) + "\"");
+						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code " + bite + ") in \"" + new String(str2, US_ASCII) + "\"");
 
 				byte nibble = lookupTable[bite];
 
 				if (nibble == -1)
 					throw new CharacterNotSupportedException(
-						"Character '" + (char) bite + "' (code " + bite + ") is not defined in the supported characters array. String: \"" + new String(strCopy, US_ASCII) + "\"");
+						"Character '" + (char) bite + "' (code " + bite + ") is not defined in the supported characters array. String: \"" + new String(str2, US_ASCII) + "\"");
 
-				strCopy[i] = nibble;
+				str2[i] = nibble;
 			}
 		else
 			for (int i = 0; i < len; i++)
-				strCopy[i] = lookupTable[strCopy[i] & 0x7F];
+				str2[i] = lookupTable[str2[i] & 0x7F];
 
 		int halfLen = len >> 1;
 		byte[] compressed = new byte[halfLen + (len & 1) + 1];
 
 		for (int i = 0; i < halfLen; i++)
-			compressed[i] = (byte) (strCopy[i << 1] << 4 | strCopy[(i << 1) + 1]);
+			compressed[i] = (byte) (str2[i << 1] << 4 | str2[(i << 1) + 1]);
 
 		if ((len & 1) == 1) {
-			compressed[halfLen] = strCopy[len - 1];
+			compressed[halfLen] = str2[len - 1];
 			compressed[halfLen + 1] = 1;
 		}
 
 		return compressed;
 	}
+
+//	public long[] compressLong(byte[] str) {
+//		int len = str.length;
+//		byte[] strCopy = new byte[len];
+//
+//		System.arraycopy(str, 0, strCopy, 0, len);
+//
+//		byte[] compressed = new byte[(int) Math.ceil(len / 64)];
+//
+//		if (throwException)
+//			for (int i = 0; i < len; i++) {
+//				byte bite = strCopy[i];
+//
+//				if (bite < 0)
+//					throw new CharacterNotSupportedException(
+//						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code " + bite + ") in \"" + new String(strCopy, US_ASCII) + "\"");
+//
+//				byte nibble = lookupTable[bite];
+//
+//				if (nibble == -1)
+//					throw new CharacterNotSupportedException(
+//						"Character '" + (char) bite + "' (code " + bite + ") is not defined in the supported characters array. String: \"" + new String(strCopy, US_ASCII) + "\"");
+//
+//				strCopy[i] = nibble;
+//			}
+//		else {
+//			int remainingSpace = 16;
+//			for (int i = 0; i < len; i++) {
+//
+//				strCopy[i] = lookupTable[strCopy[i] & 0x7F];
+//			}
+//		}
+//
+//
+////		for (int i = 0; i < compressed.length; i++)
+////			compressed[i] = (byte) (strCopy[i<<1] << 4 | strCopy[(i << 1) + 1]);
+//
+//		if ((len & 1) == 1) {
+//			compressed[halfLen] = strCopy[len - 1];
+//			compressed[halfLen + 1] = 1;
+//		}
+//
+//		return compressed;
+//	}
 
 	/**
 	 * {@inheritDoc}
