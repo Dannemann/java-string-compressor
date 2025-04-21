@@ -100,17 +100,16 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 			int bits = 5;
 
-			if (excess < 4) {
+			if (excess < 4)
 				decompressed[j++] |= (byte) (bite << (excess + 24) >>> 27);
-			} else {
+			else
 				bits = 0;
-			}
 
 			bits += excess;
 
-			if (bits == 8) {
+			if (bits == 8)
 				excess = 0;
-			} else {
+			else {
 				excess = (5 - (8 - bits));
 				bucket = (byte) (((bite << bits + 24) >>> bits + 24) << excess);
 			}
