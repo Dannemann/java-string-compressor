@@ -37,7 +37,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 			for (int i = 0; i < len; i++)
 				str2[i] = lookupTable[str2[i] & 0x7F];
 
-		byte[] compressed = new byte[len / 4 * 3 + (len & 1)];
+		byte[] compressed = new byte[len / 8 * 5];
 		int available = 8;
 		byte bucket = 0;
 		boolean bucketFull = false;
@@ -49,19 +49,21 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 				compressed[j] <<= 3 - (8 - available);
 
 //				if (bucketFull) {
-					compressed[j] |= bucket;
+				compressed[j] |= bucket;
 //					bucketFull = false;
-					bucket = 0;
+				bucket = 0;
 //				}
 
-				if ((available -= 5) == 0)
+				if ((available -= 5) == 0) {
+					available = 8;
 					j++;
+				}
 			} else {
 				int rShifts = 5 - available;
-				compressed[j] |= bite >> rShifts;
+				compressed[j] |= (byte) ((bite & 0xFF) >> rShifts);
 
 //				if (bucketFull)
-					compressed[j] |= bucket;
+				compressed[j] |= bucket;
 
 				int lShifts = 8 - rShifts;
 				bucket = (byte) (bite << lShifts);
@@ -88,7 +90,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		int excess = 0;
 		byte bucket = 0;
 
-		byte[] decompressed = new byte[compressed.length / 3 * 4 + 2];
+		byte[] decompressed = new byte[compressed.length / 5 * 8];
 
 		for (int i = 0, j = 0, len = compressed.length; i < len; i++) {
 			byte bite = compressed[i];
@@ -99,15 +101,19 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 			int bits = 5;
 
 			if (excess < 4) {
-				decompressed[j++] |= (byte) (bite << (excess) >>> 3);
+				decompressed[j++] |= (byte) (bite << (excess + 24) >>> 27);
 			} else {
-				bits = 4;
+				bits = 0;
 			}
 
-			bits += excess + 24;
+			bits += excess;
 
-			bucket = (byte) (((bite << bits) >>> bits) << excess);
-			excess += 2;
+			if (bits == 8) {
+				excess = 0;
+			} else {
+				excess = (5 - (8 - bits));
+				bucket = (byte) (((bite << bits + 24) >>> bits + 24) << excess);
+			}
 		}
 
 		return decompressed;
