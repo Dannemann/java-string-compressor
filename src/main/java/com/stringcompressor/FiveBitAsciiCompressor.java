@@ -101,7 +101,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 			int bits = 5;
 
 			if (excess < 4)
-				decompressed[j++] |= (byte) (bite << (excess + 24) >>> 27);
+				decompressed[j++] |= (byte) (bite << excess + 24 >>> 27);
 			else
 				bits = 0;
 
@@ -120,13 +120,6 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 	@Override
 	protected void validateSupportedCharset(byte[] supportedCharset) {
-	}
-
-	public static void main(String[] args) {
-
-
-		System.out.println(1 << -1);
-
 	}
 
 }
