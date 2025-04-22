@@ -13,6 +13,10 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 	@Override
 	public byte[] compress(byte[] str) {
 		int len = str.length;
+
+		if (len == 0)
+			return str;
+
 		byte[] str2 = new byte[len];
 
 		System.arraycopy(str, 0, str2, 0, len);
@@ -39,6 +43,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 //		byte[] compressed = new byte[len / 8 * 5 + (len & 1)];
 		byte[] compressed = new byte[(int) Math.ceil(len * .625) + 1];
+
 		int available = 8;
 		byte bucket = 0;
 		boolean bucketFull = false;
@@ -69,18 +74,25 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 				int lShifts = 8 - rShifts;
 				bucket = (byte) (bite << lShifts);
-				bucketFull = true;
+				bucketFull = true;  /// TODO will i need it after all for the last char?
 
 				available = lShifts;
 				j++;
 			}
 		}
 
-		if (bucket != 0) {
+		if (available == 4 || available == 8) {
+			compressed[j] |= bucket;
+			compressed[compressed.length - 1] = 0;
+		}
+
+		else if (available > 4) { // nao funciona para 00
 			compressed[j] |= bucket;
 			compressed[compressed.length - 1] = 1;
-		} else
+		} else {
+
 			compressed[compressed.length - 1] = 0;
+		}
 
 //		if ((len & 1) == 1) {
 //			compressed[halfLen] = strCopy[len - 1];
@@ -96,13 +108,17 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 	@Override
 	public byte[] decompress(byte[] compressed) {
 		int len = compressed.length;
+
+		if (len == 0)
+			return compressed;
+
 		int excess = 0;
 		byte bucket = 0;
 
 		int hint = compressed[len - 1];
 
 //		byte[] decompressed = new byte[len / 5 * 8 + (len & 1)];
-		byte[] decompressed = new byte[(int) Math.floor((len - 1) / .625) - (hint & 1)];
+		byte[] decompressed = new byte[(int) Math.floor((len - 1) / .625 - (hint & 1))];
 
 		for (int i = 0, j = 0; i < len - 1; i++) {
 			byte bite = compressed[i];

@@ -3,6 +3,7 @@ package com.stringcompressor;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static com.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
 import static java.nio.charset.StandardCharsets.US_ASCII;
@@ -12,6 +13,35 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Jean Dannemann Carone
  */
 public class FiveBitAsciiCompressorTest {
+
+	@Test
+	public void test() throws InterruptedException {
+		AsciiCompressor compressor = new FiveBitAsciiCompressor(DEFAULT_4BIT_CHARSET);
+
+		for (int j = 0; j <= 500; j++)
+			for (int i = 0; i <= 5000; i++) {
+				String str = createRandomString(j);
+	//			System.out.println(" ### TESTING FOR: " + str);
+	//			String str = "00";
+	//			String str = "193;";
+	//			String str = "+908;0+3";
+				byte[] compressed = compressor.compress(str.getBytes());
+				byte[] decompressed = compressor.decompress(compressed);
+				assertEquals(str, new String(decompressed, US_ASCII));
+
+	//			Thread.sleep(10);
+			}
+	}
+
+	private String createRandomString(int length) {
+		Random rand = new Random();
+		StringBuilder sb = new StringBuilder(length);
+		for (int i = 0; i < length; i++)
+			sb.append((char) (DEFAULT_4BIT_CHARSET[rand.nextInt(DEFAULT_4BIT_CHARSET.length)]));
+		return sb.toString();
+	}
+
+
 
 	@Test
 	public void even() {
