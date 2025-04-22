@@ -37,11 +37,13 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 			for (int i = 0; i < len; i++)
 				str2[i] = lookupTable[str2[i] & 0x7F];
 
-		byte[] compressed = new byte[len / 8 * 5 + (len & 1)];
+//		byte[] compressed = new byte[len / 8 * 5 + (len & 1)];
+		byte[] compressed = new byte[(int) Math.ceil(len * .625)];
 		int available = 8;
 		byte bucket = 0;
 		boolean bucketFull = false;
-		for (int i = 0, j = 0; i < len; i++) {
+		int j = 0;
+		for (int i = 0; i < len; i++) {
 			byte bite = str2[i];
 
 			if (available >= 5) {
@@ -74,6 +76,11 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 			}
 		}
 
+		if (bucket != 0) {
+			compressed[j] |= bucket;
+			compressed[len] = 1;
+		}
+
 //		if ((len & 1) == 1) {
 //			compressed[halfLen] = strCopy[len - 1];
 //			compressed[halfLen + 1] = 1;
@@ -91,7 +98,8 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		int excess = 0;
 		byte bucket = 0;
 
-		byte[] decompressed = new byte[len / 5 * 8 + (len & 1)];
+//		byte[] decompressed = new byte[len / 5 * 8 + (len & 1)];
+		byte[] decompressed = new byte[(int) Math.floor(len / .625)];
 
 		for (int i = 0, j = 0; i < len; i++) {
 			byte bite = compressed[i];
