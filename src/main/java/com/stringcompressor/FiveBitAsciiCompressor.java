@@ -38,7 +38,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 				str2[i] = lookupTable[str2[i] & 0x7F];
 
 //		byte[] compressed = new byte[len / 8 * 5 + (len & 1)];
-		byte[] compressed = new byte[(int) Math.ceil(len * .625)];
+		byte[] compressed = new byte[(int) Math.ceil(len * .625) + 1];
 		int available = 8;
 		byte bucket = 0;
 		boolean bucketFull = false;
@@ -78,8 +78,9 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 		if (bucket != 0) {
 			compressed[j] |= bucket;
-			compressed[len] = 1;
-		}
+			compressed[compressed.length - 1] = 1;
+		} else
+			compressed[compressed.length - 1] = 0;
 
 //		if ((len & 1) == 1) {
 //			compressed[halfLen] = strCopy[len - 1];
@@ -98,19 +99,27 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		int excess = 0;
 		byte bucket = 0;
 
-//		byte[] decompressed = new byte[len / 5 * 8 + (len & 1)];
-		byte[] decompressed = new byte[(int) Math.floor(len / .625)];
+		int hint = compressed[len - 1];
 
-		for (int i = 0, j = 0; i < len; i++) {
+//		byte[] decompressed = new byte[len / 5 * 8 + (len & 1)];
+		byte[] decompressed = new byte[(int) Math.floor((len - 1) / .625) - (hint & 1)];
+
+		for (int i = 0, j = 0; i < len - 1; i++) {
 			byte bite = compressed[i];
 
-			if (excess > 0)
-				decompressed[j++] = (byte) (bucket | ((bite & 0xFF) >>> 8 - excess));
+			if (excess > 0) {
+//				decompressed[j++] = (byte) (bucket | ((bite & 0xFF) >>> 8 - excess));
+				decompressed[j++] = supportedCharset[(byte) (bucket | ((bite & 0xFF) >>> 8 - excess))];
+
+				if (j >= decompressed.length)
+					break;
+			}
 
 			int bits = 5;
 
 			if (excess < 4)
-				decompressed[j++] |= (byte) (bite << excess + 24 >>> 27);
+//				decompressed[j++] |= (byte) (bite << excess + 24 >>> 27);
+				decompressed[j++] = supportedCharset[(byte) (bite << excess + 24 >>> 27)];
 			else
 				bits = 0;
 
