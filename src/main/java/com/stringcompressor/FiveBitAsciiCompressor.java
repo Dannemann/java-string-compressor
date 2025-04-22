@@ -6,17 +6,32 @@ import static java.nio.charset.StandardCharsets.US_ASCII;
 
 public class FiveBitAsciiCompressor extends AsciiCompressor {
 
+	public static final byte[] DEFAULT_5BIT_CHARSET = new byte[]{
+		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+		'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+		' ', '.', ',', '\'', '-'};
+
+	public FiveBitAsciiCompressor() {
+		super(DEFAULT_5BIT_CHARSET);
+	}
+
 	public FiveBitAsciiCompressor(byte[] supportedCharset) {
 		super(supportedCharset);
+	}
+
+	public FiveBitAsciiCompressor(byte[] supportedCharset, boolean throwException) {
+		super(supportedCharset);
+		this.throwException = throwException;
+	}
+
+	public FiveBitAsciiCompressor(boolean throwException) {
+		super(DEFAULT_5BIT_CHARSET);
+		this.throwException = throwException;
 	}
 
 	@Override
 	public byte[] compress(byte[] str) {
 		int len = str.length;
-
-		if (len == 0)
-			return str;
-
 		byte[] str2 = new byte[len];
 
 		System.arraycopy(str, 0, str2, 0, len);
@@ -41,25 +56,20 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 			for (int i = 0; i < len; i++)
 				str2[i] = lookupTable[str2[i] & 0x7F];
 
-//		byte[] compressed = new byte[len / 8 * 5 + (len & 1)];
-		byte[] compressed = new byte[(int) Math.ceil(len * .625) + 1];
-
+		int cLen = (int) Math.ceil(len * .625) + 1;
+		byte[] compressed = new byte[cLen];
 		int available = 8;
 		byte bucket = 0;
-		boolean bucketFull = false;
 		int j = 0;
+
 		for (int i = 0; i < len; i++) {
 			byte bite = str2[i];
 
 			if (available >= 5) {
 				compressed[j] |= bite;
 				compressed[j] <<= (3 - (8 - available));
-
-//				if (bucketFull) {
 				compressed[j] |= bucket;
-//					bucketFull = false;
 				bucket = 0;
-//				}
 
 				if ((available -= 5) == 0) {
 					available = 8;
@@ -67,64 +77,35 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 				}
 			} else {
 				int rShifts = 5 - available;
-				compressed[j] |= (byte) ((bite & 0xFF) >> rShifts);
-
-//				if (bucketFull)
-				compressed[j] |= bucket;
-
 				int lShifts = 8 - rShifts;
+				compressed[j] |= (byte) ((bite & 0xFF) >> rShifts);
+				compressed[j] |= bucket;
 				bucket = (byte) (bite << lShifts);
-				bucketFull = true;  /// TODO will i need it after all for the last char?
-
 				available = lShifts;
 				j++;
 			}
 		}
 
-		if (available == 4 || available == 8) {
-			compressed[j] |= bucket;
-			compressed[compressed.length - 1] = 0;
-		}
+		compressed[j] |= bucket;
 
-		else if (available > 4) { // nao funciona para 00
-			compressed[j] |= bucket;
+		if (available > 4 && available < 8)
 			compressed[compressed.length - 1] = 1;
-		} else {
-
-			compressed[compressed.length - 1] = 0;
-		}
-
-//		if ((len & 1) == 1) {
-//			compressed[halfLen] = strCopy[len - 1];
-//			compressed[halfLen + 1] = 1;
-//		}
 
 		return compressed;
 	}
 
-//	byte[] bitmasks = {0x00, };
-
-
 	@Override
 	public byte[] decompress(byte[] compressed) {
 		int len = compressed.length;
-
-		if (len == 0)
-			return compressed;
-
 		int excess = 0;
 		byte bucket = 0;
-
 		int hint = compressed[len - 1];
-
-//		byte[] decompressed = new byte[len / 5 * 8 + (len & 1)];
 		byte[] decompressed = new byte[(int) Math.floor((len - 1) / .625 - (hint & 1))];
 
 		for (int i = 0, j = 0; i < len - 1; i++) {
 			byte bite = compressed[i];
 
 			if (excess > 0) {
-//				decompressed[j++] = (byte) (bucket | ((bite & 0xFF) >>> 8 - excess));
 				decompressed[j++] = supportedCharset[(byte) (bucket | ((bite & 0xFF) >>> 8 - excess))];
 
 				if (j >= decompressed.length)
@@ -134,7 +115,6 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 			int bits = 5;
 
 			if (excess < 4)
-//				decompressed[j++] |= (byte) (bite << excess + 24 >>> 27);
 				decompressed[j++] = supportedCharset[(byte) (bite << excess + 24 >>> 27)];
 			else
 				bits = 0;
