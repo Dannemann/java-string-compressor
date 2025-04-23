@@ -88,7 +88,7 @@ public class FourBitAsciiCompressorTest {
     }
 
     @Test
-    public void ignoreInvalidCharTest2() {
+    public void ignoreInvalidCharsTest() {
         AsciiCompressor compressor = new FourBitAsciiCompressor();
         for (int i = 0; i < 128; i++) {
             byte[] input = new byte[]{'0', (byte) i, '2', '3'};
