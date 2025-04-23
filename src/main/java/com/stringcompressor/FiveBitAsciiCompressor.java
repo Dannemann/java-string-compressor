@@ -11,7 +11,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 	public static final byte[] DEFAULT_5BIT_CHARSET = new byte[]{
 		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 		'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-		' ', '.', ',', '\'', '-'};
+		' ', '.', ',', '\'', '-', '@'};
 
 	public FiveBitAsciiCompressor() {
 		super(DEFAULT_5BIT_CHARSET);

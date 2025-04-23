@@ -3,11 +3,7 @@ package com.stringcompressor;
 import com.stringcompressor.exception.CharacterNotSupportedException;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Random;
-
 import static com.stringcompressor.FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET;
-import static com.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -15,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * @author Jean Dannemann Carone
  */
-public class FiveBitAsciiCompressorTest {
+public class FiveBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	public void validCustomCharsetTest() {
@@ -32,7 +28,17 @@ public class FiveBitAsciiCompressorTest {
 			16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> new FiveBitAsciiCompressor(customSupportedCharset));
-		assertEquals("5-bit compressor supports a minimum of 1 and a maximum of 32 different characters. Currently 33.", e.getMessage());
+		assertEquals("5-bit compressor requires a set of exactly 32 characters. Currently 33.", e.getMessage());
+	}
+
+	@Test
+	public void missingCustomCharsetTest() {
+		byte[] customSupportedCharset = new byte[]{
+			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+			16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+		CharacterNotSupportedException e = assertThrows(
+			CharacterNotSupportedException.class, () -> new FiveBitAsciiCompressor(customSupportedCharset));
+		assertEquals("5-bit compressor requires a set of exactly 32 characters. Currently 31.", e.getMessage());
 	}
 
 	@Test
@@ -57,17 +63,17 @@ public class FiveBitAsciiCompressorTest {
 	public void invalidCharCompressTest() {
 		AsciiCompressor compressor = new FiveBitAsciiCompressor(true);
 		CharacterNotSupportedException e = assertThrows(
-			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{'Z'}));
-		assertEquals("Character 'Z' (code point 90) is not defined in the supported characters array. String: \"Z\"", e.getMessage());
+			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{'9'}));
+		assertEquals("Character '9' (code point 57) is not defined in the supported characters array. String: \"9\"", e.getMessage());
 	}
 
 	@Test
 	public void compressDecompressTest() {
 		AsciiCompressor compressor = new FiveBitAsciiCompressor();
-		for (int length = 0; length <= 500; length++)
-			for (int i = 0; i <= 3000; i++) {
-				String str = createRandomString(length);
-				byte[] compressed = compressor.compress(str.getBytes());
+		for (int length = 0; length <= 1000; length++)
+			for (int i = 0; i <= 10000; i++) {
+				String str = createRandomString(length, DEFAULT_5BIT_CHARSET);
+				byte[] compressed = compressor.compress(str.getBytes(US_ASCII));
 				byte[] decompressed = compressor.decompress(compressed);
 				assertEquals(str, new String(decompressed, US_ASCII));
 			}
@@ -76,43 +82,21 @@ public class FiveBitAsciiCompressorTest {
 	@Test
 	public void ignoreInvalidCharTest() {
 		AsciiCompressor compressor = new FiveBitAsciiCompressor();
-		byte[] compressed = compressor.compress(new byte[]{'0', (byte) 'Ç', '2', '3'});
+		byte[] compressed = compressor.compress(new byte[]{'A', (byte) 'Ç', 'B', 'C'});
 		byte[] decompressed = compressor.decompress(compressed);
-		assertEquals(",,23", new String(decompressed, US_ASCII));
-	}
-
-	// Old tests:
-
-	@Test
-	public void evenLengthTest() {
-		AsciiCompressor compressor = new FiveBitAsciiCompressor(DEFAULT_4BIT_CHARSET);
-		byte[] compressed1 = compressor.compress("0123456789;#-+.,,.+-#;9876543210".getBytes(US_ASCII));
-		assertEquals("[0, 68, 50, 20, -57, 66, 84, -74, 53, -49, 123, -102, -59, -87, 40, 57, -118, 65, -120, 32, 0]", Arrays.toString(compressed1));
-		byte[] decompressed1 = compressor.decompress(compressed1);
-		assertEquals("0123456789;#-+.,,.+-#;9876543210", new String(decompressed1, US_ASCII));
-		byte[] compressed2 = compressor.compress(",,".getBytes(US_ASCII));
-		assertEquals("[123, -64, 1]", Arrays.toString(compressed2));
-		byte[] decompressed2 = compressor.decompress(compressed2);
-		assertEquals(",,", new String(decompressed2, US_ASCII));
+		assertEquals("AGBC", new String(decompressed, US_ASCII));
 	}
 
 	@Test
-	public void oddLengthTest() {
-		AsciiCompressor compressor = new FiveBitAsciiCompressor(DEFAULT_4BIT_CHARSET);
-		byte[] compressed = compressor.compress("0123456789;#-+.,,.+-#;9876543210,".getBytes(US_ASCII));
-		assertEquals("[0, 68, 50, 20, -57, 66, 84, -74, 53, -49, 123, -102, -59, -87, 40, 57, -118, 65, -120, 32, 120, 0]", Arrays.toString(compressed));
-		byte[] decompressed = compressor.decompress(compressed);
-		assertEquals("0123456789;#-+.,,.+-#;9876543210,", new String(decompressed, US_ASCII));
-	}
-
-	// Utils:
-
-	private String createRandomString(int length) {
-		Random rand = new Random();
-		StringBuilder sb = new StringBuilder(length);
-		for (int i = 0; i < length; i++)
-			sb.append((char) (DEFAULT_5BIT_CHARSET[rand.nextInt(DEFAULT_5BIT_CHARSET.length)]));
-		return sb.toString();
+	public void ignoreInvalidCharsTest() {
+		AsciiCompressor compressor = new FiveBitAsciiCompressor();
+		for (int i = 0; i < 3000; i++)
+			for (int asciiCode = 0; asciiCode < 128; asciiCode++) {
+				byte[] input = new byte[]{'A', (byte) asciiCode, 'B', 'C', 'D', (byte) 'Ç'};
+				byte[] compressed = compressor.compress(input);
+				byte[] decompressed = compressor.decompress(compressed);
+				assertEquals(input.length, decompressed.length);
+			}
 	}
 
 }

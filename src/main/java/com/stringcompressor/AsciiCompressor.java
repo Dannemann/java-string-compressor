@@ -59,9 +59,9 @@ public abstract class AsciiCompressor {
 	protected void standardCharsetValidation(byte[] supportedCharset, int numBits, int maxChars) {
 		int len = supportedCharset.length;
 
-		if (len == 0 || len > maxChars)
+		if (len != maxChars)
 			throw new CharacterNotSupportedException(
-				numBits + "-bit compressor supports a minimum of 1 and a maximum of " + maxChars + " different characters. Currently " + len + ".");
+				numBits + "-bit compressor requires a set of exactly " + maxChars + " characters. Currently " + len + ".");
 
 		for (int i = 0; i < len; i++)
 			if (supportedCharset[i] < 0)
