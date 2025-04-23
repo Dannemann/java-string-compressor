@@ -1,7 +1,10 @@
 package com.stringcompressor;
 
 import com.stringcompressor.exception.CharacterNotSupportedException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 import static com.stringcompressor.FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET;
 import static java.nio.charset.StandardCharsets.US_ASCII;
@@ -97,6 +100,16 @@ public class FiveBitAsciiCompressorTest extends BaseTest {
 				byte[] decompressed = compressor.decompress(compressed);
 				assertEquals(input.length, decompressed.length);
 			}
+	}
+
+	@Test
+	public void compressionRateTest() {
+		AsciiCompressor compressor = new FiveBitAsciiCompressor();
+		int hundredMb = 100 * 1024 * 1024;
+		byte[] input = new byte[hundredMb];
+		Arrays.fill(input, (byte) 'A');
+		byte[] compressed = compressor.compress(input);
+		Assertions.assertEquals(62, compressed.length / 1024 / 1024); // 38% compression rate.
 	}
 
 }
