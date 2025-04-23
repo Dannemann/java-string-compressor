@@ -1,0 +1,1 @@
+A low-level ultra-fast string compactor. Up to 50% reduction.
