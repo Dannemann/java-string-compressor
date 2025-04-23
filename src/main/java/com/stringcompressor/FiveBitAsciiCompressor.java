@@ -2,7 +2,7 @@ package com.stringcompressor;
 
 /**
  * <p>Performs 5-bit-per-ASCII-character encoding and decoding.</p>
- * <p>Compression rate: %</p> // TODO: Fill compression rate.
+ * <p>Compression rate: 38%</p>
  *
  * @author Jean Dannemann Carone
  */
@@ -33,7 +33,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 	/**
 	 * <p>Packs characters into chunks of 5 bits. Supports a set of 32 different characters (00000 to 11111).</p>
-	 * <p>Compression rate: %</p> // TODO: Fill compression rate.
+	 * <p>Compression rate: 38%</p>
 	 * <p>See {@link #DEFAULT_5BIT_CHARSET} for the default set of supported characters.</p>
 	 *
 	 * @param str string to be compressed.
