@@ -108,40 +108,41 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 	 */
 	@Override
 	public byte[] decompress(byte[] compressed) {
-		int len = compressed.length;
+		int cLen = compressed.length;
 
-		if (len == 0)
+		if (cLen == 0)
 			return compressed;
 
+		int cLenMinus = cLen - 1;
+		int dLen = (int) Math.floor(cLenMinus / .625 - (compressed[cLenMinus] & 1));
+		byte[] decompressed = new byte[dLen];
 		int excess = 0;
 		byte bucket = 0;
-		int hint = compressed[len - 1];
-		byte[] decompressed = new byte[(int) Math.floor((len - 1) / .625 - (hint & 1))];
 
-		for (int i = 0, j = 0; i < len - 1; i++) {
+		for (int i = 0, j = 0; i < cLenMinus; i++) {
 			byte bite = compressed[i];
 
 			if (excess > 0) {
-				decompressed[j++] = supportedCharset[(byte) (bucket | ((bite & 0xFF) >>> 8 - excess))];
+				decompressed[j++] = supportedCharset[bucket | (bite & 0xFF) >>> 8 - excess];
 
-				if (j >= decompressed.length)
+				if (j >= dLen)
 					break;
 			}
 
-			int bits = 5;
+			int collected = 5;
 
 			if (excess < 4)
-				decompressed[j++] = supportedCharset[(byte) (bite << excess + 24 >>> 27)];
+				decompressed[j++] = supportedCharset[bite << excess + 24 >>> 27];
 			else
-				bits = 0;
+				collected = 0;
 
-			bits += excess;
+			collected += excess;
 
-			if (bits == 8)
+			if (collected == 8)
 				excess = 0;
 			else {
-				excess = (5 - (8 - bits));
-				bucket = (byte) (((bite << bits + 24) >>> bits + 24) << excess);
+				excess = 5 - (8 - collected);
+				bucket = (byte) (bite << collected + 24 >>> collected + 24 << excess);
 			}
 		}
 
