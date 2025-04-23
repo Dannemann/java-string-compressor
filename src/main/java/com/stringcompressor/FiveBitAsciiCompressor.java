@@ -27,6 +27,19 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 	@Override
 	public byte[] compress(byte[] str) {
+		// This is the bit pattern applied by this compressor:
+		// 00000 000
+		// 01 00010 0
+		// 0011 0010
+		// 0 00101 00
+		// 110 00111
+		// 01000 010
+		// 01 01010 0
+		// 1011 0110
+		// 0 01101 01
+		// 110 01111
+		// ...
+
 		int dLen = str.length;
 
 		if (preserveOriginal) {
