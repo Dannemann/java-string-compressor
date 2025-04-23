@@ -2,8 +2,6 @@ package com.stringcompressor;
 
 import com.stringcompressor.exception.CharacterNotSupportedException;
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
-
 /**
  * <p>Performs 4-bit-per-ASCII-character encoding and decoding.</p>
  * <p>Compression rate: 50%</p>
@@ -51,25 +49,7 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 			str = temp;
 		}
 
-		if (throwException)
-			for (int i = 0; i < len; i++) {
-				byte bite = str[i];
-
-				if (bite < 0)
-					throw new CharacterNotSupportedException(
-						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code " + bite + ") in \"" + new String(str, US_ASCII) + "\"");
-
-				byte nibble = lookupTable[bite];
-
-				if (nibble == -1)
-					throw new CharacterNotSupportedException(
-						"Character '" + (char) bite + "' (code " + bite + ") is not defined in the supported characters array. String: \"" + new String(str, US_ASCII) + "\"");
-
-				str[i] = nibble;
-			}
-		else
-			for (int i = 0; i < len; i++)
-				str[i] = lookupTable[str[i] & 0x7F];
+		encode(str, len);
 
 		int halfLen = len >> 1;
 		byte[] compressed = new byte[halfLen + (len & 1) + 1];
@@ -84,50 +64,6 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 
 		return compressed;
 	}
-
-//	public long[] compressLong(byte[] str) {
-//		int len = str.length;
-//		byte[] strCopy = new byte[len];
-//
-//		System.arraycopy(str, 0, strCopy, 0, len);
-//
-//		byte[] compressed = new byte[(int) Math.ceil(len / 64)];
-//
-//		if (throwException)
-//			for (int i = 0; i < len; i++) {
-//				byte bite = strCopy[i];
-//
-//				if (bite < 0)
-//					throw new CharacterNotSupportedException(
-//						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code " + bite + ") in \"" + new String(strCopy, US_ASCII) + "\"");
-//
-//				byte nibble = lookupTable[bite];
-//
-//				if (nibble == -1)
-//					throw new CharacterNotSupportedException(
-//						"Character '" + (char) bite + "' (code " + bite + ") is not defined in the supported characters array. String: \"" + new String(strCopy, US_ASCII) + "\"");
-//
-//				strCopy[i] = nibble;
-//			}
-//		else {
-//			int remainingSpace = 16;
-//			for (int i = 0; i < len; i++) {
-//
-//				strCopy[i] = lookupTable[strCopy[i] & 0x7F];
-//			}
-//		}
-//
-//
-////		for (int i = 0; i < compressed.length; i++)
-////			compressed[i] = (byte) (strCopy[i<<1] << 4 | strCopy[(i << 1) + 1]);
-//
-//		if ((len & 1) == 1) {
-//			compressed[halfLen] = strCopy[len - 1];
-//			compressed[halfLen + 1] = 1;
-//		}
-//
-//		return compressed;
-//	}
 
 	/**
 	 * {@inheritDoc}

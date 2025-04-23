@@ -1,6 +1,10 @@
 package com.stringcompressor;
 
+import com.stringcompressor.exception.CharacterNotSupportedException;
+
 import java.util.Arrays;
+
+import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
  * @author Jean Dannemann Carone
@@ -24,10 +28,10 @@ public abstract class AsciiCompressor {
 	public abstract byte[] compress(byte[] str);
 
 	/**
-	 * Restores the original String from data compressed by {@link #compress}.
+	 * Restores the original string from data compressed by {@link #compress}.
 	 *
-	 * @param compressed The compressed String byte array.
-	 * @return A decompressed String byte array.
+	 * @param compressed The compressed string byte array.
+	 * @return A decompressed string byte array.
 	 */
 	public abstract byte[] decompress(byte[] compressed);
 
@@ -35,6 +39,28 @@ public abstract class AsciiCompressor {
 
 	public void setThrowException(boolean throwException) {
 		this.throwException = throwException;
+	}
+
+	protected void encode(byte[] string, int len) {
+		if (throwException)
+			for (int i = 0; i < len; i++) {
+				byte bite = string[i];
+
+				if (bite < 0)
+					throw new CharacterNotSupportedException(
+						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code " + bite + ") in \"" + new String(string, US_ASCII) + "\"");
+
+				byte encoded = lookupTable[bite];
+
+				if (encoded == -1)
+					throw new CharacterNotSupportedException(
+						"Character '" + (char) bite + "' (code " + bite + ") is not defined in the supported characters array. String: \"" + new String(string, US_ASCII) + "\"");
+
+				string[i] = encoded;
+			}
+		else
+			for (int i = 0; i < len; i++)
+				string[i] = lookupTable[string[i] & 0x7F];
 	}
 
 }

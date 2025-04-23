@@ -1,9 +1,5 @@
 package com.stringcompressor;
 
-import com.stringcompressor.exception.CharacterNotSupportedException;
-
-import static java.nio.charset.StandardCharsets.US_ASCII;
-
 public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 	public static final byte[] DEFAULT_5BIT_CHARSET = new byte[]{
@@ -42,25 +38,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		if (dLen == 0)
 			return str;
 
-		if (throwException)
-			for (int i = 0; i < dLen; i++) {
-				byte bite = str[i];
-
-				if (bite < 0)
-					throw new CharacterNotSupportedException(
-						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code " + bite + ") in \"" + new String(str, US_ASCII) + "\"");
-
-				byte nibble = lookupTable[bite];
-
-				if (nibble == -1)
-					throw new CharacterNotSupportedException(
-						"Character '" + (char) bite + "' (code " + bite + ") is not defined in the supported characters array. String: \"" + new String(str, US_ASCII) + "\"");
-
-				str[i] = nibble;
-			}
-		else
-			for (int i = 0; i < dLen; i++)
-				str[i] = lookupTable[str[i] & 0x7F];
+		encode(str, dLen);
 
 		int cLen = (int) Math.ceil(dLen * .625) + 1;
 		byte[] compressed = new byte[cLen];
