@@ -1,5 +1,11 @@
 package com.stringcompressor;
 
+/**
+ * <p>Performs 5-bit-per-ASCII-character encoding and decoding.</p>
+ * <p>Compression rate: %</p> // TODO: Fill compression rate.
+ *
+ * @author Jean Dannemann Carone
+ */
 public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 	public static final byte[] DEFAULT_5BIT_CHARSET = new byte[]{
@@ -25,21 +31,16 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		this.throwException = throwException;
 	}
 
+	/**
+	 * <p>Packs characters into chunks of 5 bits. Supports a set of 32 different characters (00000 to 11111).</p>
+	 * <p>Compression rate: %</p> // TODO: Fill compression rate.
+	 * <p>See {@link #DEFAULT_5BIT_CHARSET} for the default set of supported characters.</p>
+	 *
+	 * @param str string to be compressed.
+	 * @return A compressed byte array.
+	 */
 	@Override
 	public byte[] compress(byte[] str) {
-		// This is the bit pattern applied by this compressor:
-		// 00000 000
-		// 01 00010 0
-		// 0011 0010
-		// 0 00101 00
-		// 110 00111
-		// 01000 010
-		// 01 01010 0
-		// 1011 0110
-		// 0 01101 01
-		// 110 01111
-		// ...
-
 		int dLen = str.length;
 
 		if (preserveOriginal) {
@@ -52,6 +53,19 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 			return str;
 
 		encode(str, dLen);
+
+		// This is the bit pattern applied by the algorithm:
+		// 00000 000
+		// 01 00010 0
+		// 0011 0010
+		// 0 00101 00
+		// 110 00111
+		// 01000 010
+		// 01 01010 0
+		// 1011 0110
+		// 0 01101 01
+		// 110 01111
+		// ...
 
 		int cLen = (int) Math.ceil(dLen * .625) + 1;
 		byte[] compressed = new byte[cLen];
@@ -89,6 +103,9 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		return compressed;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public byte[] decompress(byte[] compressed) {
 		int len = compressed.length;
@@ -133,6 +150,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 	@Override
 	protected void validateSupportedCharset(byte[] supportedCharset) {
+		standardCharsetValidation(supportedCharset, 5, 32);
 	}
 
 }

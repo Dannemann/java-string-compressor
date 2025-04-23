@@ -11,6 +11,8 @@ import static java.nio.charset.StandardCharsets.US_ASCII;
  */
 public abstract class AsciiCompressor {
 
+	// Fields:
+
 	protected final byte[] supportedCharset;
 	protected final byte[] lookupTable = new byte[128]; // ASCII range.
 
@@ -27,6 +29,8 @@ public abstract class AsciiCompressor {
 	 */
 	protected boolean throwException;
 
+	// Constructor:
+
 	public AsciiCompressor(byte[] supportedCharset) {
 		validateSupportedCharset(supportedCharset);
 		this.supportedCharset = supportedCharset;
@@ -35,6 +39,8 @@ public abstract class AsciiCompressor {
 		for (int i = 0, len = supportedCharset.length; i < len; i++)
 			lookupTable[supportedCharset[i]] = (byte) i;
 	}
+
+	// Abstract methods:
 
 	public abstract byte[] compress(byte[] str);
 
@@ -48,12 +54,19 @@ public abstract class AsciiCompressor {
 
 	protected abstract void validateSupportedCharset(byte[] supportedCharset);
 
-	public void setPreserveOriginal(boolean preserveOriginal) {
-		this.preserveOriginal = preserveOriginal;
-	}
+	// Protected interface:
 
-	public void setThrowException(boolean throwException) {
-		this.throwException = throwException;
+	protected void standardCharsetValidation(byte[] supportedCharset, int numBits, int maxChars) {
+		int len = supportedCharset.length;
+
+		if (len == 0 || len > maxChars)
+			throw new CharacterNotSupportedException(
+				numBits + "-bit compressor supports a minimum of 1 and a maximum of " + maxChars + " different characters. Currently " + len + ".");
+
+		for (int i = 0; i < len; i++)
+			if (supportedCharset[i] < 0)
+				throw new CharacterNotSupportedException(
+					"Invalid character found in the custom supported charset: '" + (char) supportedCharset[i] + "' (code " + supportedCharset[i] + ")");
 	}
 
 	protected void encode(byte[] string, int len) {
@@ -76,6 +89,16 @@ public abstract class AsciiCompressor {
 		else
 			for (int i = 0; i < len; i++)
 				string[i] = lookupTable[string[i] & 0x7F];
+	}
+
+	// Getters and setters:
+
+	public void setPreserveOriginal(boolean preserveOriginal) {
+		this.preserveOriginal = preserveOriginal;
+	}
+
+	public void setThrowException(boolean throwException) {
+		this.throwException = throwException;
 	}
 
 }
