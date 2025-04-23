@@ -66,7 +66,7 @@ public abstract class AsciiCompressor {
 		for (int i = 0; i < len; i++)
 			if (supportedCharset[i] < 0)
 				throw new CharacterNotSupportedException(
-					"Invalid character found in the custom supported charset: '" + (char) supportedCharset[i] + "' (code " + supportedCharset[i] + ")");
+					"Invalid character found in the custom supported charset: '" + (char) supportedCharset[i] + "' (code point " + supportedCharset[i] + ")");
 	}
 
 	protected void encode(byte[] string, int len) {
@@ -76,13 +76,13 @@ public abstract class AsciiCompressor {
 
 				if (bite < 0)
 					throw new CharacterNotSupportedException(
-						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code " + bite + ") in \"" + new String(string, US_ASCII) + "\"");
+						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code point " + bite + ") in \"" + new String(string, US_ASCII) + "\"");
 
 				byte encoded = lookupTable[bite];
 
 				if (encoded == -1)
 					throw new CharacterNotSupportedException(
-						"Character '" + (char) bite + "' (code " + bite + ") is not defined in the supported characters array. String: \"" + new String(string, US_ASCII) + "\"");
+						"Character '" + (char) bite + "' (code point " + bite + ") is not defined in the supported characters array. String: \"" + new String(string, US_ASCII) + "\"");
 
 				string[i] = encoded;
 			}

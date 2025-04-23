@@ -34,7 +34,7 @@ public class FourBitAsciiCompressorTest {
 		byte[] customSupportedCharset = new byte[]{-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> new FourBitAsciiCompressor(customSupportedCharset));
-		assertEquals("Invalid character found in the custom supported charset: '\uFFFF' (code -1)", e.getMessage());
+		assertEquals("Invalid character found in the custom supported charset: '\uFFFF' (code point -1)", e.getMessage());
 	}
 
 	@Test
@@ -42,7 +42,7 @@ public class FourBitAsciiCompressorTest {
 		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{(byte) 'Ç'}));
-		assertEquals("Only ASCII characters are supported. Invalid 'ￇ' (code -57) in \"�\"", e.getMessage());
+		assertEquals("Only ASCII characters are supported. Invalid 'ￇ' (code point -57) in \"�\"", e.getMessage());
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class FourBitAsciiCompressorTest {
 		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{'Z'}));
-		assertEquals("Character 'Z' (code 90) is not defined in the supported characters array. String: \"Z\"", e.getMessage());
+		assertEquals("Character 'Z' (code point 90) is not defined in the supported characters array. String: \"Z\"", e.getMessage());
 	}
 
 	@Test
@@ -64,9 +64,10 @@ public class FourBitAsciiCompressorTest {
 	}
 
 	@Test
-	public void compressDecompressAutoRandomTest() {
-		for (int i = 0; i < 1000; i++)
-			doCompressDecompressTest(createRandomString(i));
+	public void compressDecompressTest() {
+		for (int length = 0; length < 500; length++)
+			for (int i = 0; i < 3000; i++)
+				doCompressDecompressTest(createRandomString(length));
 	}
 
 	private static void doCompressDecompressTest(String str) {
