@@ -32,6 +32,10 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 	@Override
 	public byte[] compress(byte[] str) {
 		int len = str.length;
+
+		if (len == 0)
+			return str;
+
 		byte[] str2 = new byte[len];
 
 		System.arraycopy(str, 0, str2, 0, len);
@@ -67,7 +71,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 			if (available >= 5) {
 				compressed[j] |= bite;
-				compressed[j] <<= (3 - (8 - available));
+				compressed[j] <<= 3 - (8 - available);
 				compressed[j] |= bucket;
 				bucket = 0;
 
@@ -76,12 +80,10 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 					j++;
 				}
 			} else {
-				int rShifts = 5 - available;
-				int lShifts = 8 - rShifts;
-				compressed[j] |= (byte) ((bite & 0xFF) >> rShifts);
+				compressed[j] |= (byte) ((bite & 0xFF) >> 5 - available);
 				compressed[j] |= bucket;
-				bucket = (byte) (bite << lShifts);
-				available = lShifts;
+				available = 8 - (5 - available);
+				bucket = (byte) (bite << available);
 				j++;
 			}
 		}
@@ -89,7 +91,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		compressed[j] |= bucket;
 
 		if (available > 4 && available < 8)
-			compressed[compressed.length - 1] = 1;
+			compressed[cLen - 1] = 1;
 
 		return compressed;
 	}
@@ -97,6 +99,10 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 	@Override
 	public byte[] decompress(byte[] compressed) {
 		int len = compressed.length;
+
+		if (len == 0)
+			return compressed;
+
 		int excess = 0;
 		byte bucket = 0;
 		int hint = compressed[len - 1];

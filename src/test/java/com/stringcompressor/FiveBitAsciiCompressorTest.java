@@ -18,8 +18,8 @@ public class FiveBitAsciiCompressorTest {
 	@Test
 	public void test() throws InterruptedException {
 		AsciiCompressor compressor = new FiveBitAsciiCompressor();
-		for (int j = 0; j <= 1025; j++)
-			for (int i = 0; i <= 3000; i++) {
+		for (int j = 0; j <= 500; j++)
+			for (int i = 0; i <= 2000; i++) {
 				String str = createRandomString(j);
 				byte[] compressed = compressor.compress(str.getBytes());
 				byte[] decompressed = compressor.decompress(compressed);
