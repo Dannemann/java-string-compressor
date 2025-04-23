@@ -29,7 +29,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 	public byte[] compress(byte[] str) {
 		int dLen = str.length;
 
-		if (true) { // TODO: Finish this.
+		if (preserveOriginal) {
 			byte[] temp = new byte[dLen];
 			System.arraycopy(str, 0, temp, 0, dLen);
 			str = temp;

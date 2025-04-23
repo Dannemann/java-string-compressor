@@ -43,7 +43,7 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	public byte[] compress(byte[] str) {
 		int len = str.length;
 
-		if (true) { // TODO: Finish this.
+		if (preserveOriginal) {
 			byte[] temp = new byte[len];
 			System.arraycopy(str, 0, temp, 0, len);
 			str = temp;
