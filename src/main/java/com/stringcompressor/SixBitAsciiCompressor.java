@@ -34,11 +34,6 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 		super(supportedCharset);
 	}
 
-	public SixBitAsciiCompressor(byte[] supportedCharset, boolean throwException) {
-		super(supportedCharset);
-		this.throwException = throwException;
-	}
-
 	public SixBitAsciiCompressor(boolean throwException) {
 		super(DEFAULT_6BIT_CHARSET);
 		this.throwException = throwException;
@@ -59,13 +54,10 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 		if (preserveOriginal)
 			str = str.clone();
 
-		if (len == 0)
-			return str;
-
 		encode(str, len);
 
 		final int compressedLen = len * 6 + 7 >>> 3;
-		final byte[] compressed = new byte[compressedLen + 1];
+		final byte[] compressed = new byte[compressedLen + (-len >>> 31)];
 		int buffer = 0;
 		int bitsInBuffer = 0;
 		int j = 0;

@@ -19,11 +19,6 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 		super(supportedCharset);
 	}
 
-	public FourBitAsciiCompressor(byte[] supportedCharset, boolean throwException) {
-		super(supportedCharset);
-		this.throwException = throwException;
-	}
-
 	public FourBitAsciiCompressor(boolean throwException) {
 		super(DEFAULT_4BIT_CHARSET);
 		this.throwException = throwException;
@@ -38,25 +33,16 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	 * @return A compressed byte array.
 	 */
 	@Override
-	public byte[] compress(byte[] str) {
-		int len = str.length;
+	public final byte[] compress(byte[] str) {
+		final int len = str.length;
 
-		if (preserveOriginal) {
-			byte[] temp = new byte[len];
-			System.arraycopy(str, 0, temp, 0, len);
-			str = temp;
-		}
+		if (preserveOriginal)
+			str = str.clone();
 
 		encode(str, len);
 
-		// This is the bit pattern applied by the algorithm:
-		// 0000 0001
-		// 0010 0011
-		// 0100 0101
-		// ...
-
-		int halfLen = len >> 1;
-		byte[] compressed = new byte[halfLen + (len & 1) + 1];
+		final int halfLen = len >> 1;
+		final byte[] compressed = new byte[halfLen + (len & 1) + (-len >>> 31)];
 
 		for (int i = 0; i < halfLen; i++)
 			compressed[i] = (byte) (str[i << 1] << 4 | str[(i << 1) + 1]);
@@ -73,20 +59,25 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public byte[] decompress(byte[] compressed) {
-		int cLen = compressed.length - 1;
-		int odd = compressed[cLen];
-		int dLen = odd == 1 ? (--cLen << 1) + 1 : cLen << 1;
-		byte[] decompressed = new byte[dLen];
+	public final byte[] decompress(final byte[] compressed) {
+		final int compressedLen = compressed.length - 1;
 
-		for (int i = 0, j = 0; i < cLen; i++) {
-			byte bite = compressed[i];
+		if (compressedLen <= 0)
+			return new byte[0];
+
+		int cLenMinus = compressed.length - 1;
+		final int odd = compressed[cLenMinus];
+		final int dLen = odd == 1 ? (--cLenMinus << 1) + 1 : cLenMinus << 1;
+		final byte[] decompressed = new byte[dLen];
+
+		for (int i = 0, j = 0; i < cLenMinus; i++) {
+			final byte bite = compressed[i];
 			decompressed[j++] = supportedCharset[(bite & 0xF0) >> 4];
 			decompressed[j++] = supportedCharset[bite & 0x0F];
 		}
 
 		if (odd == 1)
-			decompressed[dLen - 1] = supportedCharset[compressed[cLen]];
+			decompressed[dLen - 1] = supportedCharset[compressed[cLenMinus]];
 
 		return decompressed;
 	}
