@@ -1,3 +1,6 @@
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 description = "A low-level extremely fast String compactor for Java."
 
 plugins {
@@ -11,7 +14,7 @@ repositories {
 
 dependencies {
     // Enables running JMH straight from a main method (fixes "/META-INF/BenchmarkList").
-    // Debugging is possible, but you must set forks to 0 in OptionsBuilder.
+    // Useful for debugging (you must set forks to 0 in OptionsBuilder).
     // Also, check if the dependency version matches jmhVersion at jmh section below.
     jmh("org.openjdk.jmh:jmh-generator-annprocess:1.37")
     jmhAnnotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.37")
@@ -27,14 +30,14 @@ tasks.test {
 jmh {
     jmhVersion = "1.37"
     includes = listOf(".Benchmark.")
-    benchmarkMode = listOf("thrpt", "avgt")
+    benchmarkMode = listOf("thrpt")
     fork = 2
-    warmup = "5s"
+    warmup = "10s"
     warmupIterations = 3
     iterations = 3
-    timeOnIteration = "5s"
+    timeOnIteration = "10s"
     threads = 1
     timeUnit = "ms"
     resultFormat = "TEXT"
-    resultsFile = file("${layout.projectDirectory}/benchmarks/results-macpro2019-inteli726g.txt")
+    resultsFile = file("$projectDir/benchmarks/results-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".txt")
 }
