@@ -74,8 +74,8 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	public void compressDecompressTest() {
-		for (int length = 0; length < 1000; length++)
-			for (int i = 0; i < 10000; i++)
+		for (int length = 0; length < 500; length++)
+			for (int i = 0; i < 50000; i++)
 				doCompressDecompressTest(createRandomString(length, DEFAULT_4BIT_CHARSET));
 	}
 

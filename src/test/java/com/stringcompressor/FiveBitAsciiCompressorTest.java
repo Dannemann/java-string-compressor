@@ -74,7 +74,7 @@ public class FiveBitAsciiCompressorTest extends BaseTest {
 	public void compressDecompressTest() {
 		AsciiCompressor compressor = new FiveBitAsciiCompressor();
 		for (int length = 0; length <= 500; length++)
-			for (int i = 0; i <= 5000; i++) {
+			for (int i = 0; i <= 50000; i++) {
 				String str = createRandomString(length, DEFAULT_5BIT_CHARSET);
 				byte[] compressed = compressor.compress(str.getBytes(US_ASCII));
 				byte[] decompressed = compressor.decompress(compressed);

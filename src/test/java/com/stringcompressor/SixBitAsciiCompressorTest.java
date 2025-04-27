@@ -74,7 +74,7 @@ public class SixBitAsciiCompressorTest extends BaseTest {
 	public void compressDecompressTest() {
 		AsciiCompressor compressor = new SixBitAsciiCompressor();
 		for (int length = 0; length <= 500; length++)
-			for (int i = 0; i <= 5000; i++) {
+			for (int i = 0; i <= 50000; i++) {
 				String str = createRandomString(length, DEFAULT_6BIT_CHARSET);
 				byte[] compressed = compressor.compress(str.getBytes(US_ASCII));
 				byte[] decompressed = compressor.decompress(compressed);
