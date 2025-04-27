@@ -44,66 +44,37 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 	 * @return A compressed byte array.
 	 */
 	@Override
-	public byte[] compress(byte[] str) {
-		int dLen = str.length;
+	public final byte[] compress(byte[] str) {
+		final int len = str.length;
 
-		if (preserveOriginal) {
-			byte[] temp = new byte[dLen];
-			System.arraycopy(str, 0, temp, 0, dLen);
-			str = temp;
-		}
+		if (preserveOriginal)
+			str = str.clone();
 
-		if (dLen == 0)
+		if (len == 0)
 			return str;
 
-		encode(str, dLen);
+		encode(str, len);
 
-		// TODO: Fix this.
-		// This is the bit pattern applied by the algorithm:
-		// 00000 000
-		// 01 00010 0
-		// 0011 0010
-		// 0 00101 00
-		// 110 00111
-		// 01000 010
-		// 01 01010 0
-		// 1011 0110
-		// 0 01101 01
-		// 110 01111
-		// ...
-
-		int cLen = (int) Math.ceil(dLen * .75) + 1;
-		byte[] compressed = new byte[cLen];
+		final int compressedLen = len * 6 + 7 >>> 3;
+		final byte[] compressed = new byte[compressedLen + 1];
+		int buffer = 0;
+		int bitsInBuffer = 0;
 		int j = 0;
-		int available = 8;
-		byte bucket = 0;
 
-		for (int i = 0; i < dLen; i++) {
-			byte bite = str[i];
+		for (int i = 0; i < len; i++) {
+			buffer = buffer << 6 | str[i];
+			bitsInBuffer += 6;
 
-			if (available >= 6) {
-				compressed[j] |= bite;
-				compressed[j] <<= 2 - (8 - available);
-				compressed[j] |= bucket;
-				bucket = 0;
-
-				if ((available -= 6) == 0) {
-					available = 8;
-					j++;
-				}
-			} else {
-				compressed[j] |= (byte) ((bite & 0xFF) >> 6 - available);
-				compressed[j] |= bucket;
-				available = 8 - (6 - available);
-				bucket = (byte) (bite << available);
-				j++;
-			}
+			if (bitsInBuffer >= 8)
+				compressed[j++] = (byte) (buffer >>> (bitsInBuffer -= 8));
 		}
 
-		compressed[j] |= bucket;
+		if (bitsInBuffer > 0) {
+			compressed[j] = (byte) (buffer << 8 - bitsInBuffer);
 
-		if (available > 4 && available < 8)
-			compressed[cLen - 1] = 1;
+			if (bitsInBuffer <= 3)
+				compressed[compressedLen] |= 0x01;
+		}
 
 		return compressed;
 	}
@@ -112,43 +83,27 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public byte[] decompress(byte[] compressed) {
-		int cLen = compressed.length;
+	public final byte[] decompress(final byte[] compressed) {
+		final int compressedLen = compressed.length;
 
-		if (cLen == 0)
-			return compressed;
+		if (compressedLen == 0)
+			return new byte[0];
 
-		int cLenMinus = cLen - 1;
-		int dLen = (int) Math.floor(cLenMinus / .625 - (compressed[cLenMinus] & 1));
-		byte[] decompressed = new byte[dLen];
-		int excess = 0;
-		byte bucket = 0;
+		final int cLenMinus = compressedLen - 1;
+		final int dLen = cLenMinus * 8 / 6 - (compressed[cLenMinus] & 1);
+		final byte[] decompressed = new byte[dLen];
+		int buffer = 0;
+		int bitsInBuffer = 0;
 
 		for (int i = 0, j = 0; i < cLenMinus; i++) {
-			byte bite = compressed[i];
+			buffer = buffer << 8 | compressed[i] & 0xFF;
+			bitsInBuffer += 8;
 
-			if (excess > 0) {
-				decompressed[j++] = supportedCharset[bucket | (bite & 0xFF) >>> 8 - excess];
+			if (bitsInBuffer >= 6)
+				decompressed[j++] = supportedCharset[buffer >>> (bitsInBuffer -= 6) & 0x1F];
 
-				if (j >= dLen)
-					break;
-			}
-
-			int collected = 5;
-
-			if (excess < 4)
-				decompressed[j++] = supportedCharset[bite << excess + 24 >>> 27];
-			else
-				collected = 0;
-
-			collected += excess;
-
-			if (collected == 8)
-				excess = 0;
-			else {
-				excess = 5 - (8 - collected);
-				bucket = (byte) (bite << collected + 24 >>> collected + 24 << excess);
-			}
+			if (bitsInBuffer >= 6 && j < dLen)
+				decompressed[j++] = supportedCharset[buffer >>> (bitsInBuffer -= 6) & 0x1F];
 		}
 
 		return decompressed;
