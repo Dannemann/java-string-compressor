@@ -60,30 +60,30 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	 */
 	@Override
 	public final byte[] decompress(final byte[] compressed) {
-		int cLen = compressed.length - 1;
+		int cLenMinus = compressed.length - 1;
 
-		if (cLen <= 0)
+		if (cLenMinus <= 0)
 			return new byte[0];
 
-		final int odd = compressed[cLen];
-		final int dLen = odd == 1 ? (--cLen << 1) + 1 : cLen << 1;
+		final int odd = compressed[cLenMinus];
+		final int dLen = odd == 1 ? (--cLenMinus << 1) + 1 : cLenMinus << 1;
 		final byte[] decompressed = new byte[dLen];
 
-		for (int i = 0, j = 0; i < cLen; i++) {
+		for (int i = 0, j = 0; i < cLenMinus; i++) {
 			final byte bite = compressed[i];
 			decompressed[j++] = supportedCharset[(bite & 0xF0) >> 4];
 			decompressed[j++] = supportedCharset[bite & 0x0F];
 		}
 
 		if (odd == 1)
-			decompressed[dLen - 1] = supportedCharset[compressed[cLen]];
+			decompressed[dLen - 1] = supportedCharset[compressed[cLenMinus]];
 
 		return decompressed;
 	}
 
 	@Override
 	protected void validateSupportedCharset(byte[] supportedCharset) {
-		standardCharsetValidation(supportedCharset, 4, 16);
+		standardCharsetValidation(supportedCharset, 4);
 	}
 
 }

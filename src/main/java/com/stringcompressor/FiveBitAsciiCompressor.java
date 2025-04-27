@@ -104,7 +104,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 	@Override
 	protected void validateSupportedCharset(byte[] supportedCharset) {
-		standardCharsetValidation(supportedCharset, 5, 32);
+		standardCharsetValidation(supportedCharset, 5);
 	}
 
 }

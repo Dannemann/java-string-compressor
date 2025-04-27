@@ -56,8 +56,9 @@ public abstract class AsciiCompressor {
 
 	// Protected interface:
 
-	protected void standardCharsetValidation(byte[] supportedCharset, int numBits, int maxChars) {
+	protected void standardCharsetValidation(byte[] supportedCharset, int numBits) {
 		int len = supportedCharset.length;
+		int maxChars = (int) Math.pow(2, numBits);
 
 		if (len != maxChars)
 			throw new CharacterNotSupportedException(

@@ -112,7 +112,7 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 
 	@Override
 	protected void validateSupportedCharset(byte[] supportedCharset) {
-		standardCharsetValidation(supportedCharset, 6, 64);
+		standardCharsetValidation(supportedCharset, 6);
 	}
 
 }
