@@ -45,8 +45,8 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 	 * @return A compressed byte array.
 	 */
 	@Override
-	public byte[] compress(byte[] str) {
-		int len = str.length;
+	public final byte[] compress(byte[] str) {
+		final int len = str.length;
 
 		if (preserveOriginal)
 			str = str.clone();
@@ -56,8 +56,8 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 		encode(str, len);
 
-		int compressedLen = len * 5 + 7 >>> 3;
-		byte[] compressed = new byte[compressedLen + 1];
+		final int compressedLen = len * 5 + 7 >>> 3;
+		final byte[] compressed = new byte[compressedLen + 1];
 		int buffer = 0;
 		int bitsInBuffer = 0;
 		int j = 0;
@@ -71,7 +71,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		}
 
 		if (bitsInBuffer > 0) {
-			compressed[j] = (byte) (buffer << (8 - bitsInBuffer));
+			compressed[j] = (byte) (buffer << 8 - bitsInBuffer);
 
 			if (bitsInBuffer <= 3)
 				compressed[compressedLen] |= 0x01;
@@ -84,27 +84,27 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public byte[] decompress(byte[] compressed) {
-		int cLen = compressed.length;
+	public final byte[] decompress(final byte[] compressed) {
+		final int compressedLen = compressed.length;
 
-		if (cLen == 0)
+		if (compressedLen == 0)
 			return new byte[0];
 
-		int cLenMinus = cLen - 1;
-		int dLen = (int) Math.floor(cLenMinus / .625 - (compressed[cLenMinus] & 1));
-		byte[] decompressed = new byte[dLen];
-		int bitBuffer = 0;
-		int bitsInBuf = 0;
+		final int cLenMinus = compressedLen - 1;
+		final int dLen = cLenMinus * 8 / 5 - (compressed[cLenMinus] & 1);
+		final byte[] decompressed = new byte[dLen];
+		int buffer = 0;
+		int bitsInBuffer = 0;
 
 		for (int i = 0, j = 0; i < cLenMinus; i++) {
-			bitBuffer = bitBuffer << 8 | compressed[i] & 0xFF;
-			bitsInBuf += 8;
+			buffer = buffer << 8 | compressed[i] & 0xFF;
+			bitsInBuffer += 8;
 
-			while (bitsInBuf >= 5 && j < dLen) {
-				bitsInBuf -= 5;
-				int code = (bitBuffer >>> bitsInBuf) & 0x1F;
-				decompressed[j++] = supportedCharset[code];
-			}
+			if (bitsInBuffer >= 5)
+				decompressed[j++] = supportedCharset[buffer >>> (bitsInBuffer -= 5) & 0x1F];
+
+			if (bitsInBuffer >= 5 && j < dLen)
+				decompressed[j++] = supportedCharset[buffer >>> (bitsInBuffer -= 5) & 0x1F];
 		}
 
 		return decompressed;

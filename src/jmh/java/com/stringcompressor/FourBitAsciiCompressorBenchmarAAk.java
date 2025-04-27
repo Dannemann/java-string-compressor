@@ -12,7 +12,7 @@ import static com.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
 /**
  * @author Jean Dannemann Carone
  */
-public class FourBitAsciiCompressorBenchmark {
+public class FourBitAsciiCompressorBenchmarAAk {
 
 	private static final AsciiCompressor COMPRESSOR = new FourBitAsciiCompressor(true);
 	private static final int MAX_STRINGS = 4096; // Must be a power of 2 for bitwise module.
@@ -73,7 +73,7 @@ public class FourBitAsciiCompressorBenchmark {
 	public static void main(String[] args) throws RunnerException {
 		new Runner(
 			new OptionsBuilder()
-				.include(FourBitAsciiCompressorBenchmark.class.getSimpleName())
+				.include(FourBitAsciiCompressorBenchmarAAk.class.getSimpleName())
 				.forks(0)
 				.build())
 			.run();
