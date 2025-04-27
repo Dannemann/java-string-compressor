@@ -58,6 +58,7 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 
 		encode(str, dLen);
 
+		// TODO: Fix this.
 		// This is the bit pattern applied by the algorithm:
 		// 00000 000
 		// 01 00010 0
@@ -71,7 +72,7 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 		// 110 01111
 		// ...
 
-		int cLen = (int) Math.ceil(dLen * .625) + 1;
+		int cLen = (int) Math.ceil(dLen * .75) + 1;
 		byte[] compressed = new byte[cLen];
 		int j = 0;
 		int available = 8;
@@ -80,20 +81,20 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 		for (int i = 0; i < dLen; i++) {
 			byte bite = str[i];
 
-			if (available >= 5) {
+			if (available >= 6) {
 				compressed[j] |= bite;
-				compressed[j] <<= 3 - (8 - available);
+				compressed[j] <<= 2 - (8 - available);
 				compressed[j] |= bucket;
 				bucket = 0;
 
-				if ((available -= 5) == 0) {
+				if ((available -= 6) == 0) {
 					available = 8;
 					j++;
 				}
 			} else {
-				compressed[j] |= (byte) ((bite & 0xFF) >> 5 - available);
+				compressed[j] |= (byte) ((bite & 0xFF) >> 6 - available);
 				compressed[j] |= bucket;
-				available = 8 - (5 - available);
+				available = 8 - (6 - available);
 				bucket = (byte) (bite << available);
 				j++;
 			}

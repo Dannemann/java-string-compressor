@@ -13,6 +13,11 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 		' ', '.', ',', '\'', '-', '@'};
 
+	public static final byte[] DEFAULT_5BIT_CHARSET_LOWERCASE = new byte[]{
+		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+		'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+		' ', '.', ',', '\'', '-', '@'};
+
 	public FiveBitAsciiCompressor() {
 		super(DEFAULT_5BIT_CHARSET);
 	}
@@ -41,6 +46,77 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 	 */
 	@Override
 	public byte[] compress(byte[] str) {
+		int len = str.length;
+
+		if (preserveOriginal)
+			str = str.clone();
+
+		if (len == 0)
+			return str;
+
+		encode(str, len);
+
+		int compressedLen = len * 5 + 7 >>> 3;
+		byte[] compressed = new byte[compressedLen + 1];
+		int buffer = 0;
+		int bitsInBuffer = 0;
+		int j = 0;
+
+		for (int i = 0; i < len; i++) {
+			buffer = buffer << 5 | str[i];
+			bitsInBuffer += 5;
+
+			if (bitsInBuffer >= 8)
+				compressed[j++] = (byte) (buffer >>> (bitsInBuffer -= 8));
+		}
+
+		if (bitsInBuffer > 0) {
+			compressed[j] = (byte) (buffer << (8 - bitsInBuffer));
+
+			if (bitsInBuffer > 3)
+				compressed[compressedLen] |= 0x01;
+		}
+
+		return compressed;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public byte[] decompress(byte[] compressed) {
+		int cLen = compressed.length;
+
+		if (cLen == 0)
+			return new byte[0];
+
+		int cLenMinus = cLen - 1;
+		int dLen = (int) Math.floor(cLenMinus / .625 - (compressed[cLenMinus] & 1));
+		byte[] decompressed = new byte[dLen];
+		int bitBuffer = 0;
+		int bitsInBuf = 0;
+		int outPos = 0;
+
+		for (int i = 0; i < cLenMinus && outPos < dLen; i++) {
+			bitBuffer = (bitBuffer << 8) | (compressed[i] & 0xFF);
+			bitsInBuf += 8;
+
+			while (bitsInBuf >= 5 && outPos < dLen) {
+				bitsInBuf -= 5;
+				int code = (bitBuffer >>> bitsInBuf) & 0x1F;
+				decompressed[outPos++] = supportedCharset[code];
+			}
+		}
+
+		return decompressed;
+	}
+
+	@Override
+	protected void validateSupportedCharset(byte[] supportedCharset) {
+		standardCharsetValidation(supportedCharset, 5, 32);
+	}
+
+	public byte[] compressV1(byte[] str) {
 		int dLen = str.length;
 
 		if (preserveOriginal) {
@@ -103,11 +179,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		return compressed;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public byte[] decompress(byte[] compressed) {
+	public byte[] decompressV1(byte[] compressed) {
 		int cLen = compressed.length;
 
 		if (cLen == 0)
@@ -147,11 +219,6 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		}
 
 		return decompressed;
-	}
-
-	@Override
-	protected void validateSupportedCharset(byte[] supportedCharset) {
-		standardCharsetValidation(supportedCharset, 5, 32);
 	}
 
 }
