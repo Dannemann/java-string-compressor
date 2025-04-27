@@ -100,10 +100,10 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 			bitsInBuffer += 8;
 
 			if (bitsInBuffer >= 6)
-				decompressed[j++] = supportedCharset[buffer >>> (bitsInBuffer -= 6) & 0x1F];
+				decompressed[j++] = supportedCharset[buffer >>> (bitsInBuffer -= 6) & 0x3F];
 
 			if (bitsInBuffer >= 6 && j < dLen)
-				decompressed[j++] = supportedCharset[buffer >>> (bitsInBuffer -= 6) & 0x1F];
+				decompressed[j++] = supportedCharset[buffer >>> (bitsInBuffer -= 6) & 0x3F];
 		}
 
 		return decompressed;
