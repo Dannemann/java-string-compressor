@@ -73,7 +73,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		if (bitsInBuffer > 0) {
 			compressed[j] = (byte) (buffer << (8 - bitsInBuffer));
 
-			if (bitsInBuffer > 3)
+			if (bitsInBuffer <= 3)
 				compressed[compressedLen] |= 0x01;
 		}
 
@@ -95,16 +95,15 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		byte[] decompressed = new byte[dLen];
 		int bitBuffer = 0;
 		int bitsInBuf = 0;
-		int outPos = 0;
 
-		for (int i = 0; i < cLenMinus && outPos < dLen; i++) {
-			bitBuffer = (bitBuffer << 8) | (compressed[i] & 0xFF);
+		for (int i = 0, j = 0; i < cLenMinus; i++) {
+			bitBuffer = bitBuffer << 8 | compressed[i] & 0xFF;
 			bitsInBuf += 8;
 
-			while (bitsInBuf >= 5 && outPos < dLen) {
+			while (bitsInBuf >= 5 && j < dLen) {
 				bitsInBuf -= 5;
 				int code = (bitBuffer >>> bitsInBuf) & 0x1F;
-				decompressed[outPos++] = supportedCharset[code];
+				decompressed[j++] = supportedCharset[code];
 			}
 		}
 
