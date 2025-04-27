@@ -42,7 +42,7 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 		encode(str, len);
 
 		final int halfLen = len >> 1;
-		final byte[] compressed = new byte[halfLen + (len & 1) + 1];
+		final byte[] compressed = new byte[halfLen + (len & 1) + (-len >>> 31)];
 
 		for (int i = 0; i < halfLen; i++)
 			compressed[i] = (byte) (str[i << 1] << 4 | str[(i << 1) + 1]);
@@ -61,6 +61,10 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	@Override
 	public final byte[] decompress(final byte[] compressed) {
 		int cLen = compressed.length - 1;
+
+		if (cLen <= 0)
+			return new byte[0];
+
 		final int odd = compressed[cLen];
 		final int dLen = odd == 1 ? (--cLen << 1) + 1 : cLen << 1;
 		final byte[] decompressed = new byte[dLen];
