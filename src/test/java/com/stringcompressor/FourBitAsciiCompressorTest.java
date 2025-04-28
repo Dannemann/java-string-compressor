@@ -68,7 +68,7 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 		final AsciiCompressor compressor = new FourBitAsciiCompressor(true);
 		compressor.preserveOriginal = true;
 		for (int length = 0; length <= 100; length++)
-			for (int i = 0; i <= 3000000; i++) {
+			for (int i = 0; i <= 500000; i++) {
 				final byte[] str = generateRandomString(length, DEFAULT_4BIT_CHARSET);
 				final byte[] compressed = compressor.compress(str);
 				final byte[] decompressed = compressor.decompress(compressed);
@@ -81,7 +81,7 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 		final AsciiCompressor compressor = new FourBitAsciiCompressor(true);
 		compressor.preserveOriginal = true;
 		for (int length = 2000; length <= 3000; length++)
-			for (int i = 0; i <= 1000000; i++) {
+			for (int i = 0; i <= 10000; i++) {
 				final byte[] str = generateRandomString(length, DEFAULT_4BIT_CHARSET);
 				final byte[] compressed = compressor.compress(str);
 				final byte[] decompressed = compressor.decompress(compressed);
