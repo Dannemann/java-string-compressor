@@ -1,11 +1,9 @@
-Benchmark                                                Mode  Cnt        Score       Error   Units
-FourBitAsciiCompressorBenchmark.baseline                thrpt    6  2707584.560 ± 53692.556  ops/ms
-FourBitAsciiCompressorBenchmark.compressBigStrings      thrpt    6       30.991 ±     0.503  ops/ms
-FourBitAsciiCompressorBenchmark.compressSmallStrings    thrpt    6    16563.912 ±    74.902  ops/ms
-FourBitAsciiCompressorBenchmark.decompressBigStrings    thrpt    6       41.459 ±     0.295  ops/ms
-FourBitAsciiCompressorBenchmark.decompressSmallStrings  thrpt    6    22242.828 ±   939.301  ops/ms
-FourBitAsciiCompressorBenchmark.baseline                 avgt    6       ≈ 10⁻⁶               ms/op
-FourBitAsciiCompressorBenchmark.compressBigStrings       avgt    6        0.033 ±     0.004   ms/op
-FourBitAsciiCompressorBenchmark.compressSmallStrings     avgt    6       ≈ 10⁻⁴               ms/op
-FourBitAsciiCompressorBenchmark.decompressBigStrings     avgt    6        0.024 ±     0.002   ms/op
-FourBitAsciiCompressorBenchmark.decompressSmallStrings   avgt    6       ≈ 10⁻⁴               ms/op
+Results produced by a MacBook Pro 2019 2,6 GHz 6-Core Intel Core i7.
+
+Benchmark                                       Mode  Cnt   Score   Error  Units
+FourBitAsciiCompressorBenchmark.compress10Mb    avgt    6   8.844 ± 0.426  ms/op
+FourBitAsciiCompressorBenchmark.decompress10Mb  avgt    6   6.161 ± 0.297  ms/op
+FiveBitAsciiCompressorBenchmark.compress10Mb    avgt    6  13.777 ± 0.051  ms/op
+FiveBitAsciiCompressorBenchmark.decompress10Mb  avgt    6  13.842 ± 0.029  ms/op
+SixBitAsciiCompressorBenchmark.compress10Mb     avgt    6  14.325 ± 0.054  ms/op
+SixBitAsciiCompressorBenchmark.decompress10Mb   avgt    6  14.591 ± 0.263  ms/op
