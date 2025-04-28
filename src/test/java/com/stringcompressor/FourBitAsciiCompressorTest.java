@@ -18,6 +18,29 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class FourBitAsciiCompressorTest extends BaseTest {
 
 	@Test
+	public void usageExample() {
+		// A string to be compressed. Whenever possible, prefer working directly with byte[] to avoid creating String objects.
+		byte[] inputStr = "0123456789".getBytes(US_ASCII);
+
+		// Creates a compressor with the default supported character set.
+		AsciiCompressor compressor = new FourBitAsciiCompressor();
+		// Creates a compressor with a custom charset (see FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET).
+//		AsciiCompressor customCharsetCompressor = new FourBitAsciiCompressor(new byte[]{/* custom charset */});
+
+		// Throws an exception when invalid characters are present; useful for debugging purposes.
+		// Invalid characters should be silently ignored in production. Default is false.
+		compressor.throwException = true;
+		// Compressor overwrites the original string ("inputStr") to reduce memory usage.
+		// Set to true to prevent this. Default is false.
+		compressor.preserveOriginal = false;
+
+		byte[] compressed = compressor.compress(inputStr);
+		byte[] decompressed = compressor.decompress(compressed);
+
+		assertEquals("0123456789", new String(decompressed, US_ASCII));
+	}
+
+	@Test
 	public void validCustomCharsetTest() {
 		byte[] customCharset = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 		new FourBitAsciiCompressor(customCharset);
