@@ -2,16 +2,21 @@ package com.stringcompressor;
 
 import java.util.Random;
 
-public abstract class BaseTest {
+/**
+ * @author Jean Dannemann Carone
+ */
+abstract class BaseTest {
 
 	private static final Random RANDOM = new Random();
 
-	protected static String createRandomString(int length, byte[] charset) {
-		StringBuilder sb = new StringBuilder(length);
-		int charsetLen = charset.length;
+	static byte[] generateRandomString(final int length, final byte[] charset) {
+		final byte[] string = new byte[length];
+		final int charSetLen = charset.length;
+
 		for (int i = 0; i < length; i++)
-			sb.append((char) (charset[RANDOM.nextInt(charsetLen)]));
-		return sb.toString();
+			string[i] = charset[RANDOM.nextInt(charSetLen)];
+
+		return string;
 	}
 
 }
