@@ -29,10 +29,10 @@ public class FiveBitAsciiCompressorTest extends BaseTest {
 
 		// Throws an exception when invalid characters are present; useful for debugging purposes.
 		// Invalid characters should be silently ignored in production. Default is false.
-		compressor.throwException = true;
+		compressor.setThrowException(true);
 		// Compressor overwrites the original string ("inputStr") to reduce memory usage.
 		// Set to true to prevent this. Default is false.
-		compressor.preserveOriginal = true;
+		compressor.setPreserveOriginal(true);
 
 		byte[] compressed = compressor.compress(inputStr);
 		byte[] decompressed = compressor.decompress(compressed);
