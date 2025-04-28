@@ -22,9 +22,9 @@ public class SixBitAsciiCompressorTest extends BaseTest {
 		// A string to be compressed. Whenever possible, prefer working directly with byte[] to avoid creating String objects.
 		byte[] inputStr = "HELLO, COMPRESSOR".getBytes(US_ASCII);
 
-		// Creates a compressor with the default supported character set.
+		// Creates a compressor with the default supported character set (see SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET).
 		AsciiCompressor compressor = new SixBitAsciiCompressor();
-		// Creates a compressor with a custom charset (see SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET).
+		// Creates a compressor with a custom charset.
 //		AsciiCompressor customCharsetCompressor = new SixBitAsciiCompressor(new byte[]{/* custom charset */});
 
 		// Throws an exception when invalid characters are present; useful for debugging purposes.

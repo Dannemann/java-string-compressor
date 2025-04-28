@@ -22,9 +22,9 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 		// A string to be compressed. Whenever possible, prefer working directly with byte[] to avoid creating String objects.
 		byte[] inputStr = "0123456789".getBytes(US_ASCII);
 
-		// Creates a compressor with the default supported character set.
+		// Creates a compressor with the default supported character set (see FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET).
 		AsciiCompressor compressor = new FourBitAsciiCompressor();
-		// Creates a compressor with a custom charset (see FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET).
+		// Creates a compressor with a custom charset.
 //		AsciiCompressor customCharsetCompressor = new FourBitAsciiCompressor(new byte[]{/* custom charset */});
 
 		// Throws an exception when invalid characters are present; useful for debugging purposes.
