@@ -74,6 +74,7 @@ public class FiveBitAsciiCompressorTest extends BaseTest {
 	@Test
 	public void compressDecompressSmallStringTest() {
 		final AsciiCompressor compressor = new FiveBitAsciiCompressor(true);
+		compressor.preserveOriginal = true;
 		for (int length = 0; length <= 100; length++)
 			for (int i = 0; i <= 3000000; i++) {
 				final byte[] str = generateRandomString(length, DEFAULT_5BIT_CHARSET);
@@ -86,6 +87,7 @@ public class FiveBitAsciiCompressorTest extends BaseTest {
 	@Test
 	public void compressDecompressBigStringTest() {
 		final AsciiCompressor compressor = new FiveBitAsciiCompressor(true);
+		compressor.preserveOriginal = true;
 		for (int length = 2000; length <= 3000; length++)
 			for (int i = 0; i <= 1000000; i++) {
 				final byte[] str = generateRandomString(length, DEFAULT_5BIT_CHARSET);
