@@ -14,8 +14,8 @@ import static com.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
  */
 public class FourBitAsciiCompressorBenchmark {
 
-	private static final AsciiCompressor COMPRESSOR = new FourBitAsciiCompressor(true);
-	private static final int MAX_STRINGS = 128; // Must be a power of 2 for bitwise module.
+	private static final AsciiCompressor COMPRESSOR = new FourBitAsciiCompressor();
+	private static final int MAX_STRINGS = 256; // Must be a power of 2 for bitwise module.
 	private static final byte[][] INPUT_STRINGS = new byte[MAX_STRINGS][];
 	private static final byte[][] COMPRESSED_STRINGS = new byte[MAX_STRINGS][];
 	private static final Random RANDOM = new Random();
@@ -23,12 +23,13 @@ public class FourBitAsciiCompressorBenchmark {
 	private static int index;
 
 	static {
-		System.out.println(" ### Initializing static data for FourBitAsciiCompressorBenchmark...");
+		COMPRESSOR.setPreserveOriginal(true);
+		COMPRESSOR.setThrowException(false);
 
 		int charSetLen = DEFAULT_4BIT_CHARSET.length;
 
 		for (int i = 0; i < MAX_STRINGS; i++) {
-			byte[] string = new byte[10 * 1024 * 1024]; // 10 MB string.
+			byte[] string = new byte[10 * 1024 * 1024]; // 10 MB each string.
 
 			for (int j = 0, len = string.length; j < len; j++)
 				string[j] = DEFAULT_4BIT_CHARSET[RANDOM.nextInt(charSetLen)];
@@ -37,7 +38,6 @@ public class FourBitAsciiCompressorBenchmark {
 			COMPRESSED_STRINGS[i] = COMPRESSOR.compress(string);
 		}
 
-		System.out.println(" ### FourBitAsciiCompressorBenchmark static data initialized.");
 	}
 
 //	@Benchmark
@@ -49,10 +49,10 @@ public class FourBitAsciiCompressorBenchmark {
 		return COMPRESSOR.compress(INPUT_STRINGS[index++ & 0x7FFFFFFF & MAX_STRINGS - 1]);
 	}
 
-	@Benchmark
-	public byte[] decompressStrings() {
-		return COMPRESSOR.decompress(COMPRESSED_STRINGS[index++ & 0x7FFFFFFF & MAX_STRINGS - 1]);
-	}
+//	@Benchmark
+//	public byte[] decompressStrings() {
+//		return COMPRESSOR.decompress(COMPRESSED_STRINGS[index++ & 0x7FFFFFFF & MAX_STRINGS - 1]);
+//	}
 
 	/**
 	 * For debugging (see JMH in build.gradle.kts).
