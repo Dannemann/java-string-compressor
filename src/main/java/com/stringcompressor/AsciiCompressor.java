@@ -14,7 +14,6 @@ public abstract class AsciiCompressor {
 	// Fields:
 
 	protected final byte[] supportedCharset;
-	protected final byte[] lookupTable = new byte[128]; // ASCII range.
 
 	/**
 	 * To avoid duplicating strings and save memory, the compressor will modify
@@ -28,6 +27,8 @@ public abstract class AsciiCompressor {
 	 * recommended for production.
 	 */
 	protected boolean throwException;
+
+	private final byte[] lookupTable = new byte[128]; // ASCII range.
 
 	// Constructor:
 
