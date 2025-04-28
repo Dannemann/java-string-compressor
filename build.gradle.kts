@@ -1,12 +1,14 @@
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-description = "A low-level extremely fast String compactor for Java."
-
 plugins {
     `java-library`
     id("me.champeau.jmh") version "0.7.3"
 }
+
+group = "com.dannemann"
+version = "1.0.0"
+description = "A low-level extremely fast String compactor for Java."
 
 repositories {
     mavenCentral()
