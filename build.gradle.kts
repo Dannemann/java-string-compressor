@@ -30,7 +30,7 @@ tasks.test {
 jmh {
     jmhVersion = "1.37"
     includes = listOf(".Benchmark.")
-    benchmarkMode = listOf("thrpt")
+    benchmarkMode = listOf("avgt")
     fork = 2
     warmup = "10s"
     warmupIterations = 3

@@ -9,13 +9,13 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import static com.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
+import static com.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET;
 
 /**
  * @author Jean Dannemann Carone
  */
 @State(Scope.Benchmark)
-public class FourBitAsciiCompressorBenchmark extends BaseBenchmark {
+public class SixBitAsciiCompressorBenchmark extends BaseBenchmark {
 
 	AsciiCompressor compressor;
 	byte[] toCompress;
@@ -23,8 +23,8 @@ public class FourBitAsciiCompressorBenchmark extends BaseBenchmark {
 
 	@Setup(Level.Trial)
 	public void setUp() {
-		compressor = new FourBitAsciiCompressor();
-		toCompress = generate10MbString(DEFAULT_4BIT_CHARSET);
+		compressor = new SixBitAsciiCompressor();
+		toCompress = generate10MbString(DEFAULT_6BIT_CHARSET);
 		toDecompress = compressor.compress(toCompress);
 	}
 
@@ -44,7 +44,7 @@ public class FourBitAsciiCompressorBenchmark extends BaseBenchmark {
 	public static void main(String[] args) throws RunnerException {
 		new Runner(
 			new OptionsBuilder()
-				.include(FourBitAsciiCompressorBenchmark.class.getSimpleName())
+				.include(SixBitAsciiCompressorBenchmark.class.getSimpleName())
 				.forks(0)
 				.build())
 			.run();

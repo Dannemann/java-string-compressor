@@ -21,7 +21,7 @@ public abstract class AsciiCompressor {
 	 * the original input string, encoding it and making it unusable. To avoid
 	 * this behavior and compress a copy of the original, set this to <code>true</code>.
 	 */
-	protected boolean preserveOriginal = true; // TODO: Set this false after updating benchmarks.
+	protected boolean preserveOriginal;
 
 	/**
 	 * Throw validation exceptions while compressing. Useful for debug but not
