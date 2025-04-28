@@ -1,4 +1,4 @@
-package com.stringcompressor.exception;
+package com.dannemann.stringcompressor.exception;
 
 /**
  * @author Jean Dannemann Carone

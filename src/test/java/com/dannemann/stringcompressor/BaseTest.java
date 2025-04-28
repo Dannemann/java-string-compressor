@@ -1,4 +1,4 @@
-package com.stringcompressor;
+package com.dannemann.stringcompressor;
 
 import java.util.Random;
 

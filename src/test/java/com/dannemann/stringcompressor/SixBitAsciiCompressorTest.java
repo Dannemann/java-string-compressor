@@ -1,12 +1,12 @@
-package com.stringcompressor;
+package com.dannemann.stringcompressor;
 
-import com.stringcompressor.exception.CharacterNotSupportedException;
+import com.dannemann.stringcompressor.exception.CharacterNotSupportedException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static com.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET;
+import static com.dannemann.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;

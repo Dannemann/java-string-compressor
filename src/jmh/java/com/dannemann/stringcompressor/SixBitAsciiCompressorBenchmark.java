@@ -1,4 +1,4 @@
-package com.stringcompressor;
+package com.dannemann.stringcompressor;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Level;
@@ -9,7 +9,7 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import static com.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET;
+import static com.dannemann.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET;
 
 /**
  * @author Jean Dannemann Carone

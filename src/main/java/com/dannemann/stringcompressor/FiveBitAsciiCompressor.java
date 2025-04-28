@@ -1,4 +1,4 @@
-package com.stringcompressor;
+package com.dannemann.stringcompressor;
 
 /**
  * <p>Performs 5-bit-per-ASCII-character encoding and decoding.</p>

@@ -1,6 +1,6 @@
-package com.stringcompressor;
+package com.dannemann.stringcompressor;
 
-import com.stringcompressor.exception.CharacterNotSupportedException;
+import com.dannemann.stringcompressor.exception.CharacterNotSupportedException;
 
 import java.util.Arrays;
 
