@@ -19,39 +19,39 @@ public class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	public void validCustomCharsetTest() {
-		byte[] customSupportedCharset = new byte[]{
+		byte[] customCharset = new byte[]{
 			0, 1, 2, 3, 4, 6, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 26, 27, 28, 29, 30, 31,
 			32, 33, 34, 36, 36, 37, 38, 39, 40, 41, 42, 43, 44, 46, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 56, 57, 58, 59, 60, 61, 62, 63};
-		new SixBitAsciiCompressor(customSupportedCharset);
+		new SixBitAsciiCompressor(customCharset);
 	}
 
 	@Test
 	public void excessCustomCharsetTest() {
-		byte[] customSupportedCharset = new byte[]{
+		byte[] customCharset = new byte[]{
 			0, 1, 2, 3, 4, 6, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 26, 27, 28, 29, 30, 31,
 			32, 33, 34, 36, 36, 37, 38, 39, 40, 41, 42, 43, 44, 46, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 56, 57, 58, 59, 60, 61, 62, 63, 64};
 		CharacterNotSupportedException e = assertThrows(
-			CharacterNotSupportedException.class, () -> new SixBitAsciiCompressor(customSupportedCharset));
+			CharacterNotSupportedException.class, () -> new SixBitAsciiCompressor(customCharset));
 		assertEquals("6-bit compressor requires a set of exactly 64 characters. Currently 65.", e.getMessage());
 	}
 
 	@Test
 	public void missingCustomCharsetTest() {
-		byte[] customSupportedCharset = new byte[]{
+		byte[] customCharset = new byte[]{
 			0, 1, 2, 3, 4, 6, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 26, 27, 28, 29, 30, 31,
 			32, 33, 34, 36, 36, 37, 38, 39, 40, 41, 42, 43, 44, 46, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 56, 57, 58, 59, 60, 61, 62};
 		CharacterNotSupportedException e = assertThrows(
-			CharacterNotSupportedException.class, () -> new SixBitAsciiCompressor(customSupportedCharset));
+			CharacterNotSupportedException.class, () -> new SixBitAsciiCompressor(customCharset));
 		assertEquals("6-bit compressor requires a set of exactly 64 characters. Currently 63.", e.getMessage());
 	}
 
 	@Test
 	public void invalidCustomCharsetTest() {
-		byte[] customSupportedCharset = new byte[]{
+		byte[] customCharset = new byte[]{
 			-1, 0, 1, 2, 3, 4, 6, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 26, 27, 28, 29, 30, 31,
 			32, 33, 34, 36, 36, 37, 38, 39, 40, 41, 42, 43, 44, 46, 46, 47, 48, 49, 50, 51, 52, 53, 54, 56, 56, 57, 58, 59, 60, 61, 62};
 		CharacterNotSupportedException e = assertThrows(
-			CharacterNotSupportedException.class, () -> new SixBitAsciiCompressor(customSupportedCharset));
+			CharacterNotSupportedException.class, () -> new SixBitAsciiCompressor(customCharset));
 		assertEquals("Invalid character found in the custom supported charset: '\uFFFF' (code point -1)", e.getMessage());
 	}
 

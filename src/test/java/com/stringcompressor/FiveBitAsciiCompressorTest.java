@@ -19,39 +19,39 @@ public class FiveBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	public void validCustomCharsetTest() {
-		byte[] customSupportedCharset = new byte[]{
+		byte[] customCharset = new byte[]{
 			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 			16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31};
-		new FiveBitAsciiCompressor(customSupportedCharset);
+		new FiveBitAsciiCompressor(customCharset);
 	}
 
 	@Test
 	public void excessCustomCharsetTest() {
-		byte[] customSupportedCharset = new byte[]{
+		byte[] customCharset = new byte[]{
 			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 			16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
 		CharacterNotSupportedException e = assertThrows(
-			CharacterNotSupportedException.class, () -> new FiveBitAsciiCompressor(customSupportedCharset));
+			CharacterNotSupportedException.class, () -> new FiveBitAsciiCompressor(customCharset));
 		assertEquals("5-bit compressor requires a set of exactly 32 characters. Currently 33.", e.getMessage());
 	}
 
 	@Test
 	public void missingCustomCharsetTest() {
-		byte[] customSupportedCharset = new byte[]{
+		byte[] customCharset = new byte[]{
 			0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 			16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
 		CharacterNotSupportedException e = assertThrows(
-			CharacterNotSupportedException.class, () -> new FiveBitAsciiCompressor(customSupportedCharset));
+			CharacterNotSupportedException.class, () -> new FiveBitAsciiCompressor(customCharset));
 		assertEquals("5-bit compressor requires a set of exactly 32 characters. Currently 31.", e.getMessage());
 	}
 
 	@Test
 	public void invalidCustomCharsetTest() {
-		byte[] customSupportedCharset = new byte[]{
+		byte[] customCharset = new byte[]{
 			-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 			16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
 		CharacterNotSupportedException e = assertThrows(
-			CharacterNotSupportedException.class, () -> new FiveBitAsciiCompressor(customSupportedCharset));
+			CharacterNotSupportedException.class, () -> new FiveBitAsciiCompressor(customCharset));
 		assertEquals("Invalid character found in the custom supported charset: '\uFFFF' (code point -1)", e.getMessage());
 	}
 

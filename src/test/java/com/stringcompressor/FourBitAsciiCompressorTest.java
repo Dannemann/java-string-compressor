@@ -19,31 +19,31 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	public void validCustomCharsetTest() {
-		byte[] customSupportedCharset = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-		new FourBitAsciiCompressor(customSupportedCharset);
+		byte[] customCharset = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+		new FourBitAsciiCompressor(customCharset);
 	}
 
 	@Test
 	public void excessCustomCharsetTest() {
-		byte[] customSupportedCharset = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+		byte[] customCharset = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 		CharacterNotSupportedException e = assertThrows(
-			CharacterNotSupportedException.class, () -> new FourBitAsciiCompressor(customSupportedCharset));
+			CharacterNotSupportedException.class, () -> new FourBitAsciiCompressor(customCharset));
 		assertEquals("4-bit compressor requires a set of exactly 16 characters. Currently 17.", e.getMessage());
 	}
 
 	@Test
 	public void missingCustomCharsetTest() {
-		byte[] customSupportedCharset = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+		byte[] customCharset = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 		CharacterNotSupportedException e = assertThrows(
-			CharacterNotSupportedException.class, () -> new FourBitAsciiCompressor(customSupportedCharset));
+			CharacterNotSupportedException.class, () -> new FourBitAsciiCompressor(customCharset));
 		assertEquals("4-bit compressor requires a set of exactly 16 characters. Currently 15.", e.getMessage());
 	}
 
 	@Test
 	public void invalidCustomCharsetTest() {
-		byte[] customSupportedCharset = new byte[]{-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+		byte[] customCharset = new byte[]{-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 		CharacterNotSupportedException e = assertThrows(
-			CharacterNotSupportedException.class, () -> new FourBitAsciiCompressor(customSupportedCharset));
+			CharacterNotSupportedException.class, () -> new FourBitAsciiCompressor(customCharset));
 		assertEquals("Invalid character found in the custom supported charset: '\uFFFF' (code point -1)", e.getMessage());
 	}
 
