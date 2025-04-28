@@ -73,24 +73,24 @@ public class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	public void compressDecompressSmallStringTest() {
-		AsciiCompressor compressor = new SixBitAsciiCompressor();
+		final AsciiCompressor compressor = new SixBitAsciiCompressor(true);
 		for (int length = 0; length <= 100; length++)
 			for (int i = 0; i <= 3000000; i++) {
-				byte[] str = generateRandomString(length, DEFAULT_6BIT_CHARSET);
-				byte[] compressed = compressor.compress(str);
-				byte[] decompressed = compressor.decompress(compressed);
+				final byte[] str = generateRandomString(length, DEFAULT_6BIT_CHARSET);
+				final byte[] compressed = compressor.compress(str);
+				final byte[] decompressed = compressor.decompress(compressed);
 				assertArrayEquals(str, decompressed);
 			}
 	}
 
 	@Test
 	public void compressDecompressBigStringTest() {
-		AsciiCompressor compressor = new SixBitAsciiCompressor();
+		final AsciiCompressor compressor = new SixBitAsciiCompressor(true);
 		for (int length = 2000; length <= 3000; length++)
 			for (int i = 0; i <= 1000000; i++) {
-				byte[] str = generateRandomString(length, DEFAULT_6BIT_CHARSET);
-				byte[] compressed = compressor.compress(str);
-				byte[] decompressed = compressor.decompress(compressed);
+				final byte[] str = generateRandomString(length, DEFAULT_6BIT_CHARSET);
+				final byte[] compressed = compressor.compress(str);
+				final byte[] decompressed = compressor.decompress(compressed);
 				assertArrayEquals(str, decompressed);
 			}
 	}
@@ -105,23 +105,23 @@ public class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	public void ignoreInvalidCharsTest() {
-		AsciiCompressor compressor = new SixBitAsciiCompressor();
+		final AsciiCompressor compressor = new SixBitAsciiCompressor();
 		for (int i = 0; i < 3000; i++)
 			for (int asciiCode = 0; asciiCode < 128; asciiCode++) {
-				byte[] input = new byte[]{'A', (byte) asciiCode, 'B', 'C', 'D', (byte) 'Ç'};
-				byte[] compressed = compressor.compress(input);
-				byte[] decompressed = compressor.decompress(compressed);
+				final byte[] input = new byte[]{'A', (byte) asciiCode, 'B', 'C', 'D', (byte) 'Ç'};
+				final byte[] compressed = compressor.compress(input);
+				final byte[] decompressed = compressor.decompress(compressed);
 				assertEquals(input.length, decompressed.length);
 			}
 	}
 
 	@Test
 	public void compressionRateTest() {
-		AsciiCompressor compressor = new SixBitAsciiCompressor();
-		int hundredMb = 100 * 1024 * 1024;
-		byte[] input = new byte[hundredMb];
+		final AsciiCompressor compressor = new SixBitAsciiCompressor(true);
+		final int hundredMb = 100 * 1024 * 1024;
+		final byte[] input = new byte[hundredMb];
 		Arrays.fill(input, (byte) 'A');
-		byte[] compressed = compressor.compress(input);
+		final byte[] compressed = compressor.compress(input);
 		Assertions.assertEquals(75, compressed.length / 1024 / 1024); // 25% compression rate.
 	}
 
