@@ -1,4 +1,5 @@
 Results produced by a MacBook Pro 2019 2,6 GHz 6-Core Intel Core i7.
+Results based on compressing/decompressing a 10 MB string.
 
 Benchmark                                       Mode  Cnt   Score   Error  Units
 FourBitAsciiCompressorBenchmark.compress10Mb    avgt    6   8.844 ± 0.426  ms/op
