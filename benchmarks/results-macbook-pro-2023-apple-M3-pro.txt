@@ -1,0 +1,10 @@
+Executed on a MacBook Pro 2023 Apple M3 Pro running Java 21.
+Results based on compressing/decompressing a 10 MB string.
+
+Benchmark                                       Mode  Cnt  Score   Error  Units
+FourBitAsciiCompressorBenchmark.compress10Mb    avgt    6  3.658 ± 0.010  ms/op
+FourBitAsciiCompressorBenchmark.decompress10Mb  avgt    6  3.125 ± 0.032  ms/op
+FiveBitAsciiCompressorBenchmark.compress10Mb    avgt    6  8.328 ± 0.245  ms/op
+FiveBitAsciiCompressorBenchmark.decompress10Mb  avgt    6  6.851 ± 0.101  ms/op
+SixBitAsciiCompressorBenchmark.compress10Mb     avgt    6  8.697 ± 0.336  ms/op
+SixBitAsciiCompressorBenchmark.decompress10Mb   avgt    6  8.204 ± 0.354  ms/op

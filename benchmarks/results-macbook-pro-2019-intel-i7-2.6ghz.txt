@@ -1,4 +1,4 @@
-Results produced by a MacBook Pro 2019 2,6 GHz 6-Core Intel Core i7.
+Executed on a MacBook Pro 2019 2,6 GHz 6-Core Intel Core i7 running Java 21.
 Results based on compressing/decompressing a 10 MB string.
 
 Benchmark                                       Mode  Cnt   Score   Error  Units
