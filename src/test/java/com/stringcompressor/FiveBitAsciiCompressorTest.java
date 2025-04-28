@@ -32,12 +32,13 @@ public class FiveBitAsciiCompressorTest extends BaseTest {
 		compressor.throwException = true;
 		// Compressor overwrites the original string ("inputStr") to reduce memory usage.
 		// Set to true to prevent this. Default is false.
-		compressor.preserveOriginal = false;
+		compressor.preserveOriginal = true;
 
 		byte[] compressed = compressor.compress(inputStr);
 		byte[] decompressed = compressor.decompress(compressed);
 
 		assertEquals("HELLO-COMPRESSOR", new String(decompressed, US_ASCII));
+		assertArrayEquals(inputStr, decompressed); // If preserveOriginal is false, this will fail because inputStr has been modified.
 	}
 
 	@Test
