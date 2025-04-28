@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import static com.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
 import static java.nio.charset.StandardCharsets.US_ASCII;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -67,10 +68,10 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 		AsciiCompressor compressor = new FourBitAsciiCompressor();
 		for (int length = 0; length <= 100; length++)
 			for (int i = 0; i <= 3000000; i++) {
-				String str = createRandomString(length, DEFAULT_4BIT_CHARSET);
-				byte[] compressed = compressor.compress(str.getBytes(US_ASCII));
+				byte[] str = generateRandomString(length, DEFAULT_4BIT_CHARSET);
+				byte[] compressed = compressor.compress(str);
 				byte[] decompressed = compressor.decompress(compressed);
-				assertEquals(str, new String(decompressed, US_ASCII));
+				assertArrayEquals(str, decompressed);
 			}
 	}
 
@@ -79,10 +80,10 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 		AsciiCompressor compressor = new FourBitAsciiCompressor();
 		for (int length = 2000; length <= 3000; length++)
 			for (int i = 0; i <= 1000000; i++) {
-				String str = createRandomString(length, DEFAULT_4BIT_CHARSET);
-				byte[] compressed = compressor.compress(str.getBytes(US_ASCII));
+				byte[] str = generateRandomString(length, DEFAULT_4BIT_CHARSET);
+				byte[] compressed = compressor.compress(str);
 				byte[] decompressed = compressor.decompress(compressed);
-				assertEquals(str, new String(decompressed, US_ASCII));
+				assertArrayEquals(str, decompressed);
 			}
 	}
 
