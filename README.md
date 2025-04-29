@@ -43,11 +43,23 @@ byte[] c = new SixBitAsciiCompressor().compress(data); // c is 75 megabytes.
 
 ### Define your custom character set
 
-```java
-AsciiCompressor c = new SixBitAsciiCompressor(yourCustomCharset);
-```
+Compressors have a set of default characters supported for compression. These are defined in constants
+```DEFAULT_4BIT_CHARSET```, ```DEFAULT_5BIT_CHARSET```, and ```DEFAULT_6BIT_CHARSET```. You can define your own
+character set by using any constructor with the ```supportedCharset``` parameter.
 
-Do not forget to check the test directory for usage examples and edge cases.
+### Catch invalid characters
+
+It’s useful to validate the input and throw errors when invalid characters are found.
+You can enable character validation by using any constructor with the ```throwException``` parameter.
+Validation isn’t recommended for production because you will probably be adding dozens of gigabytes to the memory,
+and you don't want a single invalid character to halt the whole processes.
+It’s better to occasionally display an incorrect character than to abort the entire operation.
+
+### Preserving the original input string
+
+By default, the compressor overwrites the original input byte array to minimize memory usage.
+Very useful when dealing with big strings, avoiding duplicating them.
+You can enable input preservation by using any constructor with the ```preserveOriginal``` parameter.
 
 ## Downloads:
 
