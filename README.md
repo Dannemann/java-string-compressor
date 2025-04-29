@@ -41,13 +41,13 @@ byte[] data = str.getBytes(US_ASCII); // Assume data is a 100 megabytes string.
 byte[] c = new SixBitAsciiCompressor().compress(data); // c is 75 megabytes.
 ```
 
-### Define your custom character set
+### Defining your custom character set
 
 Compressors have a set of default characters supported for compression. These are defined in constants
 ```DEFAULT_4BIT_CHARSET```, ```DEFAULT_5BIT_CHARSET```, and ```DEFAULT_6BIT_CHARSET```. You can define your own
 character set by using any constructor with the ```supportedCharset``` parameter.
 
-### Catch invalid characters
+### Catching invalid characters
 
 It’s useful to validate the input and throw errors when invalid characters are found.
 You can enable character validation by using any constructor with the ```throwException``` parameter.
@@ -61,7 +61,7 @@ By default, the compressor overwrites the original input byte array to minimize 
 Very useful when dealing with big strings, avoiding duplicating them.
 You can enable input preservation by using any constructor with the ```preserveOriginal``` parameter.
 
-## Downloads:
+## Downloads
 
 Add it to your Maven project:
 ```xml
