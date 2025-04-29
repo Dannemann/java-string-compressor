@@ -8,7 +8,7 @@ plugins {
 
 group = "com.dannemann"
 version = "1.0.0"
-description = "A low-level extremely fast String compactor for Java."
+description = "Ultra-fast, low-level string compression library. Up to 50% reduction."
 
 repositories {
     mavenCentral()

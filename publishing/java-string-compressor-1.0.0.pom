@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>io.github.dannemann</groupId>
+  <artifactId>java-string-compressor</artifactId>
+  <version>1.0.0</version>
+  <name>java-string-compressor</name>
+  <description>Ultra-fast, low-level string compression library. Up to 50% reduction.</description>
+  <url>https://github.com/Dannemann/java-string-compressor</url>
+  <inceptionYear>2025</inceptionYear>
+  <licenses>
+    <license>
+      <name>GNU General Public License, Version 3.0</name>
+      <url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>Dannemann</id>
+      <name>Jean Dannemann Carone</name>
+      <email>jean.carone@gmail.com</email>
+      <organizationUrl>https://www.linkedin.com/in/jeandannemann</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git://github.com/Dannemann/java-string-compressor.git</connection>
+    <developerConnection>scm:git:ssh://github.com:Dannemann/java-string-compressor.git</developerConnection>
+    <url>https://github.com/Dannemann/java-string-compressor</url>
+  </scm>
+</project>
