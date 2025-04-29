@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.dannemann"
-version = "1.0.0"
+version = "1.0.1"
 description = "Ultra-fast, low-level string compression library. Up to 50% reduction."
 
 repositories {

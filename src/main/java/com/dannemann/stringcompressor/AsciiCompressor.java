@@ -11,30 +11,35 @@ import static java.nio.charset.StandardCharsets.US_ASCII;
  */
 public abstract class AsciiCompressor {
 
+	protected static final boolean PRESERVE_ORIGINAL_DEFAULT = false;
+	protected static final boolean THROW_EXCEPTION_DEFAULT = false;
+
 	// Fields:
 
 	protected final byte[] supportedCharset;
+
+	/**
+	 * Throw validation exceptions while compressing. Useful for debugging but not recommended for production.
+	 */
+	protected final boolean throwException;
 
 	/**
 	 * To avoid duplicating strings and save memory, the compressor will modify
 	 * the original input string, encoding it and making it unusable. To avoid
 	 * this behavior and compress a copy of the original, set this to <code>true</code>.
 	 */
-	protected boolean preserveOriginal;
-
-	/**
-	 * Throw validation exceptions while compressing. Useful for debug but not
-	 * recommended for production.
-	 */
-	protected boolean throwException;
+	protected final boolean preserveOriginal;
 
 	private final byte[] lookupTable = new byte[128]; // ASCII range.
 
 	// Constructor:
 
-	public AsciiCompressor(byte[] supportedCharset) {
+	public AsciiCompressor(byte[] supportedCharset, boolean throwException, boolean preserveOriginal) {
 		validateSupportedCharset(supportedCharset);
+
 		this.supportedCharset = supportedCharset;
+		this.throwException = throwException;
+		this.preserveOriginal = preserveOriginal;
 
 		Arrays.fill(lookupTable, (byte) -1);
 		for (int i = 0, len = supportedCharset.length; i < len; i++)
@@ -43,7 +48,7 @@ public abstract class AsciiCompressor {
 
 	// Abstract methods:
 
-	public abstract byte[] compress(byte[] str);
+	public abstract byte[] compress(final byte[] string);
 
 	/**
 	 * Restores the original string from data compressed by {@link #compress}.
@@ -51,7 +56,7 @@ public abstract class AsciiCompressor {
 	 * @param compressed The compressed string byte array.
 	 * @return A decompressed string byte array.
 	 */
-	public abstract byte[] decompress(byte[] compressed);
+	public abstract byte[] decompress(final byte[] compressed);
 
 	protected abstract void validateSupportedCharset(byte[] supportedCharset);
 
@@ -91,16 +96,6 @@ public abstract class AsciiCompressor {
 		else
 			for (int i = 0; i < len; i++)
 				string[i] = lookupTable[string[i] & 0x7F];
-	}
-
-	// Getters and setters:
-
-	public void setPreserveOriginal(boolean preserveOriginal) {
-		this.preserveOriginal = preserveOriginal;
-	}
-
-	public void setThrowException(boolean throwException) {
-		this.throwException = throwException;
 	}
 
 }

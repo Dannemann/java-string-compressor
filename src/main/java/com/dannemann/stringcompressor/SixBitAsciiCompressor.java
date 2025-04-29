@@ -27,16 +27,27 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 	};
 
 	public SixBitAsciiCompressor() {
-		super(DEFAULT_6BIT_CHARSET);
+		super(DEFAULT_6BIT_CHARSET, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
 	public SixBitAsciiCompressor(byte[] supportedCharset) {
-		super(supportedCharset);
+		super(supportedCharset, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
 	public SixBitAsciiCompressor(boolean throwException) {
-		super(DEFAULT_6BIT_CHARSET);
-		this.throwException = throwException;
+		super(DEFAULT_6BIT_CHARSET, throwException, PRESERVE_ORIGINAL_DEFAULT);
+	}
+
+	public SixBitAsciiCompressor(byte[] supportedCharset, boolean throwException) {
+		super(supportedCharset, throwException, PRESERVE_ORIGINAL_DEFAULT);
+	}
+
+	public SixBitAsciiCompressor(boolean throwException, boolean preserveOriginal) {
+		super(DEFAULT_6BIT_CHARSET, throwException, preserveOriginal);
+	}
+
+	public SixBitAsciiCompressor(byte[] supportedCharset, boolean throwException, boolean preserveOriginal) {
+		super(supportedCharset, throwException, preserveOriginal);
 	}
 
 	/**
@@ -44,15 +55,13 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 	 * <p>Compression rate: 25%</p>
 	 * <p>See {@link #DEFAULT_6BIT_CHARSET} for the default set of supported characters.</p>
 	 *
-	 * @param str string to be compressed.
+	 * @param string string to be compressed.
 	 * @return A compressed byte array.
 	 */
 	@Override
-	public final byte[] compress(byte[] str) {
-		final int len = str.length;
-
-		if (preserveOriginal)
-			str = str.clone();
+	public final byte[] compress(final byte[] string) {
+		final byte[] str = preserveOriginal ? string.clone() : string;
+		final int len = string.length;
 
 		encode(str, len);
 

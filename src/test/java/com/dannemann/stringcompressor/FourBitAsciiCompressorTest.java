@@ -24,21 +24,21 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 
 		// Creates a compressor with the default supported character set (see FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET).
 		AsciiCompressor compressor = new FourBitAsciiCompressor();
-		// Creates a compressor with a custom charset.
-//		AsciiCompressor customCharsetCompressor = new FourBitAsciiCompressor(new byte[]{/* custom charset */});
 
-		// Throws an exception when invalid characters are present; useful for debugging purposes.
-		// Invalid characters should be silently ignored in production. Default is false.
-		compressor.setThrowException(true);
-		// Compressor overwrites the original string ("inputStr") to reduce memory usage.
+		// Creates a compressor with a custom charset, input validation, and input source preservation.
+		// Throws an exception when invalid characters are present; useful for debugging purposes
+		// (invalid characters should be silently ignored in production). Default is false.
+		// By default, the compressor overwrites the original input to minimize memory usage (useful for big strings).
 		// Set to true to prevent this. Default is false.
-		compressor.setPreserveOriginal(true);
+//		AsciiCompressor customCompressor = new FourBitAsciiCompressor(new byte[]{/* custom charset */}, true, true);
 
 		byte[] compressed = compressor.compress(inputStr);
 		byte[] decompressed = compressor.decompress(compressed);
 
 		assertEquals("0123456789", new String(decompressed, US_ASCII));
-		assertArrayEquals(inputStr, decompressed); // If preserveOriginal is false, this will fail because inputStr has been modified.
+
+		// If preserveOriginal is false, this will fail because inputStr has been modified.
+//		assertArrayEquals(inputStr, decompressed);
 	}
 
 	@Test
@@ -89,8 +89,7 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	public void compressDecompressSmallStringTest() {
-		final AsciiCompressor compressor = new FourBitAsciiCompressor(true);
-		compressor.setPreserveOriginal(true);
+		final AsciiCompressor compressor = new FourBitAsciiCompressor(true, true);
 		for (int length = 0; length <= 100; length++)
 			for (int i = 0; i <= 500000; i++) {
 				final byte[] str = generateRandomString(length, DEFAULT_4BIT_CHARSET);
@@ -102,8 +101,7 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	public void compressDecompressBigStringTest() {
-		final AsciiCompressor compressor = new FourBitAsciiCompressor(true);
-		compressor.setPreserveOriginal(true);
+		final AsciiCompressor compressor = new FourBitAsciiCompressor(true, true);
 		for (int length = 2000; length <= 3000; length++)
 			for (int i = 0; i <= 10000; i++) {
 				final byte[] str = generateRandomString(length, DEFAULT_4BIT_CHARSET);

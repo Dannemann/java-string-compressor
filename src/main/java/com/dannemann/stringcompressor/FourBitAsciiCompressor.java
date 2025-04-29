@@ -12,16 +12,27 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ';', '#', '-', '+', '.', ','};
 
 	public FourBitAsciiCompressor() {
-		super(DEFAULT_4BIT_CHARSET);
+		super(DEFAULT_4BIT_CHARSET, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
 	public FourBitAsciiCompressor(byte[] supportedCharset) {
-		super(supportedCharset);
+		super(supportedCharset, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
 	public FourBitAsciiCompressor(boolean throwException) {
-		super(DEFAULT_4BIT_CHARSET);
-		this.throwException = throwException;
+		super(DEFAULT_4BIT_CHARSET, throwException, PRESERVE_ORIGINAL_DEFAULT);
+	}
+
+	public FourBitAsciiCompressor(byte[] supportedCharset, boolean throwException) {
+		super(supportedCharset, throwException, PRESERVE_ORIGINAL_DEFAULT);
+	}
+
+	public FourBitAsciiCompressor(boolean throwException, boolean preserveOriginal) {
+		super(DEFAULT_4BIT_CHARSET, throwException, preserveOriginal);
+	}
+
+	public FourBitAsciiCompressor(byte[] supportedCharset, boolean throwException, boolean preserveOriginal) {
+		super(supportedCharset, throwException, preserveOriginal);
 	}
 
 	/**
@@ -29,15 +40,13 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	 * <p>Compression rate: 50%</p>
 	 * <p>See {@link #DEFAULT_4BIT_CHARSET} for the default set of supported characters.</p>
 	 *
-	 * @param str String to be compressed.
+	 * @param string String to be compressed.
 	 * @return A compressed byte array.
 	 */
 	@Override
-	public final byte[] compress(byte[] str) {
-		final int len = str.length;
-
-		if (preserveOriginal)
-			str = str.clone();
+	public final byte[] compress(final byte[] string) {
+		final byte[] str = preserveOriginal ? string.clone() : string;
+		final int len = string.length;
 
 		encode(str, len);
 

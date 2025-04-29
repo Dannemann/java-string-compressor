@@ -22,23 +22,23 @@ public class FiveBitAsciiCompressorTest extends BaseTest {
 		// A string to be compressed. Whenever possible, prefer working directly with byte[] to avoid creating String objects.
 		byte[] inputStr = "HELLO-COMPRESSOR".getBytes(US_ASCII);
 
-		// Creates a compressor with the default supported character set (see FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET).
+		// Creates a compressor with the default supported character set (see FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET)
 		AsciiCompressor compressor = new FiveBitAsciiCompressor();
-		// Creates a compressor with a custom charset.
-//		AsciiCompressor customCharsetCompressor = new FiveBitAsciiCompressor(new byte[]{/* custom charset */});
 
-		// Throws an exception when invalid characters are present; useful for debugging purposes.
-		// Invalid characters should be silently ignored in production. Default is false.
-		compressor.setThrowException(true);
-		// Compressor overwrites the original string ("inputStr") to reduce memory usage.
+		// Creates a compressor with a custom charset, input validation, and input source preservation.
+		// Throws an exception when invalid characters are present; useful for debugging purposes
+		// (invalid characters should be silently ignored in production). Default is false.
+		// By default, the compressor overwrites the original input to minimize memory usage (useful for big strings).
 		// Set to true to prevent this. Default is false.
-		compressor.setPreserveOriginal(true);
+//		AsciiCompressor customCompressor = new FiveBitAsciiCompressor(new byte[]{/* custom charset */}, true, true);
 
 		byte[] compressed = compressor.compress(inputStr);
 		byte[] decompressed = compressor.decompress(compressed);
 
 		assertEquals("HELLO-COMPRESSOR", new String(decompressed, US_ASCII));
-		assertArrayEquals(inputStr, decompressed); // If preserveOriginal is false, this will fail because inputStr has been modified.
+
+		// If preserveOriginal is false, this will fail because inputStr has been modified.
+//		assertArrayEquals(inputStr, decompressed);
 	}
 
 	@Test
@@ -97,8 +97,7 @@ public class FiveBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	public void compressDecompressSmallStringTest() {
-		final AsciiCompressor compressor = new FiveBitAsciiCompressor(true);
-		compressor.setPreserveOriginal(true);
+		final AsciiCompressor compressor = new FiveBitAsciiCompressor(true, true);
 		for (int length = 0; length <= 100; length++)
 			for (int i = 0; i <= 500000; i++) {
 				final byte[] str = generateRandomString(length, DEFAULT_5BIT_CHARSET);
@@ -110,8 +109,7 @@ public class FiveBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	public void compressDecompressBigStringTest() {
-		final AsciiCompressor compressor = new FiveBitAsciiCompressor(true);
-		compressor.setPreserveOriginal(true);
+		final AsciiCompressor compressor = new FiveBitAsciiCompressor(true, true);
 		for (int length = 2000; length <= 3000; length++)
 			for (int i = 0; i <= 10000; i++) {
 				final byte[] str = generateRandomString(length, DEFAULT_5BIT_CHARSET);
