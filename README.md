@@ -40,3 +40,21 @@ Maximum of 64 different chars. Default charset supports `A-Z`, `0-9`, and many p
 byte[] data = str.getBytes(US_ASCII); // Assume data is a 100 megabytes string.
 byte[] c = new SixBitAsciiCompressor().compress(data); // c is 75 megabytes.
 ```
+
+## Downloads:
+
+Add it to your Maven project:
+```xml
+<dependency>
+    <groupId>io.github.dannemann</groupId>
+    <artifactId>java-string-compressor</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+Gradle:
+```java
+implementation("io.github.dannemann:java-string-compressor:1.0.0")
+```
+
+Or download the lastest release from: https://github.com/Dannemann/java-string-compressor/releases
