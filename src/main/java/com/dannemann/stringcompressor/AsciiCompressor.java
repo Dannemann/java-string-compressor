@@ -71,16 +71,16 @@ public abstract class AsciiCompressor {
 					"Invalid character found in the custom supported charset: '" + (char) supportedCharset[i] + "' (code point " + supportedCharset[i] + ")");
 	}
 
-	protected void encode(byte[] string, int len) {
+	protected void encode(final byte[] string, final int len) {
 		if (throwException)
 			for (int i = 0; i < len; i++) {
-				byte bite = string[i];
+				final byte bite = string[i];
 
 				if (bite < 0)
 					throw new CharacterNotSupportedException(
 						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code point " + bite + ") in \"" + new String(string, US_ASCII) + "\"");
 
-				byte encoded = lookupTable[bite];
+				final byte encoded = lookupTable[bite];
 
 				if (encoded == -1)
 					throw new CharacterNotSupportedException(
