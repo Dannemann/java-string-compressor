@@ -41,6 +41,14 @@ byte[] data = str.getBytes(US_ASCII); // Assume data is a 100 megabytes string.
 byte[] c = new SixBitAsciiCompressor().compress(data); // c is 75 megabytes.
 ```
 
+### Define your custom character set
+
+```java
+AsciiCompressor c = new SixBitAsciiCompressor(yourCustomCharset);
+```
+
+Do not forget to check the test directory for usage examples and edge cases.
+
 ## Downloads:
 
 Add it to your Maven project:
