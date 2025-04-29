@@ -1,6 +1,6 @@
 # java-string-compressor
 
-A low-level ultra-fast string compactor. Up to 50% reduction.
+Ultra-fast, low-level string compression library. Up to 50% reduction.
 
 - 4 bits -> 50% compression rate
 - 5 bits -> 38% compression rate
@@ -8,7 +8,7 @@ A low-level ultra-fast string compactor. Up to 50% reduction.
 
 Fast! Tiny milliseconds to compress a 10 MB string. Check out the benchmarks.
 
-See the test directory for usage examples and edge cases.
+Well tested! See the test directory for usage examples and edge cases.
 
 ### 4‑bit compressor (`FourBitAsciiCompressor`)
 
