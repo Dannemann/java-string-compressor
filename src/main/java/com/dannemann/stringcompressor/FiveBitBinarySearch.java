@@ -55,11 +55,14 @@ public class FiveBitBinarySearch {
 			int bitsInBuffer = 0;
 			Integer compareResult = null;
 
-			for (int i = 0, j = 0; i < compressedLen; i++) {
+			for (int i = 0, j = 0; i < cLenMinus; i++) {
+				if (i >= keyLen)
+					break;
+
 				buffer = buffer << 8 | compressed[i] & 0xFF;
 				bitsInBuffer += 8;
 
-				if (bitsInBuffer >= 5) {
+				if (bitsInBuffer >= 5 && j < keyLen) {
 					byte decompressedByte = DEFAULT_5BIT_CHARSET[buffer >>> (bitsInBuffer -= 5) & 0x1F];
 					byte keyByte = key[j++];
 					if (decompressedByte != keyByte) {
@@ -68,7 +71,7 @@ public class FiveBitBinarySearch {
 					}
 				}
 
-				if (bitsInBuffer >= 5 && j < cLenMinus) {
+				if (bitsInBuffer >= 5 && j < keyLen) {
 					byte decompressedByte = DEFAULT_5BIT_CHARSET[buffer >>> (bitsInBuffer -= 5) & 0x1F];
 					byte keyByte = key[j++];
 					if (decompressedByte != keyByte) {

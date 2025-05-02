@@ -1,5 +1,8 @@
 package com.dannemann.stringcompressor;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * <p>Performs 5-bit-per-ASCII-character encoding and decoding.</p>
  * <p>Compression rate: 38%</p>
@@ -9,14 +12,14 @@ package com.dannemann.stringcompressor;
 public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 	public static final byte[] DEFAULT_5BIT_CHARSET = new byte[]{
+		' ', '\'', ',', '-', '.', '@',
 		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-		'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-		' ', '.', ',', '\'', '-', '@'};
+		'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
 	public static final byte[] DEFAULT_5BIT_CHARSET_LOWERCASE = new byte[]{
+		' ', '\'', ',', '-', '.', '@',
 		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-		'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-		' ', '.', ',', '\'', '-', '@'};
+		'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
 	public FiveBitAsciiCompressor() {
 		super(DEFAULT_5BIT_CHARSET, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
@@ -79,6 +82,23 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		}
 
 		return compressed;
+	}
+
+	public final byte[][] compress(final List<String> stringMass) {
+		final byte[][] compressedMass = new byte[stringMass.size()][];
+
+		Arrays.parallelSetAll(compressedMass, i -> {
+			final byte[] compressed = compress(getBytes(stringMass.get(i)));
+//			stringMass.set(i, null);
+			return compressed;
+		});
+
+//		for (int i = 0; i < len; i++) {
+//			compressedMass[i] = compress(getBytes(stringMass.get(i)));
+//			stringMass.set(i, null);
+//		}
+
+		return compressedMass;
 	}
 
 	/**

@@ -98,4 +98,18 @@ public abstract class AsciiCompressor {
 				string[i] = lookupTable[string[i] & 0x7F];
 	}
 
+	// Utils:
+
+	/**
+	 * <p>Faster way to get string bytes.</p>
+	 * <p>No validations: this method assumes that <code>string</code> is a guarantee ASCII only string.</p>
+	 */
+	public static byte[] getBytes(final String string) {
+		final int len = string.length();
+		final byte[] bytes = new byte[len];
+		for (int i = 0; i < len; i++)
+			bytes[i] = (byte) string.charAt(i);
+		return bytes;
+	}
+
 }
