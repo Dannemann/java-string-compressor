@@ -93,11 +93,6 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 			return compressed;
 		});
 
-//		for (int i = 0; i < len; i++) {
-//			compressedMass[i] = compress(getBytes(stringMass.get(i)));
-//			stringMass.set(i, null);
-//		}
-
 		return compressedMass;
 	}
 

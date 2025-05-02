@@ -56,9 +56,6 @@ public class FiveBitBinarySearch {
 			Integer compareResult = null;
 
 			for (int i = 0, j = 0; i < cLenMinus; i++) {
-				if (i >= keyLen)
-					break;
-
 				buffer = buffer << 8 | compressed[i] & 0xFF;
 				bitsInBuffer += 8;
 

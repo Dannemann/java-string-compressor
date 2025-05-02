@@ -17,7 +17,7 @@ public class FiveBitBinarySearchTest extends BaseTest {
 
 	public static void main(String[] args) {
 		System.out.println("Initializing mass.");
-		List<String> mass = generateOrderedStringMass(1_500_000, 3, 3);
+		List<String> mass = generateOrderedStringMass(5_000_000, 10, 100);
 
 		System.out.println("Compressing mass:");
 		FiveBitAsciiCompressor compressor = new FiveBitAsciiCompressor();
