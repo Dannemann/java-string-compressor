@@ -34,15 +34,11 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 		super(supportedCharset, throwException, preserveOriginal);
 	}
 
-	// -----------------------------------------------------------------------------------------------------------------
-	// Compress:
-
 	/**
 	 * <p>Compresses 2 characters into 1 byte (4 bits each). Supports a set of 16 different characters (0000 to 1111).</p>
 	 * <p>Compression rate: 50%</p>
 	 * <p>See {@link #DEFAULT_4BIT_CHARSET} for the default set of supported characters.</p>
-	 * @param string String to be compressed.
-	 * @return A compressed byte array.
+	 * @throws NullPointerException {@inheritDoc}
 	 */
 	@Override
 	public final byte[] compress(final byte[] string) {
@@ -66,8 +62,13 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Overloaded version of {@link #compress(byte[])}.
 	 */
+	@Override
+	public byte[] compress(final String string) {
+		return compress(getBytes(string));
+	}
+
 	@Override
 	public final byte[] decompress(final byte[] compressed) {
 		int cLenMinus = compressed.length - 1;

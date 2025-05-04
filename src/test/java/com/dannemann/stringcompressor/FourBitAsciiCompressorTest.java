@@ -1,8 +1,6 @@
 package com.dannemann.stringcompressor;
 
 import com.dannemann.stringcompressor.exception.CharacterNotSupportedException;
-import com.dannemann.stringcompressor.util.BaseTest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -17,10 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * @author Jean Dannemann Carone
  */
-public class FourBitAsciiCompressorTest extends BaseTest {
+class FourBitAsciiCompressorTest extends BaseTest {
 
 	@Test
-	public void usageExample() {
+	void usageExample() {
 		// A string to be compressed. Whenever possible, prefer working directly with byte[] to avoid creating String objects.
 		byte[] inputStr = "0123456789".getBytes(US_ASCII);
 
@@ -44,13 +42,13 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 	}
 
 	@Test
-	public void validCustomCharsetTest() {
+	void validCustomCharsetTest() {
 		byte[] customCharset = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 		new FourBitAsciiCompressor(customCharset);
 	}
 
 	@Test
-	public void excessCustomCharsetTest() {
+	void excessCustomCharsetTest() {
 		byte[] customCharset = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> new FourBitAsciiCompressor(customCharset));
@@ -58,7 +56,7 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 	}
 
 	@Test
-	public void missingCustomCharsetTest() {
+	void missingCustomCharsetTest() {
 		byte[] customCharset = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> new FourBitAsciiCompressor(customCharset));
@@ -66,7 +64,7 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 	}
 
 	@Test
-	public void invalidCustomCharsetTest() {
+	void invalidCustomCharsetTest() {
 		byte[] customCharset = new byte[]{-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> new FourBitAsciiCompressor(customCharset));
@@ -74,7 +72,7 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 	}
 
 	@Test
-	public void notAsciiCharCompressTest() {
+	void notAsciiCharCompressTest() {
 		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{(byte) 'Ç'}));
@@ -82,7 +80,7 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 	}
 
 	@Test
-	public void invalidCharCompressTest() {
+	void invalidCharCompressTest() {
 		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{'Z'}));
@@ -90,11 +88,11 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 	}
 
 	@Test
-	public void compressDecompressSmallStringTest() {
+	void compressDecompressSmallStringTest() {
 		final AsciiCompressor compressor = new FourBitAsciiCompressor(true, true);
 		for (int length = 0; length <= 100; length++)
 			for (int i = 0; i <= 500000; i++) {
-				final byte[] str = generateRandomString(length, DEFAULT_4BIT_CHARSET);
+				final byte[] str = generateRandomStringBytes(length, DEFAULT_4BIT_CHARSET);
 				final byte[] compressed = compressor.compress(str);
 				final byte[] decompressed = compressor.decompress(compressed);
 				assertArrayEquals(str, decompressed);
@@ -102,11 +100,11 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 	}
 
 	@Test
-	public void compressDecompressBigStringTest() {
+	void compressDecompressBigStringTest() {
 		final AsciiCompressor compressor = new FourBitAsciiCompressor(true, true);
 		for (int length = 2000; length <= 3000; length++)
 			for (int i = 0; i <= 10000; i++) {
-				final byte[] str = generateRandomString(length, DEFAULT_4BIT_CHARSET);
+				final byte[] str = generateRandomStringBytes(length, DEFAULT_4BIT_CHARSET);
 				final byte[] compressed = compressor.compress(str);
 				final byte[] decompressed = compressor.decompress(compressed);
 				assertArrayEquals(str, decompressed);
@@ -114,24 +112,28 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 	}
 
 	@Test
-	public void edgeCasesTest() {
-		AsciiCompressor compressor;
-		compressor = new FourBitAsciiCompressor(true, false);
-		assertEquals(0, compressor.compress(new byte[0]).length);
-		assertEquals(0, compressor.compress(new byte[]{}).length);
-		assertEquals(0, compressor.compress(getBytes("")).length);
-		assertEquals(0, compressor.compress("".getBytes(US_ASCII)).length);
-		assertEquals(0, compressor.compress("").length);
-		compressor = new FourBitAsciiCompressor(true, true);
-		assertEquals(0, compressor.compress(new byte[0]).length);
-		assertEquals(0, compressor.compress(new byte[]{}).length);
-		assertEquals(0, compressor.compress(getBytes("")).length);
-		assertEquals(0, compressor.compress("".getBytes(US_ASCII)).length);
-		assertEquals(0, compressor.compress("").length);
+	void edgeCasesTest() {
+		AsciiCompressor compressor1 = new FourBitAsciiCompressor(true, false);
+		assertEquals(0, compressor1.compress(new byte[0]).length);
+		assertEquals(0, compressor1.compress(new byte[]{}).length);
+		assertEquals(0, compressor1.compress(getBytes("")).length);
+		assertEquals(0, compressor1.compress("".getBytes(US_ASCII)).length);
+		assertEquals(0, compressor1.compress("").length);
+		AsciiCompressor compressor2 = new FourBitAsciiCompressor(true, true);
+		assertEquals(0, compressor2.compress(new byte[0]).length);
+		assertEquals(0, compressor2.compress(new byte[]{}).length);
+		assertEquals(0, compressor2.compress(getBytes("")).length);
+		assertEquals(0, compressor2.compress("".getBytes(US_ASCII)).length);
+		assertEquals(0, compressor2.compress("").length);
+		String nullStr = null;
+		NullPointerException e1 = assertThrows(NullPointerException.class, () -> compressor1.compress(nullStr));
+		assertEquals("Cannot invoke \"String.length()\" because \"string\" is null", e1.getMessage());
+		NullPointerException e2 = assertThrows(NullPointerException.class, () -> compressor2.compress(nullStr));
+		assertEquals("Cannot invoke \"String.length()\" because \"string\" is null", e2.getMessage());
 	}
 
 	@Test
-	public void ignoreInvalidCharTest() {
+	void ignoreInvalidCharTest() {
 		AsciiCompressor compressor = new FourBitAsciiCompressor();
 		byte[] compressed = compressor.compress(new byte[]{'0', (byte) 'Ç', '2', '3'});
 		byte[] decompressed = compressor.decompress(compressed);
@@ -139,25 +141,25 @@ public class FourBitAsciiCompressorTest extends BaseTest {
 	}
 
 	@Test
-	public void ignoreInvalidCharsTest() {
-		final AsciiCompressor compressor = new FourBitAsciiCompressor();
+	void ignoreInvalidCharsTest() {
+		AsciiCompressor compressor = new FourBitAsciiCompressor();
 		for (int i = 0; i < 3000; i++)
 			for (int asciiCode = 0; asciiCode < 128; asciiCode++) {
-				final byte[] input = new byte[]{'0', (byte) asciiCode, '2', '3', '4', (byte) 'Ç'};
-				final byte[] compressed = compressor.compress(input);
-				final byte[] decompressed = compressor.decompress(compressed);
+				byte[] input = new byte[]{'0', (byte) asciiCode, '2', '3', '4', (byte) 'Ç'};
+				byte[] compressed = compressor.compress(input);
+				byte[] decompressed = compressor.decompress(compressed);
 				assertEquals(input.length, decompressed.length);
 			}
 	}
 
 	@Test
-	public void compressionRateTest() {
+	void compressionRateTest() {
 		final AsciiCompressor compressor = new FourBitAsciiCompressor(true);
 		final int hundredMb = 100 * 1024 * 1024;
 		final byte[] input = new byte[hundredMb];
 		Arrays.fill(input, (byte) '0');
 		final byte[] compressed = compressor.compress(input);
-		Assertions.assertEquals(50, compressed.length / 1024 / 1024); // 50% compression rate.
+		assertEquals(50, compressed.length / 1024 / 1024); // 50% compression rate.
 	}
 
 }

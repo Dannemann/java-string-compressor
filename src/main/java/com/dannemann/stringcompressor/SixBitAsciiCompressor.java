@@ -3,7 +3,6 @@ package com.dannemann.stringcompressor;
 /**
  * <p>Performs 6-bit-per-ASCII-character encoding and decoding.</p>
  * <p>Compression rate: 25%</p>
- *
  * @author Jean Dannemann Carone
  */
 public class SixBitAsciiCompressor extends AsciiCompressor {
@@ -54,9 +53,7 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 	 * <p>Packs characters into chunks of 6 bits. Supports a set of 64 different characters (000000 to 111111).</p>
 	 * <p>Compression rate: 25%</p>
 	 * <p>See {@link #DEFAULT_6BIT_CHARSET} for the default set of supported characters.</p>
-	 *
-	 * @param string string to be compressed.
-	 * @return A compressed byte array.
+	 * @throws NullPointerException {@inheritDoc}
 	 */
 	@Override
 	public final byte[] compress(final byte[] string) {
@@ -90,8 +87,13 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Overloaded version of {@link #compress(byte[])}.
 	 */
+	@Override
+	public byte[] compress(final String string) {
+		return compress(getBytes(string));
+	}
+
 	@Override
 	public final byte[] decompress(final byte[] compressed) {
 		final int compressedLen = compressed.length;

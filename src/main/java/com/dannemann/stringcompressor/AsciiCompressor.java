@@ -26,7 +26,7 @@ public abstract class AsciiCompressor {
 	/**
 	 * To avoid duplicating strings and save memory, the compressor will modify
 	 * the original input string, encoding it and making it unusable. To avoid
-	 * this behavior and compress a copy of the original, set this to <code>true</code>.
+	 * this behavior and compress a copy of the original, set this to {@code true}.
 	 */
 	protected final boolean preserveOriginal;
 
@@ -48,11 +48,20 @@ public abstract class AsciiCompressor {
 
 	// Abstract methods:
 
+	/**
+	 * @param string String to be compressed.
+	 * @return A compressed byte array.
+	 * @throws NullPointerException If {@code string} is null.
+	 */
 	public abstract byte[] compress(final byte[] string);
 
 	/**
+	 * Overloaded version of {@link #compress(byte[])}.
+	 */
+	public abstract byte[] compress(final String string);
+
+	/**
 	 * Restores the original string from data compressed by {@link #compress}.
-	 *
 	 * @param compressed The compressed string byte array.
 	 * @return A decompressed string byte array.
 	 */
@@ -101,8 +110,10 @@ public abstract class AsciiCompressor {
 	// Utils:
 
 	/**
-	 * <p>Faster way to get string bytes.</p>
-	 * <p>No validations: this method assumes that <code>string</code> is a guarantee ASCII only string.</p>
+	 * <p>A faster way to get bytes from a String.</p>
+	 * <p>No validations: this method assumes that {@code string} is a guarantee ASCII only string.</p>
+	 * @param string The target string.
+	 * @return The resultant byte array.
 	 */
 	public static byte[] getBytes(final String string) {
 		final int len = string.length();

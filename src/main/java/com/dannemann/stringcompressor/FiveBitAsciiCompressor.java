@@ -1,8 +1,5 @@
 package com.dannemann.stringcompressor;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * <p>Performs 5-bit-per-ASCII-character encoding and decoding.</p>
  * <p>Compression rate: 38%</p>
@@ -44,15 +41,11 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		super(supportedCharset, throwException, preserveOriginal);
 	}
 
-	// -----------------------------------------------------------------------------------------------------------------
-	// Compress:
-
 	/**
 	 * <p>Packs characters into chunks of 5 bits. Supports a set of 32 different characters (00000 to 11111).</p>
 	 * <p>Compression rate: 38%</p>
 	 * <p>See {@link #DEFAULT_5BIT_CHARSET} for the default set of supported characters.</p>
-	 * @param string string to be compressed.
-	 * @return A compressed byte array.
+	 * @throws NullPointerException {@inheritDoc}
 	 */
 	@Override
 	public final byte[] compress(final byte[] string) {
@@ -85,24 +78,14 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		return compressed;
 	}
 
-	public final byte[][] compress(final List<String> stringMass) {
-		final byte[][] compressedMass = new byte[stringMass.size()][];
-
-		Arrays.parallelSetAll(compressedMass, i -> {
-			final byte[] compressed = compress(getBytes(stringMass.get(i)));
-//			stringMass.set(i, null);
-			return compressed;
-		});
-
-		return compressedMass;
+	/**
+	 * Overloaded version of {@link #compress(byte[])}.
+	 */
+	@Override
+	public byte[] compress(final String string) {
+		return compress(getBytes(string));
 	}
 
-	// -----------------------------------------------------------------------------------------------------------------
-	// Decompress:
-
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final byte[] decompress(final byte[] compressed) {
 		final int compressedLen = compressed.length;
