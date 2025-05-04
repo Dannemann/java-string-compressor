@@ -3,7 +3,6 @@ package com.dannemann.stringcompressor;
 /**
  * <p>Performs 4-bit-per-ASCII-character encoding and decoding.</p>
  * <p>Compression rate: 50%</p>
- *
  * @author Jean Dannemann Carone
  */
 public class FourBitAsciiCompressor extends AsciiCompressor {
@@ -35,11 +34,13 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 		super(supportedCharset, throwException, preserveOriginal);
 	}
 
+	// -----------------------------------------------------------------------------------------------------------------
+	// Compress:
+
 	/**
 	 * <p>Compresses 2 characters into 1 byte (4 bits each). Supports a set of 16 different characters (0000 to 1111).</p>
 	 * <p>Compression rate: 50%</p>
 	 * <p>See {@link #DEFAULT_4BIT_CHARSET} for the default set of supported characters.</p>
-	 *
 	 * @param string String to be compressed.
 	 * @return A compressed byte array.
 	 */

@@ -1,11 +1,13 @@
 package com.dannemann.stringcompressor;
 
 import com.dannemann.stringcompressor.exception.CharacterNotSupportedException;
+import com.dannemann.stringcompressor.util.BaseTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
+import static com.dannemann.stringcompressor.AsciiCompressor.getBytes;
 import static com.dannemann.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -117,6 +119,23 @@ public class SixBitAsciiCompressorTest extends BaseTest {
 				final byte[] decompressed = compressor.decompress(compressed);
 				assertArrayEquals(str, decompressed);
 			}
+	}
+
+	@Test
+	public void edgeCasesTest() {
+		AsciiCompressor compressor;
+		compressor = new SixBitAsciiCompressor(true, false);
+		assertEquals(0, compressor.compress(new byte[0]).length);
+		assertEquals(0, compressor.compress(new byte[]{}).length);
+		assertEquals(0, compressor.compress(getBytes("")).length);
+		assertEquals(0, compressor.compress("".getBytes(US_ASCII)).length);
+		assertEquals(0, compressor.compress("").length);
+		compressor = new SixBitAsciiCompressor(true, true);
+		assertEquals(0, compressor.compress(new byte[0]).length);
+		assertEquals(0, compressor.compress(new byte[]{}).length);
+		assertEquals(0, compressor.compress(getBytes("")).length);
+		assertEquals(0, compressor.compress("".getBytes(US_ASCII)).length);
+		assertEquals(0, compressor.compress("").length);
 	}
 
 	@Test
