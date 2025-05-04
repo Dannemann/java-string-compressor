@@ -1,5 +1,7 @@
 package com.dannemann.stringcompressor;
 
+import com.dannemann.stringcompressor.util.BaseTest;
+
 /**
  * @author Jean Dannemann Carone
  */
