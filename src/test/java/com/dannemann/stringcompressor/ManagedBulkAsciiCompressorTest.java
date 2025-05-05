@@ -20,6 +20,20 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class ManagedBulkAsciiCompressorTest extends BaseTest {
 
 	@Test
+	void compressByteArrayTest() {
+		for (int i = 0; i < 3000; i++) {
+			final int quantity = RANDOM.nextInt(10_000, 20_000);
+			final byte[][] source = generateRandomByteArray(quantity, 0, 1000, DEFAULT_4BIT_CHARSET);
+			final byte[][] destiny = new byte[quantity][];
+			final FourBitAsciiCompressor compressor = new FourBitAsciiCompressor(true, true);
+			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destiny);
+			managed.compressAll(source);
+			for (int j = 0; j < quantity; j++)
+				assertArrayEquals(source[j], compressor.decompress(destiny[j]));
+		}
+	}
+
+	@Test
 	void batchCompressByteArrayTest() {
 		for (int i = 0; i < 500; i++) {
 			final int batchSize = RANDOM.nextInt(500, 1000);
@@ -45,6 +59,20 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 	}
 
 	@Test
+	void compressStringArrayTest() {
+		for (int i = 0; i < 3000; i++) {
+			final int quantity = RANDOM.nextInt(10_000, 20_000);
+			final String[] source = generateRandomStringArray(quantity, 0, 1000, DEFAULT_5BIT_CHARSET);
+			final byte[][] destiny = new byte[quantity][];
+			final FiveBitAsciiCompressor compressor = new FiveBitAsciiCompressor(true, true);
+			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destiny);
+			managed.compressAll(source);
+			for (int j = 0; j < quantity; j++)
+				assertEquals(source[j], new String(compressor.decompress(destiny[j]), US_ASCII));
+		}
+	}
+
+	@Test
 	void batchCompressStringArrayTest() {
 		for (int i = 0; i < 500; i++) {
 			final int batchSize = RANDOM.nextInt(500, 1000);
@@ -66,6 +94,20 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 					assertEquals(fullSource.get(j), new String(compressor.decompress(destiny[j]), US_ASCII));
 				} else
 					assertNull(destiny[j]);
+		}
+	}
+
+	@Test
+	void compressStringListTest() {
+		for (int i = 0; i < 3000; i++) {
+			final int quantity = RANDOM.nextInt(10_000, 20_000);
+			final List<String> source = generateRandomStringList(quantity, 0, 1000, DEFAULT_6BIT_CHARSET);
+			final byte[][] destiny = new byte[quantity][];
+			final SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(true, true);
+			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destiny);
+			managed.compressAll(source);
+			for (int j = 0; j < quantity; j++)
+				assertEquals(source.get(j), new String(compressor.decompress(destiny[j]), US_ASCII));
 		}
 	}
 
