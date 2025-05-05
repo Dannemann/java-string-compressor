@@ -2,8 +2,11 @@ package com.dannemann.stringcompressor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static java.nio.charset.StandardCharsets.US_ASCII;
@@ -42,22 +45,14 @@ abstract class BaseTest {
 		return strings;
 	}
 
-//	// TODO: Can have way better performance.
-//	public static List<String> generateUniqueOrderedStringMass(final int quantity, final int minStrSize, final int maxStrSize) {
-//		Set<String> massSet = new HashSet<>((int) Math.ceil(quantity / .75));
-//
-//		for (int i = 0; i < quantity; i++) {
-//			final int strSize = RANDOM.nextInt(minStrSize, maxStrSize);
-//			final byte[] randomStrBytes = generateRandomStringBytes(strSize, DEFAULT_5BIT_CHARSET); // TODO: Charset hardcoded
-//			massSet.add(new String(randomStrBytes, US_ASCII));
-//		}
-//
-//		final List<String> massList = new ArrayList<>(massSet);
-//		massSet = null;
-//
-//		Collections.sort(massList);
-//
-//		return massList;
-//	}
+	protected List<String> generateRandomUniqueOrderedStringList(final int quantity, final int minStrSize, final int maxStrSize, final byte[] charset) {
+		Set<String> stringSet = new HashSet<>((int) Math.ceil(quantity / .75));
+		for (int i = 0; i < quantity; i++)
+			stringSet.add(new String(generateRandomStringBytes(RANDOM.nextInt(minStrSize, maxStrSize), charset), US_ASCII));
+		final List<String> stringList = new ArrayList<>(stringSet);
+		stringSet = null;
+		Collections.sort(stringList);
+		return stringList;
+	}
 
 }
