@@ -43,7 +43,7 @@ public class ManagedBulkAsciiCompressor {
 	}
 
 	private void validate(int willEndAt) {
-		if (willEndAt >= destinyLength) // TODO: Also warn by percentages.
+		if (willEndAt > destinyLength) // TODO: Also warn by percentages.
 			throw new BulkCompressionException("Source array length exceeds destination array length.");
 	}
 
