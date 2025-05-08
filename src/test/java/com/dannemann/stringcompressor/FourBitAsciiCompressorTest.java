@@ -76,7 +76,7 @@ class FourBitAsciiCompressorTest extends BaseTest {
 		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{(byte) 'Ç'}));
-		assertEquals("Only ASCII characters are supported. Invalid 'ￇ' (code point -57) in \"�\"", e.getMessage());
+		assertEquals("Only ASCII characters are supported. Invalid 'ￇ' (code point -57) in \"Ç\"", e.getMessage());
 	}
 
 	@Test
