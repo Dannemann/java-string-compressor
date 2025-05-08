@@ -4,7 +4,7 @@ import com.dannemann.stringcompressor.exception.CharacterNotSupportedException;
 
 import java.util.Arrays;
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 /**
  * @author Jean Dannemann Carone
@@ -92,13 +92,13 @@ public abstract class AsciiCompressor {
 
 				if (bite < 0)
 					throw new CharacterNotSupportedException(
-						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code point " + bite + ") in \"" + new String(string, US_ASCII) + "\"");
+						"Only ASCII characters are supported. Invalid '" + (char) bite + "' (code point " + bite + ") in \"" + new String(string, ISO_8859_1) + "\"");
 
 				final byte encoded = lookupTable[bite];
 
 				if (encoded == -1)
 					throw new CharacterNotSupportedException(
-						"Character '" + (char) bite + "' (code point " + bite + ") is not defined in the supported characters array. String: \"" + new String(string, US_ASCII) + "\"");
+						"Character '" + (char) bite + "' (code point " + bite + ") is not defined in the supported characters array. String: \"" + new String(string, ISO_8859_1) + "\"");
 
 				string[i] = encoded;
 			}
@@ -110,17 +110,13 @@ public abstract class AsciiCompressor {
 	// Utils:
 
 	/**
-	 * <p>A faster way to get bytes from a String.</p>
-	 * <p>No validations: this method assumes that {@code string} is a guarantee ASCII only string.</p>
+	 * <p>Fastest way to get bytes from an ASCII String.</p>
+	 * <p>Returns null if {@code string} is null.</p>
 	 * @param string The target string.
 	 * @return The resultant byte array.
 	 */
 	public static byte[] getBytes(final String string) {
-		final int len = string.length();
-		final byte[] bytes = new byte[len];
-		for (int i = 0; i < len; i++)
-			bytes[i] = (byte) string.charAt(i);
-		return bytes;
+		return string == null ? null : string.getBytes(ISO_8859_1);
 	}
 
 }
