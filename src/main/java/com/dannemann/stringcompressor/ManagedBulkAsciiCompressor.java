@@ -51,6 +51,8 @@ public class ManagedBulkAsciiCompressor {
 		return currentIndex;
 	}
 
+	// Unsafe methods. Can cause confusion.
+
 	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destiny, byte[][] source) {
 		new ManagedBulkAsciiCompressor(compressor, destiny).compressAndAddAll(source);
 	}
