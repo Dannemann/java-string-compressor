@@ -135,7 +135,7 @@ class FourBitAsciiCompressorTest extends BaseTest {
 		AsciiCompressor compressor = new FourBitAsciiCompressor();
 		byte[] compressed = compressor.compress(new byte[]{'0', (byte) 'Ç', '2', '3'});
 		byte[] decompressed = compressor.decompress(compressed);
-		assertEquals(",,23", new String(decompressed, US_ASCII));
+		assertEquals(";;23", new String(decompressed, US_ASCII));
 	}
 
 	@Test
