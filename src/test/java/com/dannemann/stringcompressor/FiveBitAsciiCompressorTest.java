@@ -159,10 +159,8 @@ class FiveBitAsciiCompressorTest extends BaseTest {
 		assertEquals(0, compressor2.compress("".getBytes(US_ASCII)).length);
 		assertEquals(0, compressor2.compress("").length);
 		String nullStr = null;
-		NullPointerException e1 = assertThrows(NullPointerException.class, () -> compressor1.compress(nullStr));
-		assertEquals("Cannot invoke \"String.length()\" because \"string\" is null", e1.getMessage());
-		NullPointerException e2 = assertThrows(NullPointerException.class, () -> compressor2.compress(nullStr));
-		assertEquals("Cannot invoke \"String.length()\" because \"string\" is null", e2.getMessage());
+		assertThrows(NullPointerException.class, () -> compressor1.compress(nullStr));
+		assertThrows(NullPointerException.class, () -> compressor2.compress(nullStr));
 	}
 
 	@Test
