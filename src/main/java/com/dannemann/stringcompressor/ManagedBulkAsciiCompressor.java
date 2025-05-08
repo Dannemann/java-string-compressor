@@ -21,21 +21,21 @@ public class ManagedBulkAsciiCompressor {
 		this.destinyLength = destiny.length;
 	}
 
-	public void compressAll(byte[][] source) {
+	public void compressAndAddAll(byte[][] source) {
 		int willEndAt = currentIndex + source.length;
 		validate(willEndAt);
 		bulk.bulkCompress(source, destiny, currentIndex);
 		currentIndex = willEndAt;
 	}
 
-	public void compressAll(String[] source) {
+	public void compressAndAddAll(String[] source) {
 		int willEndAt = currentIndex + source.length;
 		validate(willEndAt);
 		bulk.bulkCompress(source, destiny, currentIndex);
 		currentIndex = willEndAt;
 	}
 
-	public void compressAll(List<String> source) {
+	public void compressAndAddAll(List<String> source) {
 		int willEndAt = currentIndex + source.size();
 		validate(willEndAt);
 		bulk.bulkCompress(source, destiny, currentIndex);
@@ -49,6 +49,18 @@ public class ManagedBulkAsciiCompressor {
 
 	public int getCurrentIndex() {
 		return currentIndex;
+	}
+
+	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destiny, byte[][] source) {
+		new ManagedBulkAsciiCompressor(compressor, destiny).compressAndAddAll(source);
+	}
+
+	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destiny, String[] source) {
+		new ManagedBulkAsciiCompressor(compressor, destiny).compressAndAddAll(source);
+	}
+
+	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destiny, List<String> source) {
+		new ManagedBulkAsciiCompressor(compressor, destiny).compressAndAddAll(source);
 	}
 
 }
