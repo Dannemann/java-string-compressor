@@ -7,13 +7,24 @@ import static com.dannemann.stringcompressor.FiveBitAsciiCompressor.DEFAULT_5BIT
  * <p>Performs binary search on data compressed by {@link FiveBitAsciiCompressor}.
  * Particularly useful when searching large amounts of compressed data stored in memory.</p>
  * <p>The data must have been sorted prior to compression.</p>
- * <p>Note that the character ordering depends on the sequence defined in your custom charset (via {@code supportedCharset})
- * passed to the compressor constructor (see {@link FiveBitAsciiCompressor#FiveBitAsciiCompressor(byte[])}).
- * Compressors use a default charset ordered by ASCII if no custom charset is provided.</p>
+ * <p>Note that character ordering depends on the sequence defined in your custom charset (via {@code supportedCharset}),
+ * which is passed to the compressor constructor (see {@link FiveBitAsciiCompressor#FiveBitAsciiCompressor(byte[])}).
+ * If no custom charset is provided, compressors use a default charset ordered by ASCII.</p>
  * @author Jean Dannemann Carone
  */
 public final class FiveBitBinarySearch {
 
+	/**
+	 * <p>Performs a binary search on the provided compressed data array to locate the specified key.</p>
+	 * <p>The compressed data is expected to be produced by {@link FiveBitAsciiCompressor} and must be sorted before
+	 * compression for this search to work correctly. The search is performed directly on the compressed form without
+	 * decompressing the entire dataset, enabling fast lookups in large in-memory compressed collections.</p>
+	 * <p>The method returns the index of the matching element if found; otherwise, it returns
+	 * {@code -(insertion point) - 1}, following the contract of {@link java.util.Arrays#binarySearch}.</p>
+	 * @param compressedMass The array of compressed byte arrays to search through.
+	 * @param key The uncompressed key to search for, as a byte array.
+	 * @return The index of the search key if it is found; otherwise, {@code -(insertion point) - 1}.
+	 */
 	public static int search(final byte[][] compressedMass, final byte[] key) {
 		final int keyLen = key.length;
 		int low = 0;
