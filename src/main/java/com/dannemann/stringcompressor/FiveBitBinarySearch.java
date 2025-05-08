@@ -63,7 +63,7 @@ public final class FiveBitBinarySearch {
 	}
 
 	public static int search(final byte[][] compressedMass, final String key) {
-		return search(compressedMass, getBytes(key));
+		return compressedMass.length != 0 ? search(compressedMass, getBytes(key)) : -1;
 	}
 
 }
