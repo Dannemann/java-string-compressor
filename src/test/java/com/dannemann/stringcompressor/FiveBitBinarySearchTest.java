@@ -22,21 +22,21 @@ class FiveBitBinarySearchTest extends BaseTest {
 	@RepeatedTest(50)
 	void searchSmallStringTest() {
 		final List<String> source = generateRandomUniqueOrderedStringList(2_000_000, 0, 100, DEFAULT_5BIT_CHARSET);
-		final byte[][] destiny = new byte[source.size()][];
-		final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(COMPRESSOR, destiny);
+		final byte[][] destination = new byte[source.size()][];
+		final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(COMPRESSOR, destination);
 		managed.compressAndAddAll(source);
 		for (int i = 0, massLen = source.size(); i < massLen; i++)
-			assertEquals(i, FiveBitBinarySearch.search(destiny, getBytes(source.get(i))));
+			assertEquals(i, FiveBitBinarySearch.search(destination, getBytes(source.get(i))));
 	}
 
 	@RepeatedTest(50)
 	void searchBigStringTest() {
 		final List<String> source = generateRandomUniqueOrderedStringList(50_000, 4500, 5000, DEFAULT_5BIT_CHARSET);
-		final byte[][] destiny = new byte[source.size()][];
-		final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(COMPRESSOR, destiny);
+		final byte[][] destination = new byte[source.size()][];
+		final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(COMPRESSOR, destination);
 		managed.compressAndAddAll(source);
 		for (int i = 0, massLen = source.size(); i < massLen; i++)
-			assertEquals(i, FiveBitBinarySearch.search(destiny, getBytes(source.get(i))));
+			assertEquals(i, FiveBitBinarySearch.search(destination, getBytes(source.get(i))));
 	}
 	
 	// -----------------------------------------------------------------------------------------------------------------
