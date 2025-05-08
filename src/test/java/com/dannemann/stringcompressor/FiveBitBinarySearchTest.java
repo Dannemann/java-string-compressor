@@ -38,22 +38,30 @@ class FiveBitBinarySearchTest extends BaseTest {
 		for (int i = 0, massLen = source.size(); i < massLen; i++)
 			assertEquals(i, FiveBitBinarySearch.search(destiny, getBytes(source.get(i))));
 	}
+	
+	// -----------------------------------------------------------------------------------------------------------------
+	// Edge cases:
 
-	@Test
-	public void edgeCasesTest() {
-		String[] wordArray = {"WORD"};
-		String[] wordsArray = {
-			"", "A", "ABA", "AMBITION", "ANECDOTE", "B", "BAMBOO", "CANYON", "CARNIVAL", "DANDELION", "DOLPHIN", "ECLECTIC", "ELEPHANT", "FABLE", "GADGET", "GARDEN", "HORIZON",
-			"HYPNOSIS", "ISOTOPE", "JUNGLE", "KALEIDOSCOPE", "LANTERN", "MARATHON", "NEBULA", "OASIS", "PARADOX", "QUARTZ", "RHAPSODY", "SAPPHIRE", "TAPESTRY", "UMBRELLA"};
-		List<String> wordList = new ArrayList<>(Arrays.asList(wordArray));
-		List<String> wordsList = new ArrayList<>(Arrays.asList(wordsArray));
-		byte[][] compressedWord = new byte[wordList.size()][];
-		byte[][] compressedWords = new byte[wordsList.size()][];
+	// TODO: Also test symbols (. , @) at the beginning and end.
+	String[] emptyWordArray = {""};
+	String[] wordArray = {"WORD"};
+	String[] wordsArray = {
+		"", "A", "ABA", "AMBITION", "ANECDOTE", "B", "BAMBOO", "CANYON", "CARNIVAL", "DANDELION", "DOLPHIN", "ECLECTIC", "ELEPHANT", "FABLE", "GADGET", "GARDEN", "HORIZON",
+		"HYPNOSIS", "ISOTOPE", "JUNGLE", "KALEIDOSCOPE", "LANTERN", "MARATHON", "NEBULA", "OASIS", "PARADOX", "QUARTZ", "RHAPSODY", "SAPPHIRE", "TAPESTRY", "UMBRELLA"};
+	List<String> wordList = new ArrayList<>(Arrays.asList(wordArray));
+	List<String> wordsList = new ArrayList<>(Arrays.asList(wordsArray));
+	byte[][] compressedWord = new byte[wordList.size()][];
+	byte[][] compressedWords = new byte[wordsList.size()][];
+	final String nullRef = null;
+	final String key = "A";
+
+	{
 		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, compressedWord, wordList);
 		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, compressedWords, wordsList);
-		final String nullRef = null;
-		final String key = "A";
-
+	}
+	
+	@Test
+	public void nullAndEmptySearchEdgeCaseTest() {
 		assertThrows(NullPointerException.class, () -> FiveBitBinarySearch.search(null, key));
 		assertThrows(NullPointerException.class, () -> Arrays.binarySearch(null, key));
 		assertEquals(-1, FiveBitBinarySearch.search(new byte[0][], nullRef));
@@ -66,8 +74,19 @@ class FiveBitBinarySearchTest extends BaseTest {
 		assertThrows(NullPointerException.class, () -> Arrays.binarySearch(wordArray, null));
 		assertEquals(-1, FiveBitBinarySearch.search(compressedWord, ""));
 		assertEquals(-1, Arrays.binarySearch(wordArray, ""));
+		assertEquals(0, FiveBitBinarySearch.search(compressedWords, ""));
+		assertEquals(0, Arrays.binarySearch(wordsArray, ""));
+	}
+	
+	@Test
+	public void edgeCasesTest() {
+
+
 		assertEquals(-1, FiveBitBinarySearch.search(compressedWord, key));
 		assertEquals(-1, Arrays.binarySearch(wordArray, key));
+		
+		
+		
 		assertEquals(0, FiveBitBinarySearch.search(compressedWord, "WORD"));
 		assertEquals(0, Arrays.binarySearch(wordArray, "WORD"));
 	}
