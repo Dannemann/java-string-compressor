@@ -26,20 +26,20 @@ class BulkAsciiCompressorTest extends BaseTest {
 			final int numberOfBatches = RANDOM.nextInt(500, 1000);
 			final int totalElements = batchSize * numberOfBatches;
 			final List<byte[]> fullSource = new ArrayList<>();
-			final byte[][] destiny = new byte[totalElements * 2][]; // Half empty.
+			final byte[][] destination = new byte[totalElements * 2][]; // Half empty.
 			final FourBitAsciiCompressor compressor = new FourBitAsciiCompressor(true, true);
-			final BulkAsciiCompressor bulk = new BulkAsciiCompressor(compressor);
+			final BulkAsciiCompressor bulk = new BulkAsciiCompressor(compressor, destination);
 			for (int j = 0; j < numberOfBatches; j++) {
 				final byte[][] batch = generateRandomByteArray(batchSize, 0, 100, DEFAULT_4BIT_CHARSET);
-				bulk.bulkCompress(batch, destiny, j * batchSize); // Batch compress.
+				bulk.bulkCompress(batch, j * batchSize, null); // Batch compress.
 				fullSource.addAll(List.of(batch));
 			}
-			for (int j = 0, len = destiny.length; j < len; j++)
+			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
-					assertNotNull(destiny[j]);
-					assertArrayEquals(fullSource.get(j), compressor.decompress(destiny[j]));
+					assertNotNull(destination[j]);
+					assertArrayEquals(fullSource.get(j), compressor.decompress(destination[j]));
 				} else
-					assertNull(destiny[j]);
+					assertNull(destination[j]);
 		}
 	}
 
@@ -50,20 +50,20 @@ class BulkAsciiCompressorTest extends BaseTest {
 			final int numberOfBatches = RANDOM.nextInt(500, 1000);
 			final int totalElements = batchSize * numberOfBatches;
 			final List<String> fullSource = new ArrayList<>();
-			final byte[][] destiny = new byte[totalElements * 2][]; // Half empty.
+			final byte[][] destination = new byte[totalElements * 2][]; // Half empty.
 			final FiveBitAsciiCompressor compressor = new FiveBitAsciiCompressor(true, true);
-			final BulkAsciiCompressor bulk = new BulkAsciiCompressor(compressor);
+			final BulkAsciiCompressor bulk = new BulkAsciiCompressor(compressor, destination);
 			for (int j = 0; j < numberOfBatches; j++) {
 				final String[] batch = generateRandomStringArray(batchSize, 0, 100, DEFAULT_5BIT_CHARSET);
-				bulk.bulkCompress(batch, destiny, j * batchSize); // Batch compress.
+				bulk.bulkCompress(batch, j * batchSize, null); // Batch compress.
 				fullSource.addAll(List.of(batch));
 			}
-			for (int j = 0, len = destiny.length; j < len; j++)
+			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
-					assertNotNull(destiny[j]);
-					assertEquals(fullSource.get(j), new String(compressor.decompress(destiny[j]), US_ASCII));
+					assertNotNull(destination[j]);
+					assertEquals(fullSource.get(j), new String(compressor.decompress(destination[j]), US_ASCII));
 				} else
-					assertNull(destiny[j]);
+					assertNull(destination[j]);
 		}
 	}
 
@@ -74,20 +74,20 @@ class BulkAsciiCompressorTest extends BaseTest {
 			final int numberOfBatches = RANDOM.nextInt(500, 1000);
 			final int totalElements = batchSize * numberOfBatches;
 			final List<String> fullSource = new ArrayList<>();
-			final byte[][] destiny = new byte[totalElements * 2][]; // Half empty.
+			final byte[][] destination = new byte[totalElements * 2][]; // Half empty.
 			final SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(true, true);
-			final BulkAsciiCompressor bulk = new BulkAsciiCompressor(compressor);
+			final BulkAsciiCompressor bulk = new BulkAsciiCompressor(compressor, destination);
 			for (int j = 0; j < numberOfBatches; j++) {
 				final List<String> batch = generateRandomStringList(batchSize, 0, 100, DEFAULT_6BIT_CHARSET);
-				bulk.bulkCompress(batch, destiny, j * batchSize); // Batch compress.
+				bulk.bulkCompress(batch, j * batchSize, null); // Batch compress.
 				fullSource.addAll(batch);
 			}
-			for (int j = 0, len = destiny.length; j < len; j++)
+			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
-					assertNotNull(destiny[j]);
-					assertEquals(fullSource.get(j), new String(compressor.decompress(destiny[j]), US_ASCII));
+					assertNotNull(destination[j]);
+					assertEquals(fullSource.get(j), new String(compressor.decompress(destination[j]), US_ASCII));
 				} else
-					assertNull(destiny[j]);
+					assertNull(destination[j]);
 		}
 	}
 

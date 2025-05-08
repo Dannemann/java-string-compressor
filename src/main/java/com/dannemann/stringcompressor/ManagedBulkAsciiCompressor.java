@@ -1,6 +1,7 @@
 package com.dannemann.stringcompressor;
 
 import com.dannemann.stringcompressor.exception.BulkCompressionException;
+import com.dannemann.stringcompressor.util.TriConsumer;
 
 import java.util.List;
 
@@ -10,40 +11,50 @@ import java.util.List;
 public class ManagedBulkAsciiCompressor {
 
 	private final BulkAsciiCompressor bulk;
-	private final byte[][] destiny;
-	private final int destinyLength;
+	private final int destinationLength;
 
 	private int currentIndex;
 
-	public ManagedBulkAsciiCompressor(AsciiCompressor compressor, byte[][] destiny) {
-		this.bulk = new BulkAsciiCompressor(compressor);
-		this.destiny = destiny;
-		this.destinyLength = destiny.length;
+	public ManagedBulkAsciiCompressor(AsciiCompressor compressor, byte[][] destination) {
+		this.bulk = new BulkAsciiCompressor(compressor, destination);
+		this.destinationLength = destination.length;
+	}
+
+	public void compressAndAddAll(byte[][] source, TriConsumer<Integer, byte[], byte[]> callback) {
+		int willEndAt = currentIndex + source.length;
+		validate(willEndAt);
+		bulk.bulkCompress(source, currentIndex, callback);
+		currentIndex = willEndAt;
 	}
 
 	public void compressAndAddAll(byte[][] source) {
+		compressAndAddAll(source, null);
+	}
+
+	public void compressAndAddAll(String[] source, TriConsumer<Integer, String, byte[]> callback) {
 		int willEndAt = currentIndex + source.length;
 		validate(willEndAt);
-		bulk.bulkCompress(source, destiny, currentIndex);
+		bulk.bulkCompress(source, currentIndex, callback);
 		currentIndex = willEndAt;
 	}
 
 	public void compressAndAddAll(String[] source) {
-		int willEndAt = currentIndex + source.length;
+		compressAndAddAll(source, null);
+	}
+
+	public void compressAndAddAll(List<String> source, TriConsumer<Integer, String, byte[]> callback) {
+		int willEndAt = currentIndex + source.size();
 		validate(willEndAt);
-		bulk.bulkCompress(source, destiny, currentIndex);
+		bulk.bulkCompress(source, currentIndex, callback);
 		currentIndex = willEndAt;
 	}
 
 	public void compressAndAddAll(List<String> source) {
-		int willEndAt = currentIndex + source.size();
-		validate(willEndAt);
-		bulk.bulkCompress(source, destiny, currentIndex);
-		currentIndex = willEndAt;
+		compressAndAddAll(source, null);
 	}
 
 	private void validate(int willEndAt) {
-		if (willEndAt > destinyLength) // TODO: Also warn by percentages.
+		if (willEndAt > destinationLength) // TODO: Also warn by percentages.
 			throw new BulkCompressionException("Source array length exceeds destination array length.");
 	}
 
@@ -53,16 +64,16 @@ public class ManagedBulkAsciiCompressor {
 
 	// Unsafe methods. Can cause confusion.
 
-	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destiny, byte[][] source) {
-		new ManagedBulkAsciiCompressor(compressor, destiny).compressAndAddAll(source);
+	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destination, byte[][] source) {
+		new ManagedBulkAsciiCompressor(compressor, destination).compressAndAddAll(source);
 	}
 
-	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destiny, String[] source) {
-		new ManagedBulkAsciiCompressor(compressor, destiny).compressAndAddAll(source);
+	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destination, String[] source) {
+		new ManagedBulkAsciiCompressor(compressor, destination).compressAndAddAll(source);
 	}
 
-	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destiny, List<String> source) {
-		new ManagedBulkAsciiCompressor(compressor, destiny).compressAndAddAll(source);
+	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destination, List<String> source) {
+		new ManagedBulkAsciiCompressor(compressor, destination).compressAndAddAll(source);
 	}
 
 }
