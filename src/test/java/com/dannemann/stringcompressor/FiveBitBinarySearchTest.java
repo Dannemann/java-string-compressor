@@ -3,24 +3,28 @@ package com.dannemann.stringcompressor;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.dannemann.stringcompressor.AsciiCompressor.getBytes;
 import static com.dannemann.stringcompressor.FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Jean Dannemann Carone
  */
 class FiveBitBinarySearchTest extends BaseTest {
 
+	private static final AsciiCompressor COMPRESSOR = new FiveBitAsciiCompressor(true, true);
+
 	@RepeatedTest(50)
 	void searchSmallStringTest() {
 		final List<String> source = generateRandomUniqueOrderedStringList(2_000_000, 0, 100, DEFAULT_5BIT_CHARSET);
 		final byte[][] destiny = new byte[source.size()][];
-		final AsciiCompressor compressor = new FiveBitAsciiCompressor(true, true);
-		final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destiny);
-		managed.compressAll(source);
+		final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(COMPRESSOR, destiny);
+		managed.compressAndAddAll(source);
 		for (int i = 0, massLen = source.size(); i < massLen; i++)
 			assertEquals(i, FiveBitBinarySearch.search(destiny, getBytes(source.get(i))));
 	}
@@ -29,37 +33,43 @@ class FiveBitBinarySearchTest extends BaseTest {
 	void searchBigStringTest() {
 		final List<String> source = generateRandomUniqueOrderedStringList(50_000, 4500, 5000, DEFAULT_5BIT_CHARSET);
 		final byte[][] destiny = new byte[source.size()][];
-		final AsciiCompressor compressor = new FiveBitAsciiCompressor(true, true);
-		final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destiny);
-		managed.compressAll(source);
+		final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(COMPRESSOR, destiny);
+		managed.compressAndAddAll(source);
 		for (int i = 0, massLen = source.size(); i < massLen; i++)
 			assertEquals(i, FiveBitBinarySearch.search(destiny, getBytes(source.get(i))));
 	}
 
-	static String[] words = {"", "A", "ABA", "AMBITION", "ANECDOTE", "B", "BAMBOO", "CANYON", "CARNIVAL", "DANDELION", "DOLPHIN", "ECLECTIC", "ELEPHANT", "FABLE", "GADGET", "GARDEN", "HORIZON", "HYPNOSIS", "ISOTOPE", "JUNGLE", "KALEIDOSCOPE", "LANTERN", "MARATHON", "NEBULA", "OASIS", "PARADOX", "QUARTZ", "RHAPSODY", "SAPPHIRE", "TAPESTRY", "UMBRELLA"};
-
 	@Test
-	public void testEdgeCases() {
-		List<String> source = List.of(words);
-		final byte[][] destiny = new byte[source.size()][];
-		FiveBitAsciiCompressor compressor = new FiveBitAsciiCompressor(true, true);
-		final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destiny);
-		managed.compressAll(source);
+	public void edgeCasesTest() {
+		String[] wordArray = {"WORD"};
+		String[] wordsArray = {
+			"", "A", "ABA", "AMBITION", "ANECDOTE", "B", "BAMBOO", "CANYON", "CARNIVAL", "DANDELION", "DOLPHIN", "ECLECTIC", "ELEPHANT", "FABLE", "GADGET", "GARDEN", "HORIZON",
+			"HYPNOSIS", "ISOTOPE", "JUNGLE", "KALEIDOSCOPE", "LANTERN", "MARATHON", "NEBULA", "OASIS", "PARADOX", "QUARTZ", "RHAPSODY", "SAPPHIRE", "TAPESTRY", "UMBRELLA"};
+		List<String> wordList = new ArrayList<>(Arrays.asList(wordArray));
+		List<String> wordsList = new ArrayList<>(Arrays.asList(wordsArray));
+		byte[][] compressedWord = new byte[wordList.size()][];
+		byte[][] compressedWords = new byte[wordsList.size()][];
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, compressedWord, wordList);
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, compressedWords, wordsList);
+		final String nullRef = null;
+		final String key = "A";
 
-		int r = FiveBitBinarySearch.search(destiny, "A");
-		System.out.println(r);
-
-
-//		List<String> mass = List.of("");
-//		byte[][] mass = new byte[1][];
-//		byte[][] compressedMass = compressor.compress(mass);
-//
-//		int bsRes = binarySearch(compressedMass, "");
-//		assertEquals(0, bsRes);
-
-//		byte[][] mass = new byte[][]{};
-//		int a = binarySearch(mass, getBytes(""));
-//		assertEquals(-1, a);
+		assertThrows(NullPointerException.class, () -> FiveBitBinarySearch.search(null, key));
+		assertThrows(NullPointerException.class, () -> Arrays.binarySearch(null, key));
+		assertEquals(-1, FiveBitBinarySearch.search(new byte[0][], nullRef));
+		assertEquals(-1, Arrays.binarySearch(new String[0], null));
+		assertEquals(-1, FiveBitBinarySearch.search(new byte[0][], ""));
+		assertEquals(-1, Arrays.binarySearch(new String[0], ""));
+		assertEquals(-1, FiveBitBinarySearch.search(new byte[0][], key));
+		assertEquals(-1, Arrays.binarySearch(new String[0], key));
+		assertThrows(NullPointerException.class, () -> FiveBitBinarySearch.search(compressedWord, nullRef));
+		assertThrows(NullPointerException.class, () -> Arrays.binarySearch(wordArray, null));
+		assertEquals(-1, FiveBitBinarySearch.search(compressedWord, ""));
+		assertEquals(-1, Arrays.binarySearch(wordArray, ""));
+		assertEquals(-1, FiveBitBinarySearch.search(compressedWord, key));
+		assertEquals(-1, Arrays.binarySearch(wordArray, key));
+		assertEquals(0, FiveBitBinarySearch.search(compressedWord, "WORD"));
+		assertEquals(0, Arrays.binarySearch(wordArray, "WORD"));
 	}
 
 //	@Test
