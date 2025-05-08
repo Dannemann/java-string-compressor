@@ -29,7 +29,7 @@ public record BulkAsciiCompressor(AsciiCompressor compressor, byte[][] destinati
 	 * that this is executed in parallel, so, don't expect a sequential index in the callback.</p>
 	 * @param source The batch of strings to be compressed.
 	 * @param destinationStart The index at which elements will start being added to the destination array.
-	 * @param callback A function to be called after each compression.
+	 * @param callback A function that is called after each item is compressed and added to the destination array.
 	 */
 	public void bulkCompress(final byte[][] source, final int destinationStart, final TriConsumer<Integer, byte[], byte[]> callback) {
 		IntStream.range(destinationStart, source.length + destinationStart).parallel().forEach(i -> {
