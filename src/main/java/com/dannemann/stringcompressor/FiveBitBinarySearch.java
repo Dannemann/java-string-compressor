@@ -62,6 +62,9 @@ public final class FiveBitBinarySearch {
 		return -(low + 1);
 	}
 
+	/**
+	 * Overloaded version of {@link #search(byte[][], byte[])}.
+	 */
 	public static int search(final byte[][] compressedMass, final String key) {
 		return compressedMass.length != 0 ? search(compressedMass, getBytes(key)) : -1;
 	}
