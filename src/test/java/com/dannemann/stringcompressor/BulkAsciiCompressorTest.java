@@ -29,11 +29,13 @@ class BulkAsciiCompressorTest extends BaseTest {
 			final byte[][] destination = new byte[totalElements * 2][]; // Half empty.
 			final FourBitAsciiCompressor compressor = new FourBitAsciiCompressor(true, true);
 			final BulkAsciiCompressor bulk = new BulkAsciiCompressor(compressor, destination);
+			final Integer[] callbackWasCalled = new Integer[1];
 			for (int j = 0; j < numberOfBatches; j++) {
 				final byte[][] batch = generateRandomByteArray(batchSize, 0, 100, DEFAULT_4BIT_CHARSET);
-				bulk.bulkCompress(batch, j * batchSize, null); // Batch compress.
+				bulk.bulkCompress(batch, j * batchSize, (k, s, c) -> callbackWasCalled[0] = k); // Batch compress.
 				fullSource.addAll(List.of(batch));
 			}
+			assertNotNull(callbackWasCalled[0]);
 			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
 					assertNotNull(destination[j]);
@@ -53,11 +55,13 @@ class BulkAsciiCompressorTest extends BaseTest {
 			final byte[][] destination = new byte[totalElements * 2][]; // Half empty.
 			final FiveBitAsciiCompressor compressor = new FiveBitAsciiCompressor(true, true);
 			final BulkAsciiCompressor bulk = new BulkAsciiCompressor(compressor, destination);
+			final Integer[] callbackWasCalled = new Integer[1];
 			for (int j = 0; j < numberOfBatches; j++) {
 				final String[] batch = generateRandomStringArray(batchSize, 0, 100, DEFAULT_5BIT_CHARSET);
-				bulk.bulkCompress(batch, j * batchSize, null); // Batch compress.
+				bulk.bulkCompress(batch, j * batchSize, (k, s, c) -> callbackWasCalled[0] = k); // Batch compress.
 				fullSource.addAll(List.of(batch));
 			}
+			assertNotNull(callbackWasCalled[0]);
 			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
 					assertNotNull(destination[j]);
@@ -77,11 +81,13 @@ class BulkAsciiCompressorTest extends BaseTest {
 			final byte[][] destination = new byte[totalElements * 2][]; // Half empty.
 			final SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(true, true);
 			final BulkAsciiCompressor bulk = new BulkAsciiCompressor(compressor, destination);
+			final Integer[] callbackWasCalled = new Integer[1];
 			for (int j = 0; j < numberOfBatches; j++) {
 				final List<String> batch = generateRandomStringList(batchSize, 0, 100, DEFAULT_6BIT_CHARSET);
-				bulk.bulkCompress(batch, j * batchSize, null); // Batch compress.
+				bulk.bulkCompress(batch, j * batchSize, (k, s, c) -> callbackWasCalled[0] = k); // Batch compress.
 				fullSource.addAll(batch);
 			}
+			assertNotNull(callbackWasCalled[0]);
 			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
 					assertNotNull(destination[j]);
