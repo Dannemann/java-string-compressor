@@ -111,12 +111,11 @@ public abstract class AsciiCompressor {
 
 	/**
 	 * <p>Fastest way to get bytes from an ASCII String.</p>
-	 * <p>Returns null if {@code string} is null.</p>
 	 * @param string The target string.
 	 * @return The resultant byte array.
 	 */
 	public static byte[] getBytes(final String string) {
-		return string == null ? null : string.getBytes(ISO_8859_1);
+		return string.getBytes(ISO_8859_1);
 	}
 
 }
