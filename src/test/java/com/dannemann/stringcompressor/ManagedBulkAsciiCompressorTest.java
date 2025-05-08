@@ -27,7 +27,7 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			final byte[][] destiny = new byte[quantity][];
 			final FourBitAsciiCompressor compressor = new FourBitAsciiCompressor(true, true);
 			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destiny);
-			managed.compressAll(source);
+			managed.compressAndAddAll(source);
 			for (int j = 0; j < quantity; j++)
 				assertArrayEquals(source[j], compressor.decompress(destiny[j]));
 		}
@@ -45,7 +45,7 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destiny);
 			for (int j = 0; j < numberOfBatches; j++) {
 				final byte[][] batch = generateRandomByteArray(batchSize, 0, 100, DEFAULT_4BIT_CHARSET);
-				managed.compressAll(batch); // Managed batch compress.
+				managed.compressAndAddAll(batch); // Managed batch compress.
 				fullSource.addAll(List.of(batch));
 			}
 			assertEquals(totalElements, managed.getCurrentIndex());
@@ -66,7 +66,7 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			final byte[][] destiny = new byte[quantity][];
 			final FiveBitAsciiCompressor compressor = new FiveBitAsciiCompressor(true, true);
 			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destiny);
-			managed.compressAll(source);
+			managed.compressAndAddAll(source);
 			for (int j = 0; j < quantity; j++)
 				assertEquals(source[j], new String(compressor.decompress(destiny[j]), US_ASCII));
 		}
@@ -84,7 +84,7 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destiny);
 			for (int j = 0; j < numberOfBatches; j++) {
 				final String[] batch = generateRandomStringArray(batchSize, 0, 100, DEFAULT_5BIT_CHARSET);
-				managed.compressAll(batch); // Managed batch compress.
+				managed.compressAndAddAll(batch); // Managed batch compress.
 				fullSource.addAll(List.of(batch));
 			}
 			assertEquals(totalElements, managed.getCurrentIndex());
@@ -105,7 +105,7 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			final byte[][] destiny = new byte[quantity][];
 			final SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(true, true);
 			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destiny);
-			managed.compressAll(source);
+			managed.compressAndAddAll(source);
 			for (int j = 0; j < quantity; j++)
 				assertEquals(source.get(j), new String(compressor.decompress(destiny[j]), US_ASCII));
 		}
@@ -123,7 +123,7 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destiny);
 			for (int j = 0; j < numberOfBatches; j++) {
 				final List<String> batch = generateRandomStringList(batchSize, 0, 100, DEFAULT_6BIT_CHARSET);
-				managed.compressAll(batch); // Managed batch compress.
+				managed.compressAndAddAll(batch); // Managed batch compress.
 				fullSource.addAll(batch);
 			}
 			assertEquals(totalElements, managed.getCurrentIndex());
