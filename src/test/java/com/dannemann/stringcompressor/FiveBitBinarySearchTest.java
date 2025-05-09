@@ -107,6 +107,10 @@ class FiveBitBinarySearchTest extends BaseTest {
 		assertEquals(-19, Arrays.binarySearch(WORDS_ARRAY, "HUP"));
 		assertEquals(-33, FiveBitBinarySearch.search(COMPRESSED_WORDS, "UMBRELL"));
 		assertEquals(-33, Arrays.binarySearch(WORDS_ARRAY, "UMBRELL"));
+		assertEquals(32, FiveBitBinarySearch.search(COMPRESSED_WORDS, "UMBRELLA"));
+		assertEquals(32, Arrays.binarySearch(WORDS_ARRAY, "UMBRELLA"));
+		assertEquals(-34, FiveBitBinarySearch.search(COMPRESSED_WORDS, "UMBRELLAA"));
+		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "UMBRELLAA"));
 		assertEquals(-34, FiveBitBinarySearch.search(COMPRESSED_WORDS, "ZOP"));
 		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "ZOP"));
 	}
