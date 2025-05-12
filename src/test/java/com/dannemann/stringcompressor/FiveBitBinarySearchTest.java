@@ -3,7 +3,6 @@ package com.dannemann.stringcompressor;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,6 +16,42 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 class FiveBitBinarySearchTest extends BaseTest {
 
+	// -----------------------------------------------------------------------------------------------------------------
+	// Automated search tests:
+
+	@Test
+	void searchSmallStringsTest() {
+		for (int length = 0; length <= 50; length++)
+			for (int i = 0; i <= 30_000; i++) {
+				final List<String> source = generateRandomUniqueOrderedStringList(500, length, length + 1, DEFAULT_5BIT_CHARSET);
+				final byte[][] destination = new byte[source.size()][];
+				ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, destination, source);
+				for (int j = 0, massLen = source.size(); j < massLen; j++)
+					assertEquals(j, FiveBitBinarySearch.search(destination, getBytes(source.get(j))));
+			}
+	}
+
+	@RepeatedTest(100)
+	void searchBigArrayTest() {
+		final List<String> source = generateRandomUniqueOrderedStringList(2_000_000, 0, 100, DEFAULT_5BIT_CHARSET);
+		final byte[][] destination = new byte[source.size()][];
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, destination, source);
+		for (int i = 0, massLen = source.size(); i < massLen; i++)
+			assertEquals(i, FiveBitBinarySearch.search(destination, getBytes(source.get(i))));
+	}
+
+	@RepeatedTest(100)
+	void searchBigStringsTest() {
+		final List<String> source = generateRandomUniqueOrderedStringList(50_000, 4500, 5000, DEFAULT_5BIT_CHARSET);
+		final byte[][] destination = new byte[source.size()][];
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, destination, source);
+		for (int i = 0, massLen = source.size(); i < massLen; i++)
+			assertEquals(i, FiveBitBinarySearch.search(destination, getBytes(source.get(i))));
+	}
+
+	// -----------------------------------------------------------------------------------------------------------------
+	// Search edge cases:
+
 	private static final String[] EMPTY_WORD_ARRAY = {""};
 	private static final String[] WORD_ARRAY = {"WORD"};
 	private static final String[] TWO_WORDS_ARRAY = {"AA", "CC"};
@@ -24,25 +59,20 @@ class FiveBitBinarySearchTest extends BaseTest {
 		"", "A", "ABA", "ABA", "AMBITION", "ANECDOTE", "B", "BAMBOO", "CANYON", "CARNIVAL", "DANDELION", "DOLPHIN", "ECLECTIC", "ELEPHANT", "FABLE", "GADGET", "GARDEN", "HORIZON",
 		"HYPNOSIS", "IA", "ISOTOPE", "JUNGLE", "KALEIDOSCOPE", "LANTERN", "MARATHON", "NEBULA", "OASIS", "PARADOX", "QUARTZ", "RHAPSODY", "SAPPHIRE", "TAPESTRY", "UMBRELLA"};
 	private static final String[] SPECIAL_ARRAY = {" ", "@", "ALSO", "Z"};
-	private static final List<String> EMPTY_WORDS_LIST = new ArrayList<>(Arrays.asList(EMPTY_WORD_ARRAY));
-	private static final List<String> WORD_LIST = new ArrayList<>(Arrays.asList(WORD_ARRAY));
-	private static final List<String> TWO_WORDS_LIST = new ArrayList<>(Arrays.asList(TWO_WORDS_ARRAY));
-	private static final List<String> WORDS_LIST = new ArrayList<>(Arrays.asList(WORDS_ARRAY));
-	private static final List<String> SPECIAL_LIST = new ArrayList<>(Arrays.asList(SPECIAL_ARRAY));
-	private static final byte[][] COMPRESSED_EMPTY_WORD = new byte[EMPTY_WORDS_LIST.size()][];
-	private static final byte[][] COMPRESSED_WORD = new byte[WORD_LIST.size()][];
-	private static final byte[][] COMPRESSED_TWO_WORDS = new byte[TWO_WORDS_LIST.size()][];
-	private static final byte[][] COMPRESSED_WORDS = new byte[WORDS_LIST.size()][];
-	private static final byte[][] COMPRESSED_SPECIAL = new byte[SPECIAL_LIST.size()][];
+	private static final byte[][] COMPRESSED_EMPTY_WORD = new byte[EMPTY_WORD_ARRAY.length][];
+	private static final byte[][] COMPRESSED_WORD = new byte[WORD_ARRAY.length][];
+	private static final byte[][] COMPRESSED_TWO_WORDS = new byte[TWO_WORDS_ARRAY.length][];
+	private static final byte[][] COMPRESSED_WORDS = new byte[WORDS_ARRAY.length][];
+	private static final byte[][] COMPRESSED_SPECIAL = new byte[SPECIAL_ARRAY.length][];
 	private static final String NULL_REF = null;
 	private static final AsciiCompressor COMPRESSOR = new FiveBitAsciiCompressor(true, true);
 
 	static {
-		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_EMPTY_WORD, EMPTY_WORDS_LIST);
-		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_WORD, WORD_LIST);
-		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_TWO_WORDS, TWO_WORDS_LIST);
-		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_WORDS, WORDS_LIST);
-		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_SPECIAL, SPECIAL_LIST);
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_EMPTY_WORD, EMPTY_WORD_ARRAY);
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_WORD, WORD_ARRAY);
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_TWO_WORDS, TWO_WORDS_ARRAY);
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_WORDS, WORDS_ARRAY);
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_SPECIAL, SPECIAL_ARRAY);
 	}
 
 	@Test
@@ -99,7 +129,7 @@ class FiveBitBinarySearchTest extends BaseTest {
 		assertEquals(-3, Arrays.binarySearch(WORDS_ARRAY, "AA"));
 		assertEquals(-3, FiveBitBinarySearch.search(COMPRESSED_WORDS, "AB"));
 		assertEquals(-3, Arrays.binarySearch(WORDS_ARRAY, "AB"));
-		assertEquals(3, FiveBitBinarySearch.search(COMPRESSED_WORDS, "ABA"));
+		assertEquals(3, FiveBitBinarySearch.search(COMPRESSED_WORDS, "ABA")); // Duplicate.
 		assertEquals(3, Arrays.binarySearch(WORDS_ARRAY, "ABA"));
 		assertEquals(-18, FiveBitBinarySearch.search(COMPRESSED_WORDS, "HASH"));
 		assertEquals(-18, Arrays.binarySearch(WORDS_ARRAY, "HASH"));
@@ -127,34 +157,61 @@ class FiveBitBinarySearchTest extends BaseTest {
 		assertEquals(3, Arrays.binarySearch(SPECIAL_ARRAY, "Z"));
 	}
 
+	// -----------------------------------------------------------------------------------------------------------------
+	// Prefix search edge cases:
+
+	private static final String[] CLIENT_DATA_ARRAY = {
+		"ABCDEFGHIA CLIENT DATA CLIENT DATA CLIENT DATA",
+		"ABCDEFGHIB CLIENT DATA CLIENT DATA CLIENT DATA",
+		"ABCDEFGHIC CLIENT DATA CLIENT DATA CLIENT DATA",
+		"ABCDEFGHID CLIENT DATA CLIENT DATA CLIENT DATA",
+		"ABCDEFGHIE CLIENT DATA CLIENT DATA CLIENT DATA"};
+	private static final byte[][] COMPRESSED_CLIENT_DATA = new byte[CLIENT_DATA_ARRAY.length][];
+
+	static {
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_CLIENT_DATA, CLIENT_DATA_ARRAY);
+	}
+
 	@Test
-	void searchSmallStringsTest() {
-		for (int length = 0; length <= 50; length++)
-			for (int i = 0; i <= 25_000; i++) {
-				final List<String> source = generateRandomUniqueOrderedStringList(500, length, length + 1, DEFAULT_5BIT_CHARSET);
-				final byte[][] destination = new byte[source.size()][];
-				ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, destination, source);
-				for (int j = 0, massLen = source.size(); j < massLen; j++)
-					assertEquals(j, FiveBitBinarySearch.search(destination, getBytes(source.get(j))));
-			}
-	}
-
-	@RepeatedTest(50)
-	void searchBigArrayTest() {
-		final List<String> source = generateRandomUniqueOrderedStringList(2_000_000, 0, 100, DEFAULT_5BIT_CHARSET);
-		final byte[][] destination = new byte[source.size()][];
-		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, destination, source);
-		for (int i = 0, massLen = source.size(); i < massLen; i++)
-			assertEquals(i, FiveBitBinarySearch.search(destination, getBytes(source.get(i))));
-	}
-
-	@RepeatedTest(50)
-	void searchBigStringsTest() {
-		final List<String> source = generateRandomUniqueOrderedStringList(50_000, 4500, 5000, DEFAULT_5BIT_CHARSET);
-		final byte[][] destination = new byte[source.size()][];
-		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, destination, source);
-		for (int i = 0, massLen = source.size(); i < massLen; i++)
-			assertEquals(i, FiveBitBinarySearch.search(destination, getBytes(source.get(i))));
+	public void prefixSearchTest() {
+		assertThrows(NullPointerException.class, () -> FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, NULL_REF));
+		assertEquals(16, FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "")); // Will match with the first entry it finds.
+		assertEquals(3, FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "A")); // Will get the first one it finds starting A.
+		assertEquals(3, FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "AB")); // Duplicate.
+		assertEquals(3, FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "ABA")); // Duplicate.
+		assertEquals(4, FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "AMBIT"));
+		assertEquals(4, FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "AMBITI"));
+		assertEquals(4, FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "AMBITIO"));
+		assertEquals(-6, FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "AMBITIONN"));
+		assertEquals(-6, Arrays.binarySearch(WORDS_ARRAY, "AMBITIONN"));
+		assertEquals(7, FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "BA"));
+		assertEquals(32, FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "UMBRE"));
+		assertEquals(32, FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "UMBRELLA"));
+		assertEquals(-34, FiveBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "UMBRELLAA"));
+		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "UMBRELLAA"));
+		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "UMBRELLAA"));
+		assertEquals(-1, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHI "));
+		assertEquals(2, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHI")); // First one it finds.
+		assertEquals(0, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIA"));
+		assertEquals(0, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIA "));
+		assertEquals(-1, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIA"));
+		assertEquals(-1, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIA "));
+		assertEquals(1, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIB"));
+		assertEquals(1, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIB "));
+		assertEquals(-2, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIB B"));
+		assertEquals(-2, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIB B"));
+		assertEquals(-2, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIB"));
+		assertEquals(-2, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIB "));
+		assertEquals(2, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIC"));
+		assertEquals(2, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIC "));
+		assertEquals(3, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHID"));
+		assertEquals(3, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHID "));
+		assertEquals(4, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIE"));
+		assertEquals(4, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIE "));
+		assertEquals(-6, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIEE"));
+		assertEquals(-6, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIEE"));
+		assertEquals(-6, FiveBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIEE "));
+		assertEquals(-6, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIEE "));
 	}
 
 }
