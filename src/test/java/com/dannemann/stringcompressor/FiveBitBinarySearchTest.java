@@ -19,6 +19,8 @@ class FiveBitBinarySearchTest extends BaseTest {
 	// -----------------------------------------------------------------------------------------------------------------
 	// Automated search tests:
 
+	private static final AsciiCompressor COMPRESSOR = new FiveBitAsciiCompressor(true, true);
+
 	@Test
 	void searchSmallStringsTest() {
 		for (int length = 0; length <= 50; length++)
@@ -65,7 +67,6 @@ class FiveBitBinarySearchTest extends BaseTest {
 	private static final byte[][] COMPRESSED_WORDS = new byte[WORDS_ARRAY.length][];
 	private static final byte[][] COMPRESSED_SPECIAL = new byte[SPECIAL_ARRAY.length][];
 	private static final String NULL_REF = null;
-	private static final AsciiCompressor COMPRESSOR = new FiveBitAsciiCompressor(true, true);
 
 	static {
 		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_EMPTY_WORD, EMPTY_WORD_ARRAY);
