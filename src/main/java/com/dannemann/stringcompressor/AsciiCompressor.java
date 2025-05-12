@@ -98,7 +98,7 @@ public abstract class AsciiCompressor {
 
 				if (encoded == -1)
 					throw new CharacterNotSupportedException(
-						"Character '" + (char) bite + "' with code point " + bite + " is not defined in the supported characters array. Source string (maybe incomplete): \"" + new String(string, ISO_8859_1) + "\"");
+						"Character '" + (char) bite + "' with code point " + bite + " is not defined in the supported characters array. Source string is (maybe incomplete): \"" + new String(string, ISO_8859_1) + "\"");
 
 				string[i] = encoded;
 			}

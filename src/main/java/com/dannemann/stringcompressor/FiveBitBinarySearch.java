@@ -24,7 +24,7 @@ public final class FiveBitBinarySearch {
 	 * first matching element is returned.</p>
 	 * <p>The method returns the index of the matching element if found; otherwise, it returns
 	 * {@code -(insertion point) - 1}, following the contract of {@link java.util.Arrays#binarySearch}.</p>
-	 * @param compressedMass The array of compressed byte arrays to search through.
+	 * @param compressedMass The array of compressed byte array strings to search through.
 	 * @param key The uncompressed key to search for, as a byte array.
 	 * @param prefixSearch If {@code true}, searches for elements starting with the provided key prefix (must be unique).
 	 * @return The index of the search key if it is found; otherwise, {@code -(insertion point) - 1}.
