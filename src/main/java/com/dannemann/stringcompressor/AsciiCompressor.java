@@ -7,6 +7,7 @@ import java.util.Arrays;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 /**
+ * The base ASCII compressor.
  * @author Jean Dannemann Carone
  */
 public abstract class AsciiCompressor {
@@ -42,6 +43,11 @@ public abstract class AsciiCompressor {
 
 	// Constructor:
 
+	/**
+	 * @see #supportedCharset
+	 * @see #throwException
+	 * @see #preserveOriginal
+	 */
 	public AsciiCompressor(byte[] supportedCharset, boolean throwException, boolean preserveOriginal) {
 		validateSupportedCharset(supportedCharset);
 
