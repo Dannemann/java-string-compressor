@@ -31,26 +31,73 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 		'{', '}'
 	};
 
+	/**
+	 * Creates a new compressor instance using the default 6-bit character set ({@link #DEFAULT_6BIT_CHARSET}). Uses default settings
+	 * for exception throwing ({@link #throwException} is {@code false}) and original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * @author Jean Dannemann Carone
+	 */
 	public SixBitAsciiCompressor() {
 		super(DEFAULT_6BIT_CHARSET, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
+	/**
+	 * Creates a new compressor instance with a user defined 6-bit character set. Uses default settings for exception throwing
+	 * ({@link #throwException} is {@code false}) and original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * @param supportedCharset The custom set of supported characters. See {@link #DEFAULT_6BIT_CHARSET} for an example of how to define it.
+	 * @author Jean Dannemann Carone
+	 * @see #supportedCharset
+	 */
 	public SixBitAsciiCompressor(byte[] supportedCharset) {
 		super(supportedCharset, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
+	/**
+	 * Creates a new compressor instance using the default 6-bit character set ({@link #DEFAULT_6BIT_CHARSET}) and with a configurable
+	 * exception-throwing behavior. Uses default setting for original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
+	 * @author Jean Dannemann Carone
+	 * @see #throwException
+	 */
 	public SixBitAsciiCompressor(boolean throwException) {
 		super(DEFAULT_6BIT_CHARSET, throwException, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
+	/**
+	 * Creates a new compressor instance with a user defined 6-bit character set and configurable exception-throwing behavior.
+	 * Uses default setting for original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * @param supportedCharset The custom set of supported characters. See {@link #DEFAULT_6BIT_CHARSET} for an example of how to define it.
+	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
+	 * @author Jean Dannemann Carone
+	 * @see #supportedCharset
+	 * @see #throwException
+	 */
 	public SixBitAsciiCompressor(byte[] supportedCharset, boolean throwException) {
 		super(supportedCharset, throwException, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
+	/**
+	 * Creates a new compressor instance using the default 6-bit character set ({@link #DEFAULT_6BIT_CHARSET}),
+	 * with configurable exception-throwing behavior and original data preservation.
+	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
+	 * @param preserveOriginal If {@code true}, preserves the original input data by working on a copy; otherwise, modifies the input data directly.
+	 * @author Jean Dannemann Carone
+	 * @see #throwException
+	 * @see #preserveOriginal
+	 */
 	public SixBitAsciiCompressor(boolean throwException, boolean preserveOriginal) {
 		super(DEFAULT_6BIT_CHARSET, throwException, preserveOriginal);
 	}
 
+	/**
+	 * Creates a new compressor instance with a user defined 6-bit character set, configurable exception-throwing behavior, and original data preservation.
+	 * @param supportedCharset The custom set of supported characters. See {@link #DEFAULT_6BIT_CHARSET} for an example of how to define it.
+	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
+	 * @param preserveOriginal If {@code true}, preserves the original input data by working on a copy; otherwise, modifies the input data directly.
+	 * @author Jean Dannemann Carone
+	 * @see #supportedCharset
+	 * @see #throwException
+	 * @see #preserveOriginal
+	 */
 	public SixBitAsciiCompressor(byte[] supportedCharset, boolean throwException, boolean preserveOriginal) {
 		super(supportedCharset, throwException, preserveOriginal);
 	}

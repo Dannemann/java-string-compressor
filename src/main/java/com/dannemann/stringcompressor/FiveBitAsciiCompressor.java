@@ -23,26 +23,73 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 		'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
+	/**
+	 * Creates a new compressor instance using the default 5-bit character set ({@link #DEFAULT_5BIT_CHARSET}). Uses default settings
+	 * for exception throwing ({@link #throwException} is {@code false}) and original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * @author Jean Dannemann Carone
+	 */
 	public FiveBitAsciiCompressor() {
 		super(DEFAULT_5BIT_CHARSET, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
+	/**
+	 * Creates a new compressor instance with a user defined 5-bit character set. Uses default settings for exception throwing
+	 * ({@link #throwException} is {@code false}) and original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * @param supportedCharset The custom set of supported characters. See {@link #DEFAULT_5BIT_CHARSET} for an example of how to define it.
+	 * @author Jean Dannemann Carone
+	 * @see #supportedCharset
+	 */
 	public FiveBitAsciiCompressor(byte[] supportedCharset) {
 		super(supportedCharset, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
+	/**
+	 * Creates a new compressor instance using the default 5-bit character set ({@link #DEFAULT_5BIT_CHARSET}) and with a configurable
+	 * exception-throwing behavior. Uses default setting for original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
+	 * @author Jean Dannemann Carone
+	 * @see #throwException
+	 */
 	public FiveBitAsciiCompressor(boolean throwException) {
 		super(DEFAULT_5BIT_CHARSET, throwException, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
+	/**
+	 * Creates a new compressor instance with a user defined 5-bit character set and configurable exception-throwing behavior.
+	 * Uses default setting for original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * @param supportedCharset The custom set of supported characters. See {@link #DEFAULT_5BIT_CHARSET} for an example of how to define it.
+	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
+	 * @author Jean Dannemann Carone
+	 * @see #supportedCharset
+	 * @see #throwException
+	 */
 	public FiveBitAsciiCompressor(byte[] supportedCharset, boolean throwException) {
 		super(supportedCharset, throwException, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
+	/**
+	 * Creates a new compressor instance using the default 5-bit character set ({@link #DEFAULT_5BIT_CHARSET}),
+	 * with configurable exception-throwing behavior and original data preservation.
+	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
+	 * @param preserveOriginal If {@code true}, preserves the original input data by working on a copy; otherwise, modifies the input data directly.
+	 * @author Jean Dannemann Carone
+	 * @see #throwException
+	 * @see #preserveOriginal
+	 */
 	public FiveBitAsciiCompressor(boolean throwException, boolean preserveOriginal) {
 		super(DEFAULT_5BIT_CHARSET, throwException, preserveOriginal);
 	}
 
+	/**
+	 * Creates a new compressor instance with a user defined 5-bit character set, configurable exception-throwing behavior, and original data preservation.
+	 * @param supportedCharset The custom set of supported characters. See {@link #DEFAULT_5BIT_CHARSET} for an example of how to define it.
+	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
+	 * @param preserveOriginal If {@code true}, preserves the original input data by working on a copy; otherwise, modifies the input data directly.
+	 * @author Jean Dannemann Carone
+	 * @see #supportedCharset
+	 * @see #throwException
+	 * @see #preserveOriginal
+	 */
 	public FiveBitAsciiCompressor(byte[] supportedCharset, boolean throwException, boolean preserveOriginal) {
 		super(supportedCharset, throwException, preserveOriginal);
 	}

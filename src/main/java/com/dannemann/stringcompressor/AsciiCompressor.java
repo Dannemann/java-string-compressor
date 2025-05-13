@@ -16,17 +16,25 @@ public abstract class AsciiCompressor {
 
 	// Fields:
 
+	/**
+	 * <p>The set of characters accepted by this compressor. Compressors can only encode characters defined
+	 * explicitly by this set, which is typically chosen based on specific application requirements.</p>
+	 * <p>Refer to the default character sets provided by this library: {@link FourBitAsciiCompressor#DEFAULT_4BIT_CHARSET},
+	 * {@link FiveBitAsciiCompressor#DEFAULT_5BIT_CHARSET}, and {@link SixBitAsciiCompressor#DEFAULT_6BIT_CHARSET}.</p>
+	 */
 	protected final byte[] supportedCharset;
 
 	/**
-	 * Throw validation exceptions while compressing. Useful for debugging but not recommended for production.
+	 * Determines if a validation exception should be thrown when encountering unsupported characters during compression.
+	 * Useful for testing and debugging purposes. Generally not recommended for production environments, as it's preferable
+	 * to silently ignore invalid characters without interrupting the entire compression process.
 	 */
 	protected final boolean throwException;
 
 	/**
-	 * To avoid duplicating strings and save memory, the compressor will modify
-	 * the original input string, encoding it and making it unusable. To avoid
-	 * this behavior and compress a copy of the original, set this to {@code true}.
+	 * To avoid duplicating strings and save memory, the compressor will modify the original input string, encoding it and making it unusable.
+	 * This is particularly useful when compressing and storing long strings in memory.
+	 * To avoid this behavior and compress a copy of the original, set this to {@code true}.
 	 */
 	protected final boolean preserveOriginal;
 

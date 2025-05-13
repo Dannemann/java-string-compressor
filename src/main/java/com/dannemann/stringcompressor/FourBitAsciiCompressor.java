@@ -12,26 +12,73 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	 */
 	public static final byte[] DEFAULT_4BIT_CHARSET = {'#', '+', ',', '-', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ';'};
 
+	/**
+	 * Creates a new compressor instance using the default 4-bit character set ({@link #DEFAULT_4BIT_CHARSET}). Uses default settings
+	 * for exception throwing ({@link #throwException} is {@code false}) and original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * @author Jean Dannemann Carone
+	 */
 	public FourBitAsciiCompressor() {
 		super(DEFAULT_4BIT_CHARSET, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
+	/**
+	 * Creates a new compressor instance with a user defined 4-bit character set. Uses default settings for exception throwing
+	 * ({@link #throwException} is {@code false}) and original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * @param supportedCharset The custom set of supported characters. See {@link #DEFAULT_4BIT_CHARSET} for an example of how to define it.
+	 * @author Jean Dannemann Carone
+	 * @see #supportedCharset
+	 */
 	public FourBitAsciiCompressor(byte[] supportedCharset) {
 		super(supportedCharset, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
+	/**
+	 * Creates a new compressor instance using the default 4-bit character set ({@link #DEFAULT_4BIT_CHARSET}) and with a configurable
+	 * exception-throwing behavior. Uses default setting for original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
+	 * @author Jean Dannemann Carone
+	 * @see #throwException
+	 */
 	public FourBitAsciiCompressor(boolean throwException) {
 		super(DEFAULT_4BIT_CHARSET, throwException, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
+	/**
+	 * Creates a new compressor instance with a user defined 4-bit character set and configurable exception-throwing behavior.
+	 * Uses default setting for original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * @param supportedCharset The custom set of supported characters. See {@link #DEFAULT_4BIT_CHARSET} for an example of how to define it.
+	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
+	 * @author Jean Dannemann Carone
+	 * @see #supportedCharset
+	 * @see #throwException
+	 */
 	public FourBitAsciiCompressor(byte[] supportedCharset, boolean throwException) {
 		super(supportedCharset, throwException, PRESERVE_ORIGINAL_DEFAULT);
 	}
 
+	/**
+	 * Creates a new compressor instance using the default 4-bit character set ({@link #DEFAULT_4BIT_CHARSET}),
+	 * with configurable exception-throwing behavior and original data preservation.
+	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
+	 * @param preserveOriginal If {@code true}, preserves the original input data by working on a copy; otherwise, modifies the input data directly.
+	 * @author Jean Dannemann Carone
+	 * @see #throwException
+	 * @see #preserveOriginal
+	 */
 	public FourBitAsciiCompressor(boolean throwException, boolean preserveOriginal) {
 		super(DEFAULT_4BIT_CHARSET, throwException, preserveOriginal);
 	}
 
+	/**
+	 * Creates a new compressor instance with a user defined 4-bit character set, configurable exception-throwing behavior, and original data preservation.
+	 * @param supportedCharset The custom set of supported characters. See {@link #DEFAULT_4BIT_CHARSET} for an example of how to define it.
+	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
+	 * @param preserveOriginal If {@code true}, preserves the original input data by working on a copy; otherwise, modifies the input data directly.
+	 * @author Jean Dannemann Carone
+	 * @see #supportedCharset
+	 * @see #throwException
+	 * @see #preserveOriginal
+	 */
 	public FourBitAsciiCompressor(byte[] supportedCharset, boolean throwException, boolean preserveOriginal) {
 		super(supportedCharset, throwException, preserveOriginal);
 	}
