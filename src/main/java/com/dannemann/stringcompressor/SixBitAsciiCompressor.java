@@ -7,6 +7,9 @@ package com.dannemann.stringcompressor;
  */
 public class SixBitAsciiCompressor extends AsciiCompressor {
 
+	/**
+	 * 6-bit character set supported by default: ' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', ']', '_', '{', '}'
+	 */
 	public static final byte[] DEFAULT_6BIT_CHARSET = new byte[]{
 		' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
 		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -16,6 +19,9 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 		'[', ']', '_', '{', '}'
 	};
 
+	/**
+	 * 6-bit lowercase character set supported by default: ' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', '[', ']', '_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '}'
+	 */
 	public static final byte[] DEFAULT_6BIT_CHARSET_LOWERCASE = new byte[]{
 		' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
 		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -52,8 +58,10 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 	/**
 	 * <p>Packs characters into chunks of 6 bits. Supports a set of 64 different characters (000000 to 111111).</p>
 	 * <p>Compression rate: 25%</p>
-	 * <p>See {@link #DEFAULT_6BIT_CHARSET} for the default set of supported characters.</p>
+	 * <p>See {@link #DEFAULT_6BIT_CHARSET} for the default set of supported characters. To use a custom character set,
+	 * refer to any constructor that accepts the {@code byte[] supportedCharset} parameter.</p>
 	 * @throws NullPointerException {@inheritDoc}
+	 * @author Jean Dannemann Carone
 	 */
 	@Override
 	public final byte[] compress(final byte[] string) {
@@ -88,12 +96,16 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 
 	/**
 	 * Overloaded version of {@link #compress(byte[])}.
+	 * @author Jean Dannemann Carone
 	 */
 	@Override
 	public byte[] compress(final String string) {
 		return compress(getBytes(string));
 	}
 
+	/**
+	 * @author Jean Dannemann Carone
+	 */
 	@Override
 	public final byte[] decompress(final byte[] compressed) {
 		final int compressedLen = compressed.length;

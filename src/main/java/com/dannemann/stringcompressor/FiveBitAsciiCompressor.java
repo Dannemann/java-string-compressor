@@ -7,11 +7,17 @@ package com.dannemann.stringcompressor;
  */
 public class FiveBitAsciiCompressor extends AsciiCompressor {
 
+	/**
+	 * 5-bit character set supported by default: ' ', '\'', ',', '-', '.', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+	 */
 	public static final byte[] DEFAULT_5BIT_CHARSET = new byte[]{
 		' ', '\'', ',', '-', '.', '@',
 		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 		'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
+	/**
+	 * 5-bit lowercase character set supported by default: ' ', '\'', ',', '-', '.', '@', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+	 */
 	public static final byte[] DEFAULT_5BIT_CHARSET_LOWERCASE = new byte[]{
 		' ', '\'', ',', '-', '.', '@',
 		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
@@ -44,8 +50,10 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 	/**
 	 * <p>Packs characters into chunks of 5 bits. Supports a set of 32 different characters (00000 to 11111).</p>
 	 * <p>Compression rate: 38%</p>
-	 * <p>See {@link #DEFAULT_5BIT_CHARSET} for the default set of supported characters.</p>
+	 * <p>See {@link #DEFAULT_5BIT_CHARSET} for the default set of supported characters. To use a custom character set,
+	 * refer to any constructor that accepts the {@code byte[] supportedCharset} parameter.</p>
 	 * @throws NullPointerException {@inheritDoc}
+	 * @author Jean Dannemann Carone
 	 */
 	@Override
 	public final byte[] compress(final byte[] string) {
@@ -80,12 +88,16 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 	/**
 	 * Overloaded version of {@link #compress(byte[])}.
+	 * @author Jean Dannemann Carone
 	 */
 	@Override
 	public byte[] compress(final String string) {
 		return compress(getBytes(string));
 	}
 
+	/**
+	 * @author Jean Dannemann Carone
+	 */
 	@Override
 	public final byte[] decompress(final byte[] compressed) {
 		final int compressedLen = compressed.length;

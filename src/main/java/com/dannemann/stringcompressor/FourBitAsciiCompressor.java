@@ -7,8 +7,10 @@ package com.dannemann.stringcompressor;
  */
 public class FourBitAsciiCompressor extends AsciiCompressor {
 
-	public static final byte[] DEFAULT_4BIT_CHARSET = {
-		'#', '+', ',', '-', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ';'};
+	/**
+	 * 4-bit character set supported by default: '#', '+', ',', '-', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ';'
+	 */
+	public static final byte[] DEFAULT_4BIT_CHARSET = {'#', '+', ',', '-', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ';'};
 
 	public FourBitAsciiCompressor() {
 		super(DEFAULT_4BIT_CHARSET, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
@@ -37,8 +39,10 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	/**
 	 * <p>Compresses 2 characters into 1 byte (4 bits each). Supports a set of 16 different characters (0000 to 1111).</p>
 	 * <p>Compression rate: 50%</p>
-	 * <p>See {@link #DEFAULT_4BIT_CHARSET} for the default set of supported characters.</p>
+	 * <p>See {@link #DEFAULT_4BIT_CHARSET} for the default set of supported characters. To use a custom character set,
+	 * refer to any constructor that accepts the {@code byte[] supportedCharset} parameter.</p>
 	 * @throws NullPointerException {@inheritDoc}
+	 * @author Jean Dannemann Carone
 	 */
 	@Override
 	public final byte[] compress(final byte[] string) {
@@ -63,12 +67,16 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 
 	/**
 	 * Overloaded version of {@link #compress(byte[])}.
+	 * @author Jean Dannemann Carone
 	 */
 	@Override
 	public byte[] compress(final String string) {
 		return compress(getBytes(string));
 	}
 
+	/**
+	 * @author Jean Dannemann Carone
+	 */
 	@Override
 	public final byte[] decompress(final byte[] compressed) {
 		int cLenMinus = compressed.length - 1;

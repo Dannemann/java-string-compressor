@@ -85,6 +85,9 @@ public abstract class AsciiCompressor {
 					"Invalid character found in the custom supported charset: '" + (char) supportedCharset[i] + "' (code point " + supportedCharset[i] + ")");
 	}
 
+	/**
+	 * @author Jean Dannemann Carone
+	 */
 	protected void encode(final byte[] string, final int len) {
 		if (throwException)
 			for (int i = 0; i < len; i++) {
@@ -114,6 +117,7 @@ public abstract class AsciiCompressor {
 	 * <p>If {@code string} is null, returns null.</p>
 	 * @param string The target string.
 	 * @return The resultant byte array.
+	 * @author Jean Dannemann Carone
 	 */
 	public static byte[] getBytes(final String string) {
 		return string != null ? string.getBytes(ISO_8859_1) : null;
