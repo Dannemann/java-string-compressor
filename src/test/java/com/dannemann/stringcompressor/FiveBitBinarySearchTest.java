@@ -147,7 +147,7 @@ class FiveBitBinarySearchTest extends BaseTest {
 	}
 
 	@Test
-	public void specialChararactersSearch() {
+	public void specialCharactersSearch() {
 		assertEquals(-1, FiveBitBinarySearch.search(COMPRESSED_SPECIAL, ""));
 		assertEquals(-1, Arrays.binarySearch(SPECIAL_ARRAY, ""));
 		assertEquals(0, FiveBitBinarySearch.search(COMPRESSED_SPECIAL, " "));
