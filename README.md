@@ -1,6 +1,6 @@
 # java-string-compressor
 
-Ultra-fast, low-level string compression library. Up to 50% reduction.
+Ultra-fast, low-level string compression library. Up to 50% memory reduction.
 
 - 4 bits -> 50% compression rate
 - 5 bits -> 38% compression rate
@@ -78,3 +78,8 @@ implementation("io.github.dannemann:java-string-compressor:1.0.0")
 ```
 
 Or download the lastest release from: https://github.com/Dannemann/java-string-compressor/releases
+
+
+
+
+if you need logging , check ZeroLog, ChronicleLog and similar tools
