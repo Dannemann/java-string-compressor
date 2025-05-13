@@ -17,8 +17,8 @@ import java.util.stream.IntStream;
  * provided in each method call.</p>
  * @param compressor The {@link AsciiCompressor} used to compress each string.
  * @param destination The destination array where compressed data will be stored.
- * @see ManagedBulkAsciiCompressor
  * @author Jean Dannemann Carone
+ * @see ManagedBulkAsciiCompressor
  */
 public record BulkAsciiCompressor(AsciiCompressor compressor, byte[][] destination) {
 
