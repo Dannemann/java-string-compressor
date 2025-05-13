@@ -30,6 +30,7 @@ public record BulkAsciiCompressor(AsciiCompressor compressor, byte[][] destinati
 	 * @param source The batch of strings to be compressed.
 	 * @param destinationStart The index at which elements will start being added to the destination array.
 	 * @param callback A function that is called after each item is compressed and added to the destination array.
+	 * @author Jean Dannemann Carone
 	 */
 	public void bulkCompress(final byte[][] source, final int destinationStart, final TriConsumer<Integer, byte[], byte[]> callback) {
 		IntStream.range(destinationStart, source.length + destinationStart).parallel().forEach(i -> {
@@ -46,6 +47,7 @@ public record BulkAsciiCompressor(AsciiCompressor compressor, byte[][] destinati
 
 	/**
 	 * Overloaded version of {@link #bulkCompress(byte[][], int, TriConsumer)}.
+	 * @author Jean Dannemann Carone
 	 */
 	public void bulkCompress(final String[] source, final int destinationStart, final TriConsumer<Integer, String, byte[]> callback) {
 		IntStream.range(destinationStart, source.length + destinationStart).parallel().forEach(i -> {
@@ -62,6 +64,7 @@ public record BulkAsciiCompressor(AsciiCompressor compressor, byte[][] destinati
 
 	/**
 	 * Overloaded version of {@link #bulkCompress(byte[][], int, TriConsumer)}.
+	 * @author Jean Dannemann Carone
 	 */
 	public void bulkCompress(final List<String> source, final int destinationStart, final TriConsumer<Integer, String, byte[]> callback) {
 		IntStream.range(destinationStart, source.size() + destinationStart).parallel().forEach(i -> {
