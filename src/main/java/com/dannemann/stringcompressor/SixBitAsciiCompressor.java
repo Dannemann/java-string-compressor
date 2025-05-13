@@ -151,6 +151,7 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 	}
 
 	/**
+	 * Restores the original string from data compressed by {@link #compress(byte[])}.
 	 * @author Jean Dannemann Carone
 	 */
 	@Override

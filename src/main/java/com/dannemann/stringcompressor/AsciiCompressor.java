@@ -75,7 +75,6 @@ public abstract class AsciiCompressor {
 	public abstract byte[] compress(final String string);
 
 	/**
-	 * Restores the original string from data compressed by {@link #compress}.
 	 * @param compressed The compressed string byte array.
 	 * @return A decompressed string byte array.
 	 */
