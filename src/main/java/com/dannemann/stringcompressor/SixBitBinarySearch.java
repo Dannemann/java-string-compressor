@@ -28,46 +28,40 @@ public final class SixBitBinarySearch {
 	 * @param key The uncompressed key to search for, as a byte array.
 	 * @param prefixSearch If {@code true}, searches for elements starting with the provided key prefix (must be unique).
 	 * @return The index of the search key if it is found; otherwise, {@code -(insertion point) - 1}.
+	 * @author Jean Dannemann Carone
 	 */
 	public static int search(final byte[][] compressedMass, final byte[] key, boolean prefixSearch) {
-		final int cLen = compressedMass.length;
-		if (cLen == 0)
+		final int massLength = compressedMass.length;
+
+		if (massLength == 0)
 			return -1;
 
 		final int keyLen = key.length;
 		int low = 0;
-		int high = cLen - 1;
+		int high = massLength - 1;
 
 		while (low <= high) {
 			final int mid = low + high >>> 1;
 			final byte[] compStr = compressedMass[mid];
-			final int last = compStr.length - 1;
-			final int dLen = last >= 0 ? last * 8 / 6 - (compStr[last] & 1) : 0;
-			final int minLen = Math.min(dLen, keyLen);
-			int cmp = 0;
+			final int cLenMinus = compStr.length - 1;
 			int buffer = 0;
 			int bits = 0;
+			int cmp = 0;
 
-			for (int i = 0, j = 0; i < last && j < minLen; i++) {
+			for (int i = 0, j = 0; i < cLenMinus && j < keyLen; i++) {
 				buffer = buffer << 8 | compStr[i] & 0xFF;
 				bits += 8;
 
-				if (bits >= 6) {
-					byte cv = DEFAULT_6BIT_CHARSET[buffer >>> (bits -= 6) & 0x3F];
-					cmp = cv - key[j++];
-					if (cmp != 0)
-						break;
-
-					if (bits >= 6 && j < minLen) {
-						cv = DEFAULT_6BIT_CHARSET[buffer >>> (bits -= 6) & 0x3F];
-						cmp = cv - key[j++];
-						if (cmp != 0)
-							break;
-					}
-				}
+				if (bits >= 6 &&
+					(cmp = DEFAULT_6BIT_CHARSET[buffer >>> (bits -= 6) & 0x3F] - key[j++]) != 0 ||
+					bits >= 6 && j < keyLen &&
+					(cmp = DEFAULT_6BIT_CHARSET[buffer >>> (bits -= 6) & 0x3F] - key[j++]) != 0)
+					break;
 			}
 
 			if (cmp == 0) {
+				final int dLen = cLenMinus >= 0 ? cLenMinus * 8 / 6 - (compStr[cLenMinus] & 1) : 0;
+
 				if (prefixSearch && keyLen <= dLen)
 					return mid;
 
