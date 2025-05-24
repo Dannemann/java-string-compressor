@@ -55,12 +55,44 @@ class FourBitBinarySearchTest extends BaseTest {
 	// Search edge cases:
 
 	private static final String[] EMPTY_WORD_ARRAY = {""};
-	private static final String[] WORD_ARRAY = {"WORD"};
-	private static final String[] TWO_WORDS_ARRAY = {"AA", "CC"};
+	private static final String[] WORD_ARRAY = {"8765"};
+	private static final String[] TWO_WORDS_ARRAY = {"11", "33"};
 	private static final String[] WORDS_ARRAY = {
-		"", "A", "ABA", "ABA", "AMBITION", "ANECDOTE", "B", "BAMBOO", "CANYON", "CARNIVAL", "DANDELION", "DOLPHIN", "ECLECTIC", "ELEPHANT", "FABLE", "GADGET", "GARDEN", "HORIZON",
-		"HYPNOSIS", "IA", "ISOTOPE", "JUNGLE", "KALEIDOSCOPE", "LANTERN", "MARATHON", "NEBULA", "OASIS", "PARADOX", "QUARTZ", "RHAPSODY", "SAPPHIRE", "TAPESTRY", "UMBRELLA"};
-	private static final String[] SPECIAL_ARRAY = {" ", "@", "ALSO", "}"};
+		"",                         // ""
+		"01",                       // A
+		"010201",                   // ABA
+		"010201",                   // ABA
+		"0113020920091514",         // AMBITION
+		"0114050304152005",         // ANECDOTE
+		"02",                       // B
+		"020113021515",             // BAMBOO
+		"030114251514",             // CANYON
+		"0301181409220112",         // CARNIVAL
+		"040114040512091514",       // DANDELION
+		"04151216080914",           // DOLPHIN
+		"0503120503200903",         // ECLECTIC
+		"0512051608011420",         // ELEPHANT
+		"0601021205",               // FABLE
+		"070104070520",             // GADGET
+		"070118040514",             // GARDEN
+		"08151809261514",           // HORIZON
+		"0825161415190919",         // HYPNOSIS
+		"0901",                     // IA
+		"09191520151605",           // ISOTOPE
+		"102114071205",             // JUNGLE
+		"110112050904151903151605", // KALEIDOSCOPE
+		"12011420051814",           // LANTERN
+		"1301180120081514",         // MARATHON
+		"140502211201",             // NEBULA
+		"1501190919",               // OASIS
+		"16011801041524",           // PARADOX
+		"172101182026",             // QUARTZ
+		"1808011619150425",         // RHAPSODY
+		"1901161608091805",         // SAPPHIRE
+		"2001160519201825",         // TAPESTRY
+		"2113021805121201"          // UMBRELLA
+	};
+	private static final String[] SPECIAL_ARRAY = {"#", ".", "0567", ";"};
 	private static final byte[][] COMPRESSED_EMPTY_WORD = new byte[EMPTY_WORD_ARRAY.length][];
 	private static final byte[][] COMPRESSED_WORD = new byte[WORD_ARRAY.length][];
 	private static final byte[][] COMPRESSED_TWO_WORDS = new byte[TWO_WORDS_ARRAY.length][];
@@ -69,150 +101,150 @@ class FourBitBinarySearchTest extends BaseTest {
 	private static final String NULL_REF = null;
 
 	static {
-//		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_EMPTY_WORD, EMPTY_WORD_ARRAY);
-//		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_WORD, WORD_ARRAY);
-//		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_TWO_WORDS, TWO_WORDS_ARRAY);
-//		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_WORDS, WORDS_ARRAY);
-//		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_SPECIAL, SPECIAL_ARRAY);
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_EMPTY_WORD, EMPTY_WORD_ARRAY);
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_WORD, WORD_ARRAY);
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_TWO_WORDS, TWO_WORDS_ARRAY);
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_WORDS, WORDS_ARRAY);
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_SPECIAL, SPECIAL_ARRAY);
 	}
 
-//	@Test
+	@Test
 	public void nullAndEmptySearchEdgeCaseTest() {
-		assertThrows(NullPointerException.class, () -> SixBitBinarySearch.search(null, "A"));
-		assertThrows(NullPointerException.class, () -> Arrays.binarySearch(null, "A"));
-		assertEquals(-1, SixBitBinarySearch.search(new byte[0][], NULL_REF));
+		assertThrows(NullPointerException.class, () -> FourBitBinarySearch.search(null, "0"));
+		assertThrows(NullPointerException.class, () -> Arrays.binarySearch(null, "0"));
+		assertEquals(-1, FourBitBinarySearch.search(new byte[0][], NULL_REF));
 		assertEquals(-1, Arrays.binarySearch(new String[0], null));
-		assertEquals(-1, SixBitBinarySearch.search(new byte[0][], ""));
+		assertEquals(-1, FourBitBinarySearch.search(new byte[0][], ""));
 		assertEquals(-1, Arrays.binarySearch(new String[0], ""));
-		assertEquals(-1, SixBitBinarySearch.search(new byte[0][], "A"));
-		assertEquals(-1, Arrays.binarySearch(new String[0], "A"));
-		assertThrows(NullPointerException.class, () -> SixBitBinarySearch.search(COMPRESSED_WORD, NULL_REF));
+		assertEquals(-1, FourBitBinarySearch.search(new byte[0][], "0"));
+		assertEquals(-1, Arrays.binarySearch(new String[0], "0"));
+		assertThrows(NullPointerException.class, () -> FourBitBinarySearch.search(COMPRESSED_WORD, NULL_REF));
 		assertThrows(NullPointerException.class, () -> Arrays.binarySearch(WORD_ARRAY, null));
-		assertEquals(0, SixBitBinarySearch.search(COMPRESSED_EMPTY_WORD, ""));
+		assertEquals(0, FourBitBinarySearch.search(COMPRESSED_EMPTY_WORD, ""));
 		assertEquals(0, Arrays.binarySearch(EMPTY_WORD_ARRAY, ""));
-		assertEquals(-1, SixBitBinarySearch.search(COMPRESSED_WORD, ""));
+		assertEquals(-1, FourBitBinarySearch.search(COMPRESSED_WORD, ""));
 		assertEquals(-1, Arrays.binarySearch(WORD_ARRAY, ""));
-		assertEquals(0, SixBitBinarySearch.search(COMPRESSED_WORDS, ""));
+		assertEquals(0, FourBitBinarySearch.search(COMPRESSED_WORDS, ""));
 		assertEquals(0, Arrays.binarySearch(WORDS_ARRAY, ""));
 	}
 
-//	@Test
+	@Test
 	public void characterSearchEdgeCaseTest() {
-		assertEquals(-2, SixBitBinarySearch.search(COMPRESSED_EMPTY_WORD, "A"));
-		assertEquals(-2, Arrays.binarySearch(EMPTY_WORD_ARRAY, "A"));
-		assertEquals(-1, SixBitBinarySearch.search(COMPRESSED_WORD, "A"));
-		assertEquals(-1, Arrays.binarySearch(WORD_ARRAY, "A"));
-		assertEquals(-2, SixBitBinarySearch.search(COMPRESSED_WORD, "X"));
-		assertEquals(-2, Arrays.binarySearch(WORD_ARRAY, "X"));
-		assertEquals(-1, SixBitBinarySearch.search(COMPRESSED_WORD, "A"));
-		assertEquals(-1, Arrays.binarySearch(WORD_ARRAY, "A"));
-		assertEquals(-2, SixBitBinarySearch.search(COMPRESSED_TWO_WORDS, "B"));
-		assertEquals(-2, Arrays.binarySearch(TWO_WORDS_ARRAY, "B"));
-		assertEquals(-1, SixBitBinarySearch.search(COMPRESSED_TWO_WORDS, "A"));
-		assertEquals(-1, Arrays.binarySearch(TWO_WORDS_ARRAY, "A"));
-		assertEquals(-2, SixBitBinarySearch.search(COMPRESSED_WORDS, " "));
+		assertEquals(-2, FourBitBinarySearch.search(COMPRESSED_EMPTY_WORD, "1"));
+		assertEquals(-2, Arrays.binarySearch(EMPTY_WORD_ARRAY, "1"));
+		assertEquals(-1, FourBitBinarySearch.search(COMPRESSED_WORD, "1"));
+		assertEquals(-1, Arrays.binarySearch(WORD_ARRAY, "1"));
+		assertEquals(-2, FourBitBinarySearch.search(COMPRESSED_WORD, "9"));
+		assertEquals(-2, Arrays.binarySearch(WORD_ARRAY, "9"));
+		assertEquals(-1, FourBitBinarySearch.search(COMPRESSED_WORD, "1"));
+		assertEquals(-1, Arrays.binarySearch(WORD_ARRAY, "1"));
+		assertEquals(-2, FourBitBinarySearch.search(COMPRESSED_TWO_WORDS, "2"));
+		assertEquals(-2, Arrays.binarySearch(TWO_WORDS_ARRAY, "2"));
+		assertEquals(-1, FourBitBinarySearch.search(COMPRESSED_TWO_WORDS, "1"));
+		assertEquals(-1, Arrays.binarySearch(TWO_WORDS_ARRAY, "1"));
+		assertEquals(-2, FourBitBinarySearch.search(COMPRESSED_WORDS, " "));
 		assertEquals(-2, Arrays.binarySearch(WORDS_ARRAY, " "));
-		assertEquals(-2, SixBitBinarySearch.search(COMPRESSED_WORDS, "'"));
-		assertEquals(-2, Arrays.binarySearch(WORDS_ARRAY, "'"));
-		assertEquals(1, SixBitBinarySearch.search(COMPRESSED_WORDS, "A"));
-		assertEquals(1, Arrays.binarySearch(WORDS_ARRAY, "A"));
-		assertEquals(1, SixBitBinarySearch.search(COMPRESSED_WORDS, "A"));
-		assertEquals(1, Arrays.binarySearch(WORDS_ARRAY, "A"));
+		assertEquals(-2, FourBitBinarySearch.search(COMPRESSED_WORDS, "-"));
+		assertEquals(-2, Arrays.binarySearch(WORDS_ARRAY, "-"));
+		assertEquals(1, FourBitBinarySearch.search(COMPRESSED_WORDS, "01"));
+		assertEquals(1, Arrays.binarySearch(WORDS_ARRAY, "01"));
 	}
 
-//	@Test
+	@Test
 	public void wordSearchEdgeCaseTest() {
-		assertEquals(0, SixBitBinarySearch.search(COMPRESSED_WORD, "WORD"));
-		assertEquals(0, Arrays.binarySearch(WORD_ARRAY, "WORD"));
-		assertEquals(-2, SixBitBinarySearch.search(COMPRESSED_TWO_WORDS, "AAB"));
-		assertEquals(-2, Arrays.binarySearch(TWO_WORDS_ARRAY, "AAB"));
-		assertEquals(-3, SixBitBinarySearch.search(COMPRESSED_WORDS, "AA"));
-		assertEquals(-3, Arrays.binarySearch(WORDS_ARRAY, "AA"));
-		assertEquals(-3, SixBitBinarySearch.search(COMPRESSED_WORDS, "AB"));
-		assertEquals(-3, Arrays.binarySearch(WORDS_ARRAY, "AB"));
-		assertEquals(3, SixBitBinarySearch.search(COMPRESSED_WORDS, "ABA")); // Duplicate.
-		assertEquals(3, Arrays.binarySearch(WORDS_ARRAY, "ABA"));
-		assertEquals(-18, SixBitBinarySearch.search(COMPRESSED_WORDS, "HASH"));
-		assertEquals(-18, Arrays.binarySearch(WORDS_ARRAY, "HASH"));
-		assertEquals(-19, SixBitBinarySearch.search(COMPRESSED_WORDS, "HUP"));
-		assertEquals(-19, Arrays.binarySearch(WORDS_ARRAY, "HUP"));
-		assertEquals(-33, SixBitBinarySearch.search(COMPRESSED_WORDS, "UMBRELL"));
-		assertEquals(-33, Arrays.binarySearch(WORDS_ARRAY, "UMBRELL"));
-		assertEquals(32, SixBitBinarySearch.search(COMPRESSED_WORDS, "UMBRELLA"));
-		assertEquals(32, Arrays.binarySearch(WORDS_ARRAY, "UMBRELLA"));
-		assertEquals(-34, SixBitBinarySearch.search(COMPRESSED_WORDS, "UMBRELLAA"));
-		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "UMBRELLAA"));
-		assertEquals(-34, SixBitBinarySearch.search(COMPRESSED_WORDS, "ZOP"));
-		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "ZOP"));
+		assertEquals(0, FourBitBinarySearch.search(COMPRESSED_WORD, "8765"));
+		assertEquals(0, Arrays.binarySearch(WORD_ARRAY, "8765"));
+		assertEquals(-2, FourBitBinarySearch.search(COMPRESSED_TWO_WORDS, "112"));
+		assertEquals(-2, Arrays.binarySearch(TWO_WORDS_ARRAY, "112"));
+		assertEquals(-3, FourBitBinarySearch.search(COMPRESSED_WORDS, "0101")); // AA
+		assertEquals(-3, Arrays.binarySearch(WORDS_ARRAY, "0101")); // AA
+		assertEquals(-3, FourBitBinarySearch.search(COMPRESSED_WORDS, "0102")); // AB
+		assertEquals(-3, Arrays.binarySearch(WORDS_ARRAY, "0102")); // AB
+		assertEquals(3, FourBitBinarySearch.search(COMPRESSED_WORDS, "010201")); // ABA
+		assertEquals(3, Arrays.binarySearch(WORDS_ARRAY, "010201")); // ABA
+		assertEquals(-18, FourBitBinarySearch.search(COMPRESSED_WORDS, "08011908")); // HASH
+		assertEquals(-18, Arrays.binarySearch(WORDS_ARRAY, "08011908")); // HASH
+		assertEquals(-19, FourBitBinarySearch.search(COMPRESSED_WORDS, "082116")); // HUP
+		assertEquals(-19, Arrays.binarySearch(WORDS_ARRAY, "082116")); // HUP
+		assertEquals(-33, FourBitBinarySearch.search(COMPRESSED_WORDS, "21130218051212")); // UMBRELL
+		assertEquals(-33, Arrays.binarySearch(WORDS_ARRAY, "21130218051212")); // UMBRELL
+		assertEquals(32, FourBitBinarySearch.search(COMPRESSED_WORDS, "2113021805121201")); // UMBRELLA
+		assertEquals(32, Arrays.binarySearch(WORDS_ARRAY, "2113021805121201")); // UMBRELLA
+		assertEquals(-34, FourBitBinarySearch.search(COMPRESSED_WORDS, "211302180512120101")); // UMBRELLAA
+		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "211302180512120101")); // UMBRELLAA
+		assertEquals(-34, FourBitBinarySearch.search(COMPRESSED_WORDS, "261516")); // ZOP
+		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "261516")); // ZOP
 	}
 
-//	@Test
+	@Test
 	public void specialCharactersSearch() {
-		assertEquals(-1, SixBitBinarySearch.search(COMPRESSED_SPECIAL, ""));
+		assertEquals(-1, FourBitBinarySearch.search(COMPRESSED_SPECIAL, ""));
 		assertEquals(-1, Arrays.binarySearch(SPECIAL_ARRAY, ""));
-		assertEquals(0, SixBitBinarySearch.search(COMPRESSED_SPECIAL, " "));
-		assertEquals(0, Arrays.binarySearch(SPECIAL_ARRAY, " "));
-		assertEquals(1, SixBitBinarySearch.search(COMPRESSED_SPECIAL, "@"));
-		assertEquals(1, Arrays.binarySearch(SPECIAL_ARRAY, "@"));
-		assertEquals(3, SixBitBinarySearch.search(COMPRESSED_SPECIAL, "}"));
-		assertEquals(3, Arrays.binarySearch(SPECIAL_ARRAY, "}"));
+		assertEquals(0, FourBitBinarySearch.search(COMPRESSED_SPECIAL, "#"));
+		assertEquals(0, Arrays.binarySearch(SPECIAL_ARRAY, "#"));
+		assertEquals(1, FourBitBinarySearch.search(COMPRESSED_SPECIAL, "."));
+		assertEquals(1, Arrays.binarySearch(SPECIAL_ARRAY, "."));
+		assertEquals(3, FourBitBinarySearch.search(COMPRESSED_SPECIAL, ";"));
+		assertEquals(3, Arrays.binarySearch(SPECIAL_ARRAY, ";"));
 	}
 
 	// -----------------------------------------------------------------------------------------------------------------
 	// Prefix search edge cases:
 
 	private static final String[] CLIENT_DATA_ARRAY = {
-		"ABCDEFGHIA CLIENT DATA CLIENT DATA CLIENT DATA",
-		"ABCDEFGHIB CLIENT DATA CLIENT DATA CLIENT DATA",
-		"ABCDEFGHIC CLIENT DATA CLIENT DATA CLIENT DATA",
-		"ABCDEFGHID CLIENT DATA CLIENT DATA CLIENT DATA",
-		"ABCDEFGHIE CLIENT DATA CLIENT DATA CLIENT DATA"};
+		"01020304050607080901#435384758934757894343",
+		"01020304050607080902#435384758934757894343",
+		"01020304050607080903#435384758934757894343",
+		"01020304050607080904#435384758934757894343",
+		"01020304050607080905#435384758934757894343"
+	};
+
 	private static final byte[][] COMPRESSED_CLIENT_DATA = new byte[CLIENT_DATA_ARRAY.length][];
 
 	static {
-//		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_CLIENT_DATA, CLIENT_DATA_ARRAY);
+		ManagedBulkAsciiCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_CLIENT_DATA, CLIENT_DATA_ARRAY);
 	}
 
-//	@Test
+	@Test
 	public void prefixSearchTest() {
-		assertThrows(NullPointerException.class, () -> SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, NULL_REF));
-		assertEquals(16, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "")); // Will match with the first entry it finds.
-		assertEquals(3, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "A")); // Will get the first one it finds starting A.
-		assertEquals(3, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "AB")); // Duplicate.
-		assertEquals(3, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "ABA")); // Duplicate.
-		assertEquals(4, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "AMBIT"));
-		assertEquals(4, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "AMBITI"));
-		assertEquals(4, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "AMBITIO"));
-		assertEquals(-6, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "AMBITIONN"));
-		assertEquals(-6, Arrays.binarySearch(WORDS_ARRAY, "AMBITIONN"));
-		assertEquals(7, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "BA"));
-		assertEquals(32, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "UMBRE"));
-		assertEquals(32, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "UMBRELLA"));
-		assertEquals(-34, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "UMBRELLAA"));
-		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "UMBRELLAA"));
-		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "UMBRELLAA"));
-		assertEquals(-1, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHI "));
-		assertEquals(2, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHI")); // First one it finds.
-		assertEquals(0, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIA"));
-		assertEquals(0, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIA "));
-		assertEquals(-1, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIA"));
-		assertEquals(-1, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIA "));
-		assertEquals(1, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIB"));
-		assertEquals(1, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIB "));
-		assertEquals(-2, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIB B"));
-		assertEquals(-2, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIB B"));
-		assertEquals(-2, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIB"));
-		assertEquals(-2, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIB "));
-		assertEquals(2, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIC"));
-		assertEquals(2, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIC "));
-		assertEquals(3, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHID"));
-		assertEquals(3, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHID "));
-		assertEquals(4, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIE"));
-		assertEquals(4, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIE "));
-		assertEquals(-6, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIEE"));
-		assertEquals(-6, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIEE"));
-		assertEquals(-6, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIEE "));
-		assertEquals(-6, Arrays.binarySearch(CLIENT_DATA_ARRAY, "ABCDEFGHIEE "));
+		assertThrows(NullPointerException.class, () -> FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, NULL_REF));
+		assertEquals(16, FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "")); // Will match with the first entry it finds.
+		assertEquals(3, FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "01")); // Will get the first one it finds starting A.
+		assertEquals(3, FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "0102")); // Duplicate.
+		assertEquals(3, FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "010201")); // Duplicate.
+		assertEquals(4, FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "0113020920"));
+		assertEquals(4, FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "011302092009"));
+		assertEquals(4, FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "01130209200915"));
+		assertEquals(-6, FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "011302092009151414"));
+		assertEquals(-6, Arrays.binarySearch(WORDS_ARRAY, "011302092009151414"));
+		assertEquals(7, FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "0201"));
+		assertEquals(32, FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "2113021805"));
+		assertEquals(32, FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "2113021805121201"));
+		assertEquals(-34, FourBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "211302180512120101"));
+		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "211302180512120101"));
+		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "211302180512120101#"));
+		assertEquals(-1, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "010203040506070809#"));
+		assertEquals(2, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "010203040506070809")); // First one it finds.
+		assertEquals(0, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "01020304050607080901"));
+		assertEquals(0, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "01020304050607080901#"));
+		assertEquals(-1, Arrays.binarySearch(CLIENT_DATA_ARRAY, "01020304050607080901"));
+		assertEquals(-1, Arrays.binarySearch(CLIENT_DATA_ARRAY, "01020304050607080901#"));
+		assertEquals(1, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "01020304050607080902"));
+		assertEquals(1, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "01020304050607080902#"));
+		assertEquals(-2, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "01020304050607080902#02"));
+		assertEquals(-2, Arrays.binarySearch(CLIENT_DATA_ARRAY, "01020304050607080902#02"));
+		assertEquals(-2, Arrays.binarySearch(CLIENT_DATA_ARRAY, "01020304050607080902"));
+		assertEquals(-2, Arrays.binarySearch(CLIENT_DATA_ARRAY, "01020304050607080902#"));
+		assertEquals(2, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "01020304050607080903"));
+		assertEquals(2, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "01020304050607080903#"));
+		assertEquals(3, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "01020304050607080904"));
+		assertEquals(3, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "01020304050607080904#"));
+		assertEquals(4, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "01020304050607080905"));
+		assertEquals(4, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "01020304050607080905#"));
+		assertEquals(-6, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "0102030405060708090505"));
+		assertEquals(-6, Arrays.binarySearch(CLIENT_DATA_ARRAY, "0102030405060708090505"));
+		assertEquals(-6, FourBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "0102030405060708090505#"));
+		assertEquals(-6, Arrays.binarySearch(CLIENT_DATA_ARRAY, "0102030405060708090505#"));
 	}
 
 }
