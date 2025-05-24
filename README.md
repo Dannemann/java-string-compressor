@@ -1,6 +1,6 @@
 # java-string-compressor
 
-Ultra-fast, low-level string compression library. Up to 50% memory reduction.
+Ultra-fast, zero-allocation string compression library. Up to 50% memory reduction.
 
 - 4 bits -> 50% compression rate
 - 5 bits -> 38% compression rate

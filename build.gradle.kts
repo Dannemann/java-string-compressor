@@ -8,7 +8,7 @@ plugins {
 
 group = "com.dannemann"
 version = "1.2.0"
-description = "Ultra-fast, low-level string compression library. Up to 50% memory reduction."
+description = "Ultra-fast, zero-allocation string compression library. Up to 50% memory reduction."
 
 repositories {
     mavenCentral()
