@@ -116,8 +116,6 @@ class SixBitBinarySearchTest extends BaseTest {
 		assertEquals(-2, Arrays.binarySearch(WORDS_ARRAY, "'"));
 		assertEquals(1, SixBitBinarySearch.search(COMPRESSED_WORDS, "A"));
 		assertEquals(1, Arrays.binarySearch(WORDS_ARRAY, "A"));
-		assertEquals(1, SixBitBinarySearch.search(COMPRESSED_WORDS, "A"));
-		assertEquals(1, Arrays.binarySearch(WORDS_ARRAY, "A"));
 	}
 
 	@Test
@@ -190,7 +188,7 @@ class SixBitBinarySearchTest extends BaseTest {
 		assertEquals(32, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "UMBRELLA"));
 		assertEquals(-34, SixBitBinarySearch.prefixSearch(COMPRESSED_WORDS, "UMBRELLAA"));
 		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "UMBRELLAA"));
-		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "UMBRELLAA"));
+		assertEquals(-34, Arrays.binarySearch(WORDS_ARRAY, "UMBRELLAA "));
 		assertEquals(-1, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHI "));
 		assertEquals(2, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHI")); // First one it finds.
 		assertEquals(0, SixBitBinarySearch.prefixSearch(COMPRESSED_CLIENT_DATA, "ABCDEFGHIA"));
