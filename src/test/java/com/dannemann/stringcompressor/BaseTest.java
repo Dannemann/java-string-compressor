@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static com.dannemann.stringcompressor.AsciiCompressor.getString;
 
 /**
  * @author Jean Dannemann Carone
@@ -34,21 +34,21 @@ abstract class BaseTest {
 
 	protected static String[] generateRandomStringArray(final int numElements, final int minStrSize, final int maxStrSize, byte[] charset) {
 		final String[] strings = new String[numElements];
-		Arrays.parallelSetAll(strings, i -> new String(generateRandomStringBytes(ThreadLocalRandom.current().nextInt(minStrSize, maxStrSize), charset), ISO_8859_1));
+		Arrays.parallelSetAll(strings, i -> getString(generateRandomStringBytes(ThreadLocalRandom.current().nextInt(minStrSize, maxStrSize), charset)));
 		return strings;
 	}
 
 	protected static List<String> generateRandomStringList(final int numElements, final int minStrSize, final int maxStrSize, byte[] charset) {
 		final List<String> strings = new ArrayList<>(numElements);
 		for (int i = 0; i < numElements; i++)
-			strings.add(new String(generateRandomStringBytes(RANDOM.nextInt(minStrSize, maxStrSize), charset), ISO_8859_1));
+			strings.add(getString(generateRandomStringBytes(RANDOM.nextInt(minStrSize, maxStrSize), charset)));
 		return strings;
 	}
 
 	protected List<String> generateRandomUniqueOrderedStringList(final int quantity, final int minStrSize, final int maxStrSize, final byte[] charset) {
 		Set<String> stringSet = new HashSet<>((int) Math.ceil(quantity / .75));
 		for (int i = 0; i < quantity; i++)
-			stringSet.add(new String(generateRandomStringBytes(RANDOM.nextInt(minStrSize, maxStrSize), charset), ISO_8859_1));
+			stringSet.add(getString(generateRandomStringBytes(RANDOM.nextInt(minStrSize, maxStrSize), charset)));
 		final List<String> stringList = new ArrayList<>(stringSet);
 		stringSet = null;
 		Collections.sort(stringList);

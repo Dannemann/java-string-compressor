@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import static com.dannemann.stringcompressor.AsciiCompressor.getBytes;
+import static com.dannemann.stringcompressor.AsciiCompressor.getString;
 import static com.dannemann.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET;
 import static com.dannemann.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET_LOWERCASE;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
@@ -30,7 +31,7 @@ class SixBitAsciiCompressorTest extends BaseTest {
 		byte[] compressed = compressor.compress(inputStr);
 		byte[] decompressed = compressor.decompress(compressed);
 
-		assertEquals("HELLO, COMPRESSOR", new String(decompressed, ISO_8859_1));
+		assertEquals("HELLO, COMPRESSOR", AsciiCompressor.getString(decompressed));
 
 		// If preserveOriginal is false, this will fail because inputStr has been modified.
 //		assertArrayEquals(inputStr, decompressed);
@@ -162,7 +163,7 @@ class SixBitAsciiCompressorTest extends BaseTest {
 		AsciiCompressor compressor = new SixBitAsciiCompressor();
 		byte[] compressed = compressor.compress(new byte[]{'A', (byte) 'Ç', 'B', 'C'});
 		byte[] decompressed = compressor.decompress(compressed);
-		assertEquals("AGBC", new String(decompressed, ISO_8859_1));
+		assertEquals("AGBC", getString(decompressed));
 	}
 
 	@Test

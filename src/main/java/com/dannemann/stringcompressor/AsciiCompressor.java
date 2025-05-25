@@ -89,13 +89,13 @@ public abstract class AsciiCompressor {
 
 				if (bite < 0)
 					throw new CharacterNotSupportedException(
-						"Only ASCII characters are supported. Invalid '" + (char) bite + "' with code point " + bite + " in string (maybe incomplete): \"" + new String(string, ISO_8859_1) + "\"");
+						"Only ASCII characters are supported. Invalid '" + (char) bite + "' with code point " + bite + " in string (maybe incomplete): \"" + getString(string) + "\"");
 
 				final byte encoded = lookupTable[bite];
 
 				if (encoded == -1)
 					throw new CharacterNotSupportedException(
-						"Character '" + (char) bite + "' with code point " + bite + " is not defined in the supported characters array. Source string is (maybe incomplete): \"" + new String(string, ISO_8859_1) + "\"");
+						"Character '" + (char) bite + "' with code point " + bite + " is not defined in the supported characters array. Source string is (maybe incomplete): \"" + getString(string) + "\"");
 
 				string[i] = encoded;
 			}

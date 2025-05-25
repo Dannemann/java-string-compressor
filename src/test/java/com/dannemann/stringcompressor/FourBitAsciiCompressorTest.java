@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import static com.dannemann.stringcompressor.AsciiCompressor.getBytes;
+import static com.dannemann.stringcompressor.AsciiCompressor.getString;
 import static com.dannemann.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -29,7 +30,7 @@ class FourBitAsciiCompressorTest extends BaseTest {
 		byte[] compressed = compressor.compress(inputStr);
 		byte[] decompressed = compressor.decompress(compressed);
 
-		assertEquals("0123456789", new String(decompressed, ISO_8859_1));
+		assertEquals("0123456789", AsciiCompressor.getString(decompressed));
 
 		// If preserveOriginal is false, this will fail because inputStr has been modified.
 //		assertArrayEquals(inputStr, decompressed);
@@ -129,7 +130,7 @@ class FourBitAsciiCompressorTest extends BaseTest {
 		AsciiCompressor compressor = new FourBitAsciiCompressor();
 		byte[] compressed = compressor.compress(new byte[]{'0', (byte) 'Ç', '2', '3'});
 		byte[] decompressed = compressor.decompress(compressed);
-		assertEquals(";;23", new String(decompressed, ISO_8859_1));
+		assertEquals(";;23", getString(decompressed));
 	}
 
 	@Test

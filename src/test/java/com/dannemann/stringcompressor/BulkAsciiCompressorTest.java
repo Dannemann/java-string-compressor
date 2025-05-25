@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dannemann.stringcompressor.AsciiCompressor.getString;
 import static com.dannemann.stringcompressor.FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET;
 import static com.dannemann.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
 import static com.dannemann.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET;
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -65,7 +65,7 @@ class BulkAsciiCompressorTest extends BaseTest {
 			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
 					assertNotNull(destination[j]);
-					assertEquals(fullSource.get(j), new String(compressor.decompress(destination[j]), ISO_8859_1));
+					assertEquals(fullSource.get(j), getString(compressor.decompress(destination[j])));
 				} else
 					assertNull(destination[j]);
 		}
@@ -91,7 +91,7 @@ class BulkAsciiCompressorTest extends BaseTest {
 			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
 					assertNotNull(destination[j]);
-					assertEquals(fullSource.get(j), new String(compressor.decompress(destination[j]), ISO_8859_1));
+					assertEquals(fullSource.get(j), getString(compressor.decompress(destination[j])));
 				} else
 					assertNull(destination[j]);
 		}
