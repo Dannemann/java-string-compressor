@@ -113,7 +113,8 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 	}
 
 	/**
-	 * Overloaded version of {@link #compress(byte[])}.
+	 * <p>Overloaded version of {@link #compress(byte[])}.</p>
+	 * <p>Whenever possible, use {@link #compress(byte[])} and avoid string instantiation.</p>
 	 * @author Jean Dannemann Carone
 	 */
 	@Override
