@@ -33,7 +33,7 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 
 	/**
 	 * Creates a new compressor instance using the default 6-bit character set ({@link #DEFAULT_6BIT_CHARSET}). Uses default settings
-	 * for exception throwing ({@link #throwException} is {@code false}) and original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * for exception throwing ({@link #throwException} is {@code false}) and byte array data preservation ({@link #preserveOriginal} is {@code false}).
 	 * @author Jean Dannemann Carone
 	 */
 	public SixBitAsciiCompressor() {
@@ -42,10 +42,10 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 
 	/**
 	 * Creates a new compressor instance with a user defined 6-bit character set. Uses default settings for exception throwing
-	 * ({@link #throwException} is {@code false}) and original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * ({@link #throwException} is {@code false}) and byte array data preservation ({@link #preserveOriginal} is {@code false}).
 	 * @param supportedCharset The custom set of supported characters. See {@link #DEFAULT_6BIT_CHARSET} for an example of how to define it.
 	 * @author Jean Dannemann Carone
-	 * @see #supportedCharset
+	 * @see #getSupportedCharset()
 	 */
 	public SixBitAsciiCompressor(byte[] supportedCharset) {
 		super(supportedCharset, THROW_EXCEPTION_DEFAULT, PRESERVE_ORIGINAL_DEFAULT);
@@ -53,10 +53,10 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 
 	/**
 	 * Creates a new compressor instance using the default 6-bit character set ({@link #DEFAULT_6BIT_CHARSET}) and with a configurable
-	 * exception-throwing behavior. Uses default setting for original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * exception-throwing behavior. Uses default setting for byte array data preservation ({@link #preserveOriginal} is {@code false}).
 	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
 	 * @author Jean Dannemann Carone
-	 * @see #throwException
+	 * @see #isThrowException()
 	 */
 	public SixBitAsciiCompressor(boolean throwException) {
 		super(DEFAULT_6BIT_CHARSET, throwException, PRESERVE_ORIGINAL_DEFAULT);
@@ -64,12 +64,12 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 
 	/**
 	 * Creates a new compressor instance with a user defined 6-bit character set and configurable exception-throwing behavior.
-	 * Uses default setting for original data preservation ({@link #preserveOriginal} is {@code false}).
+	 * Uses default setting for byte array data preservation ({@link #preserveOriginal} is {@code false}).
 	 * @param supportedCharset The custom set of supported characters. See {@link #DEFAULT_6BIT_CHARSET} for an example of how to define it.
 	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
 	 * @author Jean Dannemann Carone
-	 * @see #supportedCharset
-	 * @see #throwException
+	 * @see #getSupportedCharset()
+	 * @see #isThrowException()
 	 */
 	public SixBitAsciiCompressor(byte[] supportedCharset, boolean throwException) {
 		super(supportedCharset, throwException, PRESERVE_ORIGINAL_DEFAULT);
@@ -77,26 +77,26 @@ public class SixBitAsciiCompressor extends AsciiCompressor {
 
 	/**
 	 * Creates a new compressor instance using the default 6-bit character set ({@link #DEFAULT_6BIT_CHARSET}),
-	 * with configurable exception-throwing behavior and original data preservation.
+	 * with configurable exception-throwing behavior and byte array data preservation.
 	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
-	 * @param preserveOriginal If {@code true}, preserves the original input data by working on a copy; otherwise, modifies the input data directly.
+	 * @param preserveOriginal If {@code true}, preserves the original input byte array by working on a copy; otherwise, modifies it directly.
 	 * @author Jean Dannemann Carone
-	 * @see #throwException
-	 * @see #preserveOriginal
+	 * @see #isThrowException()
+	 * @see #isPreserveOriginal()
 	 */
 	public SixBitAsciiCompressor(boolean throwException, boolean preserveOriginal) {
 		super(DEFAULT_6BIT_CHARSET, throwException, preserveOriginal);
 	}
 
 	/**
-	 * Creates a new compressor instance with a user defined 6-bit character set, configurable exception-throwing behavior, and original data preservation.
+	 * Creates a new compressor instance with a user defined 6-bit character set, configurable exception-throwing behavior, and byte array data preservation.
 	 * @param supportedCharset The custom set of supported characters. See {@link #DEFAULT_6BIT_CHARSET} for an example of how to define it.
 	 * @param throwException If {@code true}, throws an exception on unsupported characters; otherwise, silently ignores them.
-	 * @param preserveOriginal If {@code true}, preserves the original input data by working on a copy; otherwise, modifies the input data directly.
+	 * @param preserveOriginal If {@code true}, preserves the original input byte array by working on a copy; otherwise, modifies it directly.
 	 * @author Jean Dannemann Carone
-	 * @see #supportedCharset
-	 * @see #throwException
-	 * @see #preserveOriginal
+	 * @see #getSupportedCharset()
+	 * @see #isThrowException()
+	 * @see #isPreserveOriginal()
 	 */
 	public SixBitAsciiCompressor(byte[] supportedCharset, boolean throwException, boolean preserveOriginal) {
 		super(supportedCharset, throwException, preserveOriginal);

@@ -12,41 +12,23 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
  */
 public abstract class AsciiCompressor {
 
-	protected static final boolean PRESERVE_ORIGINAL_DEFAULT = false;
-	protected static final boolean THROW_EXCEPTION_DEFAULT = false;
-
 	// Fields:
 
-	/**
-	 * <p>The set of characters accepted by this compressor. Compressors can only encode characters defined
-	 * explicitly by this set, which is typically chosen based on specific application requirements.</p>
-	 * <p>Refer to the default character sets provided by this library: {@link FourBitAsciiCompressor#DEFAULT_4BIT_CHARSET},
-	 * {@link FiveBitAsciiCompressor#DEFAULT_5BIT_CHARSET}, and {@link SixBitAsciiCompressor#DEFAULT_6BIT_CHARSET}.</p>
-	 */
+	protected static final boolean THROW_EXCEPTION_DEFAULT = false;
+	protected static final boolean PRESERVE_ORIGINAL_DEFAULT = false;
+
 	protected final byte[] supportedCharset;
-
-	/**
-	 * Determines if a validation exception should be thrown when encountering unsupported characters during compression.
-	 * Useful for testing and debugging purposes. Generally not recommended for production environments, as it's preferable
-	 * to silently ignore invalid characters without interrupting the entire compression process.
-	 */
 	protected final boolean throwException;
-
-	/**
-	 * To avoid duplicating strings and save memory, the compressor will modify the original input string, encoding it and making it unusable.
-	 * This is particularly useful when compressing and storing long strings in memory.
-	 * To avoid this behavior and compress a copy of the original, set this to {@code true}.
-	 */
 	protected final boolean preserveOriginal;
 
-	private final byte[] lookupTable = new byte[128]; // ASCII range.
+	private final byte[] lookupTable = new byte[128];
 
 	// Constructor:
 
 	/**
-	 * @see #supportedCharset
-	 * @see #throwException
-	 * @see #preserveOriginal
+	 * @see #getSupportedCharset()
+	 * @see #isThrowException()
+	 * @see #isPreserveOriginal()
 	 */
 	public AsciiCompressor(byte[] supportedCharset, boolean throwException, boolean preserveOriginal) {
 		validateSupportedCharset(supportedCharset);
@@ -85,17 +67,16 @@ public abstract class AsciiCompressor {
 	// Protected interface:
 
 	protected void standardCharsetValidation(byte[] supportedCharset, int numBits) {
-		int len = supportedCharset.length;
 		int maxChars = (int) Math.pow(2, numBits);
 
-		if (len != maxChars)
+		if (supportedCharset.length != maxChars)
 			throw new CharacterNotSupportedException(
-				numBits + "-bit compressor requires a set of exactly " + maxChars + " characters. Currently " + len + ".");
+				numBits + "-bit compressor requires a set of exactly " + maxChars + " characters. Currently " + supportedCharset.length + ".");
 
-		for (int i = 0; i < len; i++)
-			if (supportedCharset[i] < 0)
+		for (byte bite : supportedCharset)
+			if (bite < 0)
 				throw new CharacterNotSupportedException(
-					"Invalid character found in the custom supported charset: '" + (char) supportedCharset[i] + "' (code point " + supportedCharset[i] + ")");
+					"Invalid character found in the custom supported charset: '" + (char) bite + "' (code point " + bite + ")");
 	}
 
 	/**
@@ -128,12 +109,48 @@ public abstract class AsciiCompressor {
 	/**
 	 * <p>Fastest way to get bytes from an ASCII String.</p>
 	 * <p>If {@code string} is null, returns null.</p>
+	 * <p>This method effectively do: {@code string.getBytes(ISO_8859_1)}<br/>
+	 * <a href="https://cl4es.github.io/2021/02/23/Faster-Charset-Decoding.html">To understand why, click here.</a></p>
 	 * @param string The target string.
 	 * @return The resultant byte array.
 	 * @author Jean Dannemann Carone
 	 */
 	public static byte[] getBytes(final String string) {
 		return string != null ? string.getBytes(ISO_8859_1) : null;
+	}
+
+	// Getters:
+
+	/**
+	 * <p>The set of characters accepted by this compressor. Compressors can only encode characters defined
+	 * explicitly by this charset, which is typically chosen based on specific application requirements.</p>
+	 * <p>Refer to the default character sets provided by this library: {@link FourBitAsciiCompressor#DEFAULT_4BIT_CHARSET},
+	 * {@link FiveBitAsciiCompressor#DEFAULT_5BIT_CHARSET}, and {@link SixBitAsciiCompressor#DEFAULT_6BIT_CHARSET}.</p>
+	 * @author Jean Dannemann Carone
+	 */
+	public byte[] getSupportedCharset() {
+		return supportedCharset;
+	}
+
+	/**
+	 * <p>Determines if a validation exception should be thrown when encountering unsupported characters during
+	 * compression. Generally not recommended for production environments, as it's preferable to silently ignore
+	 * invalid characters without interrupting the entire compression process.</p>
+	 * <p>Useful for testing and debugging.</p>
+	 * @author Jean Dannemann Carone
+	 */
+	public boolean isThrowException() {
+		return throwException;
+	}
+
+	/**
+	 * <p>When dealing directly with byte[] string representation, the compressor will modify the original array, encoding
+	 * it and making it unusable. To avoid this behavior and compress a copy of the original, set this to {@code true}.</p>
+	 * <p>Useful for testing and debugging on a zero-allocation environment, when the source is also a byte array.</p>
+	 * @author Jean Dannemann Carone
+	 */
+	public boolean isPreserveOriginal() {
+		return preserveOriginal;
 	}
 
 }
