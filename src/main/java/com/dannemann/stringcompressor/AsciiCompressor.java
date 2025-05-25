@@ -45,7 +45,7 @@ public abstract class AsciiCompressor {
 	// Abstract methods:
 
 	/**
-	 * @param string String to be compressed.
+	 * @param string String byte array to be compressed.
 	 * @return A compressed byte array.
 	 * @throws NullPointerException If {@code string} is null.
 	 */
@@ -117,6 +117,19 @@ public abstract class AsciiCompressor {
 	 */
 	public static byte[] getBytes(final String string) {
 		return string != null ? string.getBytes(ISO_8859_1) : null;
+	}
+
+	/**
+	 * <p>Fastest way to create an ASCII String from a byte array.</p>
+	 * <p>If {@code bytes} is null, returns null.</p>
+	 * <p>This method effectively do: {@code new String(bytes, ISO_8859_1)}<br/>
+	 * <a href="https://cl4es.github.io/2021/10/17/Faster-Charset-Encoding.html">To understand why, click here.</a></p>
+	 * @param bytes String bytes.
+	 * @return The resultant String.
+	 * @author Jean Dannemann Carone
+	 */
+	public static String getString(final byte[] bytes) {
+		return bytes != null ? new String(bytes, ISO_8859_1) : null;
 	}
 
 	// Getters:
