@@ -21,16 +21,10 @@ class FiveBitAsciiCompressorTest extends BaseTest {
 	@Test
 	void usageExample() {
 		// A string to be compressed. Whenever possible, prefer working directly with byte[] to avoid creating String objects.
-		byte[] inputStr = "HELLO-COMPRESSOR".getBytes(US_ASCII);
+		byte[] inputStr = AsciiCompressor.getBytes("HELLO-COMPRESSOR");
 
 		// Creates a compressor with the default supported character set (see FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET)
 		AsciiCompressor compressor = new FiveBitAsciiCompressor();
-
-		// Creates a compressor with a custom charset, input validation, and input source preservation.
-		// Throws an exception when invalid characters are present; useful for debugging purposes
-		// (invalid characters should be silently ignored in production). Default is false.
-		// By default, the compressor overwrites the original input to minimize memory usage (useful for big strings).
-		// Set to true to prevent this. Default is false.
 //		AsciiCompressor customCompressor = new FiveBitAsciiCompressor(new byte[]{/* custom charset */}, true, true);
 
 		byte[] compressed = compressor.compress(inputStr);
