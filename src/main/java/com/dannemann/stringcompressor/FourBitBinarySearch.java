@@ -63,7 +63,7 @@ public final class FourBitBinarySearch {
 
 				if ((cmp = DEFAULT_4BIT_CHARSET[(bite & 0xF0) >> 4] - key[j++]) != 0 ||
 					j < keyLen &&
-						(cmp = DEFAULT_4BIT_CHARSET[bite & 0x0F] - key[j++]) != 0)
+					(cmp = DEFAULT_4BIT_CHARSET[bite & 0x0F] - key[j++]) != 0)
 					break;
 			}
 
