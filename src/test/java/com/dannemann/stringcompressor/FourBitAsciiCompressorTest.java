@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import static com.dannemann.stringcompressor.AsciiCompressor.getBytes;
 import static com.dannemann.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
-import static java.nio.charset.StandardCharsets.US_ASCII;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -29,7 +29,7 @@ class FourBitAsciiCompressorTest extends BaseTest {
 		byte[] compressed = compressor.compress(inputStr);
 		byte[] decompressed = compressor.decompress(compressed);
 
-		assertEquals("0123456789", new String(decompressed, US_ASCII));
+		assertEquals("0123456789", new String(decompressed, ISO_8859_1));
 
 		// If preserveOriginal is false, this will fail because inputStr has been modified.
 //		assertArrayEquals(inputStr, decompressed);
@@ -111,13 +111,13 @@ class FourBitAsciiCompressorTest extends BaseTest {
 		assertEquals(0, compressor1.compress(new byte[0]).length);
 		assertEquals(0, compressor1.compress(new byte[]{}).length);
 		assertEquals(0, compressor1.compress(getBytes("")).length);
-		assertEquals(0, compressor1.compress("".getBytes(US_ASCII)).length);
+		assertEquals(0, compressor1.compress("".getBytes(ISO_8859_1)).length);
 		assertEquals(0, compressor1.compress("").length);
 		AsciiCompressor compressor2 = new FourBitAsciiCompressor(true, true);
 		assertEquals(0, compressor2.compress(new byte[0]).length);
 		assertEquals(0, compressor2.compress(new byte[]{}).length);
 		assertEquals(0, compressor2.compress(getBytes("")).length);
-		assertEquals(0, compressor2.compress("".getBytes(US_ASCII)).length);
+		assertEquals(0, compressor2.compress("".getBytes(ISO_8859_1)).length);
 		assertEquals(0, compressor2.compress("").length);
 		String nullStr = null;
 		assertThrows(NullPointerException.class, () -> compressor1.compress(nullStr));
@@ -129,7 +129,7 @@ class FourBitAsciiCompressorTest extends BaseTest {
 		AsciiCompressor compressor = new FourBitAsciiCompressor();
 		byte[] compressed = compressor.compress(new byte[]{'0', (byte) 'Ç', '2', '3'});
 		byte[] decompressed = compressor.decompress(compressed);
-		assertEquals(";;23", new String(decompressed, US_ASCII));
+		assertEquals(";;23", new String(decompressed, ISO_8859_1));
 	}
 
 	@Test

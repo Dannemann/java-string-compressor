@@ -8,7 +8,7 @@ import java.util.List;
 import static com.dannemann.stringcompressor.FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET;
 import static com.dannemann.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
 import static com.dannemann.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET;
-import static java.nio.charset.StandardCharsets.US_ASCII;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -68,7 +68,7 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destination);
 			managed.compressAndAddAll(source);
 			for (int j = 0; j < quantity; j++)
-				assertEquals(source[j], new String(compressor.decompress(destination[j]), US_ASCII));
+				assertEquals(source[j], new String(compressor.decompress(destination[j]), ISO_8859_1));
 		}
 	}
 
@@ -91,7 +91,7 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
 					assertNotNull(destination[j]);
-					assertEquals(fullSource.get(j), new String(compressor.decompress(destination[j]), US_ASCII));
+					assertEquals(fullSource.get(j), new String(compressor.decompress(destination[j]), ISO_8859_1));
 				} else
 					assertNull(destination[j]);
 		}
@@ -107,7 +107,7 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destination);
 			managed.compressAndAddAll(source);
 			for (int j = 0; j < quantity; j++)
-				assertEquals(source.get(j), new String(compressor.decompress(destination[j]), US_ASCII));
+				assertEquals(source.get(j), new String(compressor.decompress(destination[j]), ISO_8859_1));
 		}
 	}
 
@@ -130,7 +130,7 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
 					assertNotNull(destination[j]);
-					assertEquals(fullSource.get(j), new String(compressor.decompress(destination[j]), US_ASCII));
+					assertEquals(fullSource.get(j), new String(compressor.decompress(destination[j]), ISO_8859_1));
 				} else
 					assertNull(destination[j]);
 		}

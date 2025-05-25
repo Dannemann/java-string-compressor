@@ -8,7 +8,7 @@ import java.util.Arrays;
 import static com.dannemann.stringcompressor.AsciiCompressor.getBytes;
 import static com.dannemann.stringcompressor.FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET;
 import static com.dannemann.stringcompressor.FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET_LOWERCASE;
-import static java.nio.charset.StandardCharsets.US_ASCII;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,7 +30,7 @@ class FiveBitAsciiCompressorTest extends BaseTest {
 		byte[] compressed = compressor.compress(inputStr);
 		byte[] decompressed = compressor.decompress(compressed);
 
-		assertEquals("HELLO-COMPRESSOR", new String(decompressed, US_ASCII));
+		assertEquals("HELLO-COMPRESSOR", new String(decompressed, ISO_8859_1));
 
 		// If preserveOriginal is false, this will fail because inputStr has been modified.
 //		assertArrayEquals(inputStr, decompressed);
@@ -144,13 +144,13 @@ class FiveBitAsciiCompressorTest extends BaseTest {
 		assertEquals(0, compressor1.compress(new byte[0]).length);
 		assertEquals(0, compressor1.compress(new byte[]{}).length);
 		assertEquals(0, compressor1.compress(getBytes("")).length);
-		assertEquals(0, compressor1.compress("".getBytes(US_ASCII)).length);
+		assertEquals(0, compressor1.compress("".getBytes(ISO_8859_1)).length);
 		assertEquals(0, compressor1.compress("").length);
 		AsciiCompressor compressor2 = new FiveBitAsciiCompressor(true, true);
 		assertEquals(0, compressor2.compress(new byte[0]).length);
 		assertEquals(0, compressor2.compress(new byte[]{}).length);
 		assertEquals(0, compressor2.compress(getBytes("")).length);
-		assertEquals(0, compressor2.compress("".getBytes(US_ASCII)).length);
+		assertEquals(0, compressor2.compress("".getBytes(ISO_8859_1)).length);
 		assertEquals(0, compressor2.compress("").length);
 		String nullStr = null;
 		assertThrows(NullPointerException.class, () -> compressor1.compress(nullStr));
@@ -162,7 +162,7 @@ class FiveBitAsciiCompressorTest extends BaseTest {
 		AsciiCompressor compressor = new FiveBitAsciiCompressor();
 		byte[] compressed = compressor.compress(new byte[]{'A', (byte) 'Ç', 'B', 'C'});
 		byte[] decompressed = compressor.decompress(compressed);
-		assertEquals("AGBC", new String(decompressed, US_ASCII));
+		assertEquals("AGBC", new String(decompressed, ISO_8859_1));
 	}
 
 	@Test
