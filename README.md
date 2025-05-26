@@ -20,8 +20,6 @@ byte[] c = new FiveBitAsciiCompressor().compress(data); // c is 62 megabytes.
 byte[] c = new SixBitAsciiCompressor().compress(data); // c is 75 megabytes.
 ```
 
-Check our documentation below.
-
 ## Downloads
 ```xml
 <dependency>
