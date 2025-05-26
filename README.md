@@ -65,7 +65,8 @@ AsciiCompressor compressor = new SixBitAsciiCompressor();
 Each compressor have a set of default supported characters which are defined in fields `DEFAULT_4BIT_CHARSET`, `DEFAULT_5BIT_CHARSET`, and `DEFAULT_6BIT_CHARSET`.
 If you need a custom character set, use constructors with parameter `supportedCharset`:
 ```java
-byte[] myCustom4BitCharset = {'!', '"', '#', '$', '%', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '@'}; // Follows ASCII character ordering.
+// Follows ASCII character ordering.
+byte[] myCustom4BitCharset = {'!', '"', '#', '$', '%', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '@'};
 AsciiCompressor compressor = new FourBitAsciiCompressor(myCustom4BitCharset);
 ```
 
