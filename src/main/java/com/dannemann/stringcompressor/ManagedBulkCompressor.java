@@ -8,15 +8,15 @@ import java.util.List;
 /**
  * @author Jean Dannemann Carone
  */
-public class ManagedBulkAsciiCompressor {
+public class ManagedBulkCompressor {
 
-	private final BulkAsciiCompressor bulk;
+	private final BulkCompressor bulk;
 	private final int destinationLength;
 
 	private int currentIndex;
 
-	public ManagedBulkAsciiCompressor(AsciiCompressor compressor, byte[][] destination) {
-		this.bulk = new BulkAsciiCompressor(compressor, destination);
+	public ManagedBulkCompressor(AsciiCompressor compressor, byte[][] destination) {
+		this.bulk = new BulkCompressor(compressor, destination);
 		this.destinationLength = destination.length;
 	}
 
@@ -65,15 +65,15 @@ public class ManagedBulkAsciiCompressor {
 	// Unsafe methods. Can cause confusion.
 
 	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destination, byte[][] source) {
-		new ManagedBulkAsciiCompressor(compressor, destination).compressAndAddAll(source);
+		new ManagedBulkCompressor(compressor, destination).compressAndAddAll(source);
 	}
 
 	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destination, String[] source) {
-		new ManagedBulkAsciiCompressor(compressor, destination).compressAndAddAll(source);
+		new ManagedBulkCompressor(compressor, destination).compressAndAddAll(source);
 	}
 
 	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destination, List<String> source) {
-		new ManagedBulkAsciiCompressor(compressor, destination).compressAndAddAll(source);
+		new ManagedBulkCompressor(compressor, destination).compressAndAddAll(source);
 	}
 
 }

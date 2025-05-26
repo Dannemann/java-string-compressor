@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 /**
  * <p>Utility for compressing batches of strings using a provided {@link AsciiCompressor} and storing the compressed
  * results in a pre-allocated destination array.</p>
- * <p>Note: This is a "lower-level" utility. See class {@link ManagedBulkAsciiCompressor} for a higher-level abstraction
+ * <p>Note: This is a "lower-level" utility. See class {@link ManagedBulkCompressor} for a higher-level abstraction
  * of an automated batching process.</p>
  * <p>This class is designed for bulk operations where multiple strings (as {@code String[]}, {@code byte[][]}, or
  * {@code List<String>}) need to be compressed efficiently and stored at specified positions in the destination array.
@@ -18,9 +18,9 @@ import java.util.stream.IntStream;
  * @param compressor The {@link AsciiCompressor} used to compress each string.
  * @param destination The destination array where compressed data will be stored.
  * @author Jean Dannemann Carone
- * @see ManagedBulkAsciiCompressor
+ * @see ManagedBulkCompressor
  */
-public record BulkAsciiCompressor(AsciiCompressor compressor, byte[][] destination) {
+public record BulkCompressor(AsciiCompressor compressor, byte[][] destination) {
 
 	/**
 	 * <p>Compress a batch of strings and add them to the destination array starting at the specified index. A callback

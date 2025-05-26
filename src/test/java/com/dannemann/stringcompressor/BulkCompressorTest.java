@@ -17,21 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * @author Jean Dannemann Carone
  */
-class ManagedBulkAsciiCompressorTest extends BaseTest {
-
-	@Test
-	void compressByteArrayTest() {
-		for (int i = 0; i < 3000; i++) {
-			final int quantity = RANDOM.nextInt(10_000, 20_000);
-			final byte[][] source = generateRandomByteArray(quantity, 0, 1000, DEFAULT_4BIT_CHARSET);
-			final byte[][] destination = new byte[quantity][];
-			final FourBitAsciiCompressor compressor = new FourBitAsciiCompressor(true, true);
-			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destination);
-			managed.compressAndAddAll(source);
-			for (int j = 0; j < quantity; j++)
-				assertArrayEquals(source[j], compressor.decompress(destination[j]));
-		}
-	}
+class BulkCompressorTest extends BaseTest {
 
 	@Test
 	void batchCompressByteArrayTest() {
@@ -42,33 +28,20 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			final List<byte[]> fullSource = new ArrayList<>();
 			final byte[][] destination = new byte[totalElements * 2][]; // Half empty.
 			final FourBitAsciiCompressor compressor = new FourBitAsciiCompressor(true, true);
-			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destination);
+			final BulkCompressor bulk = new BulkCompressor(compressor, destination);
+			final Integer[] callbackWasCalled = new Integer[1];
 			for (int j = 0; j < numberOfBatches; j++) {
 				final byte[][] batch = generateRandomByteArray(batchSize, 0, 100, DEFAULT_4BIT_CHARSET);
-				managed.compressAndAddAll(batch); // Managed batch compress.
+				bulk.bulkCompress(batch, j * batchSize, (k, s, c) -> callbackWasCalled[0] = k); // Batch compress.
 				fullSource.addAll(List.of(batch));
 			}
-			assertEquals(totalElements, managed.getCurrentIndex());
+			assertNotNull(callbackWasCalled[0]);
 			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
 					assertNotNull(destination[j]);
 					assertArrayEquals(fullSource.get(j), compressor.decompress(destination[j]));
 				} else
 					assertNull(destination[j]);
-		}
-	}
-
-	@Test
-	void compressStringArrayTest() {
-		for (int i = 0; i < 3000; i++) {
-			final int quantity = RANDOM.nextInt(10_000, 20_000);
-			final String[] source = generateRandomStringArray(quantity, 0, 1000, DEFAULT_5BIT_CHARSET);
-			final byte[][] destination = new byte[quantity][];
-			final FiveBitAsciiCompressor compressor = new FiveBitAsciiCompressor(true, true);
-			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destination);
-			managed.compressAndAddAll(source);
-			for (int j = 0; j < quantity; j++)
-				assertEquals(source[j], getString(compressor.decompress(destination[j])));
 		}
 	}
 
@@ -81,33 +54,20 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			final List<String> fullSource = new ArrayList<>();
 			final byte[][] destination = new byte[totalElements * 2][]; // Half empty.
 			final FiveBitAsciiCompressor compressor = new FiveBitAsciiCompressor(true, true);
-			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destination);
+			final BulkCompressor bulk = new BulkCompressor(compressor, destination);
+			final Integer[] callbackWasCalled = new Integer[1];
 			for (int j = 0; j < numberOfBatches; j++) {
 				final String[] batch = generateRandomStringArray(batchSize, 0, 100, DEFAULT_5BIT_CHARSET);
-				managed.compressAndAddAll(batch); // Managed batch compress.
+				bulk.bulkCompress(batch, j * batchSize, (k, s, c) -> callbackWasCalled[0] = k); // Batch compress.
 				fullSource.addAll(List.of(batch));
 			}
-			assertEquals(totalElements, managed.getCurrentIndex());
+			assertNotNull(callbackWasCalled[0]);
 			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
 					assertNotNull(destination[j]);
 					assertEquals(fullSource.get(j), getString(compressor.decompress(destination[j])));
 				} else
 					assertNull(destination[j]);
-		}
-	}
-
-	@Test
-	void compressStringListTest() {
-		for (int i = 0; i < 3000; i++) {
-			final int quantity = RANDOM.nextInt(10_000, 20_000);
-			final List<String> source = generateRandomStringList(quantity, 0, 1000, DEFAULT_6BIT_CHARSET);
-			final byte[][] destination = new byte[quantity][];
-			final SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(true, true);
-			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destination);
-			managed.compressAndAddAll(source);
-			for (int j = 0; j < quantity; j++)
-				assertEquals(source.get(j), getString(compressor.decompress(destination[j])));
 		}
 	}
 
@@ -120,13 +80,14 @@ class ManagedBulkAsciiCompressorTest extends BaseTest {
 			final List<String> fullSource = new ArrayList<>();
 			final byte[][] destination = new byte[totalElements * 2][]; // Half empty.
 			final SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(true, true);
-			final ManagedBulkAsciiCompressor managed = new ManagedBulkAsciiCompressor(compressor, destination);
+			final BulkCompressor bulk = new BulkCompressor(compressor, destination);
+			final Integer[] callbackWasCalled = new Integer[1];
 			for (int j = 0; j < numberOfBatches; j++) {
 				final List<String> batch = generateRandomStringList(batchSize, 0, 100, DEFAULT_6BIT_CHARSET);
-				managed.compressAndAddAll(batch); // Managed batch compress.
+				bulk.bulkCompress(batch, j * batchSize, (k, s, c) -> callbackWasCalled[0] = k); // Batch compress.
 				fullSource.addAll(batch);
 			}
-			assertEquals(totalElements, managed.getCurrentIndex());
+			assertNotNull(callbackWasCalled[0]);
 			for (int j = 0, len = destination.length; j < len; j++)
 				if (j < totalElements) {
 					assertNotNull(destination[j]);
