@@ -140,7 +140,7 @@ from handle array positions and bounds. This is why we recommend `ManagedBulkCom
 
 Both bulk compressors loop through the data in parallel by calling `IntStream.range().parallel()`.
 
-Let's take `compactedMass` from the previous example and show how we can populate it with data from all customers.
+Let's take `compactedMass` from the previous example and show how we can populate it with data from all customers:
 
 ```java
 byte[][] compactedMass = new byte[100000000][]; // Data for 100 million customers.
