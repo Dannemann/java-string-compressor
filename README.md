@@ -104,7 +104,7 @@ We recommend using `AsciiCompressor.getString(byte[])` because the method can be
 To extract ASCII bytes from a `String` in the most efficient way (for compression), do `AsciiCompressor.getBytes(String)`.
 But the overloaded version `compressor.compress(String)` already calls it automatically, so, just call the overloaded version.
 
-### Where to store the compressed data
+### Where to store the compressed data?
 
 In its purest form, a `String` is just a byte array (`byte[]`), and a compressed `String` couldn't be different. 
 You can store it anywhere you would store a `byte[]`.
