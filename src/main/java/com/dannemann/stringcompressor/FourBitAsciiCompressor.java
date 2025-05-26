@@ -8,7 +8,7 @@ package com.dannemann.stringcompressor;
 public class FourBitAsciiCompressor extends AsciiCompressor {
 
 	/**
-	 * 4-bit character set supported by default: '#', '+', ',', '-', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ';'
+	 * 4-bit character set supported by default (ordered by ASCII): '#', '+', ',', '-', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ';'
 	 */
 	public static final byte[] DEFAULT_4BIT_CHARSET = {'#', '+', ',', '-', '.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ';'};
 

@@ -8,7 +8,7 @@ package com.dannemann.stringcompressor;
 public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 	/**
-	 * 5-bit character set supported by default: ' ', '\'', ',', '-', '.', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+	 * 5-bit character set supported by default (ordered by ASCII): ' ', '\'', ',', '-', '.', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
 	 */
 	public static final byte[] DEFAULT_5BIT_CHARSET = new byte[]{
 		' ', '\'', ',', '-', '.', '@',
@@ -16,7 +16,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 		'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
 	/**
-	 * 5-bit lowercase character set supported by default: ' ', '\'', ',', '-', '.', '@', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+	 * 5-bit lowercase character set supported by default (ordered by ASCII): ' ', '\'', ',', '-', '.', '@', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
 	 */
 	public static final byte[] DEFAULT_5BIT_CHARSET_LOWERCASE = new byte[]{
 		' ', '\'', ',', '-', '.', '@',
