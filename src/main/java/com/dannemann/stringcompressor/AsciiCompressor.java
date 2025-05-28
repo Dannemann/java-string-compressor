@@ -139,8 +139,8 @@ public abstract class AsciiCompressor {
 	 * explicitly by this charset, which is typically chosen based on specific application requirements.</p>
 	 * <p>Refer to the default character sets provided by this library: {@link FourBitAsciiCompressor#DEFAULT_4BIT_CHARSET},
 	 * {@link FiveBitAsciiCompressor#DEFAULT_5BIT_CHARSET}, and {@link SixBitAsciiCompressor#DEFAULT_6BIT_CHARSET}.</p>
-	 * <p>Important: The order at which you define the characters in the array matters, and it will define the lexicographic
-	 * ordering the binary search will follow. It's a good practice to define your custom charset following the ASCII ordering.</p>
+	 * <p>Important: The order in which you list characters in this array matters, as it defines the lexicographic
+	 * order the binary search will follow. It's good practice to define your custom charset in standard ASCII order.</p>
 	 * @author Jean Dannemann Carone
 	 * @see FourBitBinarySearch
 	 * @see FiveBitBinarySearch
