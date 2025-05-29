@@ -60,13 +60,16 @@ AsciiCompressor compressor = new SixBitAsciiCompressor();
 ```
 
 #### Defining your custom character set
-Each compressor have a set of default supported characters which are defined in fields `DEFAULT_4BIT_CHARSET`, `DEFAULT_5BIT_CHARSET`, and `DEFAULT_6BIT_CHARSET`.
+Each compressor have a set of default supported characters which are defined in fields 
+`FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET`, `FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET`, and `SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET`.
 If you need a custom character set, use constructors with parameter `supportedCharset`:
 ```java
 // Follows ASCII character ordering.
 byte[] myCustom4BitCharset = {'!', '"', '#', '$', '%', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '@'};
 AsciiCompressor compressor = new FourBitAsciiCompressor(myCustom4BitCharset);
 ```
+**Important:** The order in which you list characters in this array matters, as it defines the lexicographic
+order the binary search will follow. It's good practice to define your custom charset in standard ASCII order, like the example above.
 
 #### Catching invalid characters (useful for testing an debugging)
 It’s useful to validate the input and throw errors when invalid characters are found.
