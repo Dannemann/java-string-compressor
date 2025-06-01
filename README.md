@@ -5,19 +5,20 @@ Fast! Tiny milliseconds to compress a 10 MB string. Check out the benchmarks.<br
 Well tested! See the test directory for usage examples and edge cases.
 
 ```java
-String data = "Assume this is a 100 megabytes string...";
+String data = "Assume this is a 100 MB string...";
+byte[] c;
 
 // 4‑bit compressor -> 50% compression rate
 // Max of 16 different chars. Default charset: `0-9`, `;`, `#`, `-`, `+`, `.`, `,`
-byte[] c = new FourBitAsciiCompressor().compress(data); // c is 50 megabytes.
+c = new FourBitAsciiCompressor().compress(data); /** c is 50 megabytes. */
 
 // 5‑bit compressor -> 38% compression rate
 // Max of 32 different chars. Default charset: `A-Z`, space, `.`, `,`, `\`, `-`, `@`
-byte[] c = new FiveBitAsciiCompressor().compress(data); // c is 62 megabytes.
+c = new FiveBitAsciiCompressor().compress(data); /** c is 62 megabytes. */
 
 // 6‑bit compressor -> 25% compression rate
-// Max of 64 different chars. Default charset: `A-Z`, `0-9`, and many punctuation marks defined at SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET.
-byte[] c = new SixBitAsciiCompressor().compress(data); // c is 75 megabytes.
+// Max of 64 different chars. Default charset: `A-Z`, `0-9`, and many punctuation marks.
+c = new SixBitAsciiCompressor().compress(data); /** c is 75 megabytes. */
 ```
 
 ## Downloads
@@ -50,7 +51,7 @@ This way we can remove those unnecessary bits and store only the ones we need.
 And this is exactly was this library do. 
 
 Another important feature is searching. This library not only supports compacting, but also binary searching on the 
-compacted data itself without deflating it, which will be explained later in this documentation.
+compacted data itself without deflating it, which will be explained later.
 
 To compress a string, you can easily use either `FourBitAsciiCompressor`, `FiveBitAsciiCompressor`, or `SixBitAsciiCompressor`.
 
@@ -106,28 +107,35 @@ To extract ASCII bytes from a `String` in the most efficient way (for compressio
 But the overloaded version `compressor.compress(String)` already calls it automatically, so, just call the overloaded version.
 
 ### Where to store the compressed data?
-
 In its purest form, a `String` is just a byte array (`byte[]`), and a compressed `String` couldn't be different. 
 You can store it anywhere you would store a `byte[]`.
 The most common approach is to store each compressed string ordered in memory using a `byte[][]` (for binary search) or 
-a B+Tree (coming in the next release).
+a B+Tree if you need frequent insertions (coming in the next release).
 The frequency of reads and writes + business requirements will tell the best media and data structure to use.
 
 If the data is ordered before compression and stored in-memory in a `byte[][]`, you can use the full power of the binary search directly in the compressed data
 through `FourBitBinarySearch`, `FiveBitBinarySearch`, and `SixBitBinarySearch`.
 
 ### Binary search
-
-
-
+Executing a binary search in compressed data is simple as:
 ```java
-byte[][] compactedMass = new byte[100000000][]; // Data for 100 million customers.
+byte[][] compressedData = new byte[100000000][]; // Data for 100 million customers.
 
-
-byte[] compressed = compressor.compress(input);
-byte[] decompressed = compressor.decompress(compressed);
-String string = new String(decompressed, StandardCharsets.ISO_8859_1);
+SixBitBinarySearch binary = new SixBitBinarySearch(compressedData, false);
+int index = binary.search("key");
 ```
+But this is not a realistic use case. Let's walk through a real-world scenario:
+
+Imagine the company you are working with have 70 million customers. You can't create an array with that exact number of
+elements because otherwise you will have no space to add further customers to your data pool (usually with some incremental 
+ID implementation to avoid adding in the middle, but always at the end of the array). In this case, we can extend the size 
+to accommodate incoming customers by making the array bigger, like in the example above with: 
+```byte[][] compressedData = new byte[100000000][]; // Data for 100 million customers.```
+
+
+### B+Tree
+
+Coming in the next release.
 
 ### Bulk / Batch compression
 
@@ -141,10 +149,10 @@ from handle array positions and bounds. This is why we recommend `ManagedBulkCom
 
 Both bulk compressors loop through the data in parallel by calling `IntStream.range().parallel()`.
 
-Let's take `compactedMass` from the previous example and show how we can populate it with data from all customers:
+Let's take `compactedData` from the previous example and show how we can populate it with data from all customers:
 
 ```java
-byte[][] compactedMass = new byte[100000000][]; // Data for 100 million customers.
+byte[][] compactedData = new byte[100000000][]; // Data for 100 million customers.
 
 
 
