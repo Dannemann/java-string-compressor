@@ -35,7 +35,6 @@ public final class FiveBitBinarySearch extends BaseBinarySearch {
 	 * @param charset Character set used to compress {@code compressedData}.
 	 * @author Jean Dannemann Carone
 	 */
-	// TODO: WHAT IF COMPRESSED MASS IS BIGGER THAN THE NUMBER OF ELEMENTS? TREAT THIS.
 	public FiveBitBinarySearch(byte[][] compressedData, boolean prefixSearch, byte[] charset) {
 		super(compressedData, prefixSearch, charset);
 	}
