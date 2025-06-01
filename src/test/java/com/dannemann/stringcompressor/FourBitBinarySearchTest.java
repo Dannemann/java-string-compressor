@@ -29,7 +29,7 @@ class FourBitBinarySearchTest extends BaseTest {
 				final byte[][] destination = new byte[source.size()][];
 				ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, destination, source);
 				final FourBitBinarySearch bs = new FourBitBinarySearch(destination, false);
-				for (int j = 0, massLen = source.size(); j < massLen; j++)
+				for (int j = 0, len = source.size(); j < len; j++)
 					assertEquals(j, bs.search(getBytes(source.get(j))));
 			}
 	}
@@ -40,7 +40,7 @@ class FourBitBinarySearchTest extends BaseTest {
 		final byte[][] destination = new byte[source.size()][];
 		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, destination, source);
 		final FourBitBinarySearch bs = new FourBitBinarySearch(destination, false);
-		for (int i = 0, massLen = source.size(); i < massLen; i++)
+		for (int i = 0, len = source.size(); i < len; i++)
 			assertEquals(i, bs.search(getBytes(source.get(i))));
 	}
 
@@ -50,7 +50,7 @@ class FourBitBinarySearchTest extends BaseTest {
 		final byte[][] destination = new byte[source.size()][];
 		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, destination, source);
 		final FourBitBinarySearch bs = new FourBitBinarySearch(destination, false);
-		for (int i = 0, massLen = source.size(); i < massLen; i++)
+		for (int i = 0, len = source.size(); i < len; i++)
 			assertEquals(i, bs.search(getBytes(source.get(i))));
 	}
 
@@ -111,12 +111,12 @@ class FourBitBinarySearchTest extends BaseTest {
 		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_SPECIAL, SPECIAL_ARRAY);
 	}
 
-	static int fourBitBinarySearch(byte[][] compressedMass, String input) {
-		return new FourBitBinarySearch(compressedMass, false).search(getBytes(input));
+	static int fourBitBinarySearch(byte[][] compressedData, String input) {
+		return new FourBitBinarySearch(compressedData, false).search(getBytes(input));
 	}
 
-	static int fourBitPrefixSearch(byte[][] compressedMass, String input) {
-		return new FourBitBinarySearch(compressedMass, true).search(getBytes(input));
+	static int fourBitPrefixSearch(byte[][] compressedData, String input) {
+		return new FourBitBinarySearch(compressedData, true).search(getBytes(input));
 	}
 
 	@Test

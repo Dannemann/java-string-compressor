@@ -2,20 +2,20 @@ package com.dannemann.stringcompressor;
 
 public abstract class BaseBinarySearch {
 
-	protected final byte[][] compressedMass;
+	protected final byte[][] compressedData;
 	protected final boolean prefixSearch;
 	protected final byte[] charset;
 
-	public BaseBinarySearch(byte[][] compressedMass, boolean prefixSearch, byte[] charset) {
-		this.compressedMass = compressedMass;
+	public BaseBinarySearch(byte[][] compressedData, boolean prefixSearch, byte[] charset) {
+		this.compressedData = compressedData;
 		this.prefixSearch = prefixSearch;
 		this.charset = charset;
 	}
 
 	public abstract int search(final byte[] key);
 
-	public byte[][] getCompressedMass() {
-		return compressedMass;
+	public byte[][] getCompressedData() {
+		return compressedData;
 	}
 
 	public boolean isPrefixSearch() {

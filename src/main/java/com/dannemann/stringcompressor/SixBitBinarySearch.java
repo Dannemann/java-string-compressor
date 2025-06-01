@@ -19,24 +19,24 @@ public final class SixBitBinarySearch extends BaseBinarySearch {
 
 	/**
 	 * Creates a binary search object for data compressed with the default character set {@link SixBitAsciiCompressor#DEFAULT_6BIT_CHARSET}.
-	 * @param compressedMass The mass of compressed strings to search through.
+	 * @param compressedData The mass of compressed strings to search through.
 	 * @param prefixSearch If {@code true}, searches for elements starting with the provided key prefix (must be unique).
 	 * @author Jean Dannemann Carone
 	 * @see SixBitBinarySearch#SixBitBinarySearch(byte[][], boolean, byte[])
 	 */
-	public SixBitBinarySearch(byte[][] compressedMass, boolean prefixSearch) {
-		super(compressedMass, prefixSearch, DEFAULT_6BIT_CHARSET);
+	public SixBitBinarySearch(byte[][] compressedData, boolean prefixSearch) {
+		super(compressedData, prefixSearch, DEFAULT_6BIT_CHARSET);
 	}
 
 	/**
 	 * Creates a binary search object.
-	 * @param compressedMass The mass of compressed strings to search through.
+	 * @param compressedData The mass of compressed strings to search through.
 	 * @param prefixSearch If {@code true}, searches for elements starting with the provided key prefix (must be unique).
-	 * @param charset Character set used to compress {@code compressedMass}.
+	 * @param charset Character set used to compress {@code compressedData}.
 	 * @author Jean Dannemann Carone
 	 */
-	public SixBitBinarySearch(byte[][] compressedMass, boolean prefixSearch, byte[] charset) {
-		super(compressedMass, prefixSearch, charset);
+	public SixBitBinarySearch(byte[][] compressedData, boolean prefixSearch, byte[] charset) {
+		super(compressedData, prefixSearch, charset);
 	}
 
 	/**
@@ -52,18 +52,18 @@ public final class SixBitBinarySearch extends BaseBinarySearch {
 	 */
 	@Override
 	public int search(final byte[] key) {
-		final int massLength = compressedMass.length;
+		final int dataLength = compressedData.length;
 
-		if (massLength == 0)
+		if (dataLength == 0)
 			return -1;
 
 		final int keyLen = key.length;
 		int low = 0;
-		int high = massLength - 1;
+		int high = dataLength - 1;
 
 		while (low <= high) {
 			final int mid = low + high >>> 1;
-			final byte[] compStr = compressedMass[mid];
+			final byte[] compStr = compressedData[mid];
 			final int cLenMinus = compStr.length - 1;
 			int buffer = 0;
 			int bits = 0;
@@ -75,7 +75,7 @@ public final class SixBitBinarySearch extends BaseBinarySearch {
 
 				if (bits >= 6 &&
 					(cmp = DEFAULT_6BIT_CHARSET[buffer >>> (bits -= 6) & 0x3F] - key[j++]) != 0 ||
-					bits >= 6 && j < keyLen &&
+					bits >= 6 && j < keyLen && 
 					(cmp = DEFAULT_6BIT_CHARSET[buffer >>> (bits -= 6) & 0x3F] - key[j++]) != 0)
 					break;
 			}

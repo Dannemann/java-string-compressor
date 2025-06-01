@@ -19,24 +19,24 @@ public final class FourBitBinarySearch extends BaseBinarySearch {
 
 	/**
 	 * Creates a binary search object for data compressed with the default character set {@link FourBitAsciiCompressor#DEFAULT_4BIT_CHARSET}.
-	 * @param compressedMass The mass of compressed strings to search through.
+	 * @param compressedData The mass of compressed strings to search through.
 	 * @param prefixSearch If {@code true}, searches for elements starting with the provided key prefix (must be unique).
 	 * @author Jean Dannemann Carone
 	 * @see FourBitBinarySearch#FourBitBinarySearch(byte[][], boolean, byte[])
 	 */
-	public FourBitBinarySearch(byte[][] compressedMass, boolean prefixSearch) {
-		super(compressedMass, prefixSearch, DEFAULT_4BIT_CHARSET);
+	public FourBitBinarySearch(byte[][] compressedData, boolean prefixSearch) {
+		super(compressedData, prefixSearch, DEFAULT_4BIT_CHARSET);
 	}
 
 	/**
 	 * Creates a binary search object.
-	 * @param compressedMass The mass of compressed strings to search through.
+	 * @param compressedData The mass of compressed strings to search through.
 	 * @param prefixSearch If {@code true}, searches for elements starting with the provided key prefix (must be unique).
-	 * @param charset Character set used to compress {@code compressedMass}.
+	 * @param charset Character set used to compress {@code compressedData}.
 	 * @author Jean Dannemann Carone
 	 */
-	public FourBitBinarySearch(byte[][] compressedMass, boolean prefixSearch, byte[] charset) {
-		super(compressedMass, prefixSearch, charset);
+	public FourBitBinarySearch(byte[][] compressedData, boolean prefixSearch, byte[] charset) {
+		super(compressedData, prefixSearch, charset);
 	}
 
 	/**
@@ -52,18 +52,18 @@ public final class FourBitBinarySearch extends BaseBinarySearch {
 	 */
 	@Override
 	public int search(final byte[] key) {
-		final int massLength = compressedMass.length;
+		final int dataLength = compressedData.length;
 
-		if (massLength == 0)
+		if (dataLength == 0)
 			return -1;
 
 		final int keyLen = key.length;
 		int low = 0;
-		int high = massLength - 1;
+		int high = dataLength - 1;
 
 		while (low <= high) {
 			final int mid = low + high >>> 1;
-			final byte[] compStr = compressedMass[mid];
+			final byte[] compStr = compressedData[mid];
 			final int odd;
 			final int dLen;
 			int cLenMinus = compStr.length - 1;

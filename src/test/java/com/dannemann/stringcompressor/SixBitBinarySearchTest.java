@@ -29,7 +29,7 @@ class SixBitBinarySearchTest extends BaseTest {
 				final byte[][] destination = new byte[source.size()][];
 				ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, destination, source);
 				final SixBitBinarySearch bs = new SixBitBinarySearch(destination, false);
-				for (int j = 0, massLen = source.size(); j < massLen; j++)
+				for (int j = 0, len = source.size(); j < len; j++)
 					assertEquals(j, bs.search(getBytes(source.get(j))));
 			}
 	}
@@ -40,7 +40,7 @@ class SixBitBinarySearchTest extends BaseTest {
 		final byte[][] destination = new byte[source.size()][];
 		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, destination, source);
 		final SixBitBinarySearch bs = new SixBitBinarySearch(destination, false);
-		for (int i = 0, massLen = source.size(); i < massLen; i++)
+		for (int i = 0, len = source.size(); i < len; i++)
 			assertEquals(i, bs.search(getBytes(source.get(i))));
 	}
 
@@ -50,7 +50,7 @@ class SixBitBinarySearchTest extends BaseTest {
 		final byte[][] destination = new byte[source.size()][];
 		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, destination, source);
 		final SixBitBinarySearch bs = new SixBitBinarySearch(destination, false);
-		for (int i = 0, massLen = source.size(); i < massLen; i++)
+		for (int i = 0, len = source.size(); i < len; i++)
 			assertEquals(i, bs.search(getBytes(source.get(i))));
 	}
 
@@ -79,12 +79,12 @@ class SixBitBinarySearchTest extends BaseTest {
 		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_SPECIAL, SPECIAL_ARRAY);
 	}
 
-	static int sixBitBinarySearch(byte[][] compressedMass, String input) {
-		return new SixBitBinarySearch(compressedMass, false).search(getBytes(input));
+	static int sixBitBinarySearch(byte[][] compressedData, String input) {
+		return new SixBitBinarySearch(compressedData, false).search(getBytes(input));
 	}
 
-	static int sixBitPrefixSearch(byte[][] compressedMass, String input) {
-		return new SixBitBinarySearch(compressedMass, true).search(getBytes(input));
+	static int sixBitPrefixSearch(byte[][] compressedData, String input) {
+		return new SixBitBinarySearch(compressedData, true).search(getBytes(input));
 	}
 
 	@Test

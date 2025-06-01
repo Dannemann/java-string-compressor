@@ -29,7 +29,7 @@ class FiveBitBinarySearchTest extends BaseTest {
 				final byte[][] destination = new byte[source.size()][];
 				ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, destination, source);
 				final FiveBitBinarySearch bs = new FiveBitBinarySearch(destination, false);
-				for (int j = 0, massLen = source.size(); j < massLen; j++)
+				for (int j = 0, len = source.size(); j < len; j++)
 					assertEquals(j, bs.search(getBytes(source.get(j))));
 			}
 	}
@@ -40,7 +40,7 @@ class FiveBitBinarySearchTest extends BaseTest {
 		final byte[][] destination = new byte[source.size()][];
 		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, destination, source);
 		final FiveBitBinarySearch bs = new FiveBitBinarySearch(destination, false);
-		for (int i = 0, massLen = source.size(); i < massLen; i++)
+		for (int i = 0, len = source.size(); i < len; i++)
 			assertEquals(i, bs.search(getBytes(source.get(i))));
 	}
 
@@ -50,7 +50,7 @@ class FiveBitBinarySearchTest extends BaseTest {
 		final byte[][] destination = new byte[source.size()][];
 		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, destination, source);
 		final FiveBitBinarySearch bs = new FiveBitBinarySearch(destination, false);
-		for (int i = 0, massLen = source.size(); i < massLen; i++)
+		for (int i = 0, len = source.size(); i < len; i++)
 			assertEquals(i, bs.search(getBytes(source.get(i))));
 	}
 
@@ -79,12 +79,12 @@ class FiveBitBinarySearchTest extends BaseTest {
 		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_SPECIAL, SPECIAL_ARRAY);
 	}
 
-	static int fiveBitBinarySearch(byte[][] compressedMass, String input) {
-		return new FiveBitBinarySearch(compressedMass, false).search(getBytes(input));
+	static int fiveBitBinarySearch(byte[][] compressedData, String input) {
+		return new FiveBitBinarySearch(compressedData, false).search(getBytes(input));
 	}
 
-	static int fiveBitPrefixSearch(byte[][] compressedMass, String input) {
-		return new FiveBitBinarySearch(compressedMass, true).search(getBytes(input));
+	static int fiveBitPrefixSearch(byte[][] compressedData, String input) {
+		return new FiveBitBinarySearch(compressedData, true).search(getBytes(input));
 	}
 
 	@Test
