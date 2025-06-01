@@ -3,15 +3,18 @@ package com.dannemann.stringcompressor;
 import static com.dannemann.stringcompressor.FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET;
 
 /**
- * <p>Performs binary search (including prefix search) on data compressed by {@link FiveBitAsciiCompressor}.
- * Particularly useful when searching large amounts of compressed data stored in memory.</p>
- * <p>The data must have been sorted prior to compression.</p>
- * <p>If {@code prefixSearch} is set to {@code true}, the method searches for an element whose prefix matches the
- * specified key. Otherwise, it searches for an exact match. If there are multiple elements with the same prefix, the
- * first matching element is returned.</p>
- * <p>Note that character ordering depends on the sequence defined in your custom charset (via {@code supportedCharset}),
- * which is passed to the compressor constructor (see {@link FiveBitAsciiCompressor#FiveBitAsciiCompressor(byte[])}).
- * If no custom charset is provided, compressors use a default charset ordered by ASCII.</p>
+ * <p>Performs binary search on data compressed by {@link FiveBitAsciiCompressor}. The data must have been sorted prior
+ * to compression.</p>
+ * <p>If {@code prefixSearch} is {@code true}, the method returns the first element whose prefix matches the specified
+ * key. Otherwise, it looks for an exact match. When multiple elements share the same prefix, the first matching element
+ * is returned (just as in the exact‐match search).</p>
+ * <p>Null elements are considered to come after any character, in the same way that Z comes after A. This is because
+ * the {@code compressedData} array typically has extra space to accommodate new entries, so unused slots (nulls) are
+ * placed at the end.</p>
+ * <p>Note that character ordering depends on the sequence defined in your custom charset (via
+ * {@code supportedCharset}), which is passed to the compressor constructor (see
+ * {@link FiveBitAsciiCompressor#FiveBitAsciiCompressor(byte[])}). If no custom charset is provided, compressors use a
+ * default charset ordered by ASCII.</p>
  * @author Jean Dannemann Carone
  * @see FiveBitAsciiCompressor#DEFAULT_5BIT_CHARSET
  */
@@ -64,29 +67,34 @@ public final class FiveBitBinarySearch extends BaseBinarySearch {
 		while (low <= high) {
 			final int mid = low + high >>> 1;
 			final byte[] compStr = compressedData[mid];
-			final int cLenMinus = compStr.length - 1;
-			int buffer = 0;
-			int bits = 0;
 			int cmp = 0;
 
-			for (int i = 0, j = 0; i < cLenMinus && j < keyLen; i++) {
-				buffer = buffer << 8 | compStr[i] & 0xFF;
-				bits += 8;
+			if (compStr == null)
+				cmp = 1;
+			else {
+				final int cLenMinus = compStr.length - 1;
+				int buffer = 0;
+				int bits = 0;
 
-				if (bits >= 5 &&
-					(cmp = charset[buffer >>> (bits -= 5) & 0x1F] - key[j++]) != 0 ||
-					bits >= 5 && j < keyLen &&
-					(cmp = charset[buffer >>> (bits -= 5) & 0x1F] - key[j++]) != 0)
-					break;
-			}
+				for (int i = 0, j = 0; i < cLenMinus && j < keyLen; i++) {
+					buffer = buffer << 8 | compStr[i] & 0xFF;
+					bits += 8;
 
-			if (cmp == 0) {
-				final int dLen = cLenMinus >= 0 ? cLenMinus * 8 / 5 - (compStr[cLenMinus] & 1) : 0;
+					if (bits >= 5 &&
+						(cmp = charset[buffer >>> (bits -= 5) & 0x1F] - key[j++]) != 0 ||
+						bits >= 5 && j < keyLen &&
+						(cmp = charset[buffer >>> (bits -= 5) & 0x1F] - key[j++]) != 0)
+						break;
+				}
 
-				if (prefixSearch && keyLen <= dLen)
-					return mid;
+				if (cmp == 0) {
+					final int dLen = cLenMinus >= 0 ? cLenMinus * 8 / 5 - (compStr[cLenMinus] & 1) : 0;
 
-				cmp = dLen - keyLen;
+					if (prefixSearch && keyLen <= dLen)
+						return mid;
+
+					cmp = dLen - keyLen;
+				}
 			}
 
 			if (cmp < 0)
