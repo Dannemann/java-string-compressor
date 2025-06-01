@@ -6,7 +6,7 @@ public abstract class BaseBinarySearch {
 	protected final boolean prefixSearch;
 	protected final byte[] charset;
 
-	public BaseBinarySearch(byte[][] compressedData, boolean prefixSearch, byte[] charset) {
+	protected BaseBinarySearch(byte[][] compressedData, boolean prefixSearch, byte[] charset) {
 		this.compressedData = compressedData;
 		this.prefixSearch = prefixSearch;
 		this.charset = charset;

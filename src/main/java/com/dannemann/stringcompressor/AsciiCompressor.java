@@ -30,7 +30,7 @@ public abstract class AsciiCompressor {
 	 * @see #isThrowException()
 	 * @see #isPreserveOriginal()
 	 */
-	public AsciiCompressor(byte[] supportedCharset, boolean throwException, boolean preserveOriginal) {
+	protected AsciiCompressor(byte[] supportedCharset, boolean throwException, boolean preserveOriginal) {
 		validateSupportedCharset(supportedCharset);
 
 		this.supportedCharset = supportedCharset;
