@@ -71,7 +71,7 @@ class FourBitAsciiCompressorTest extends BaseTest {
 		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{(byte) 'Ç'}));
-		assertEquals("Only ASCII characters are supported. Invalid 'ￇ' (code point -57) in \"Ç\"", e.getMessage());
+		assertEquals("Only ASCII characters are supported. Invalid 'ￇ' with code point -57 in string (maybe incomplete): \"Ç\"", e.getMessage());
 	}
 
 	@Test
@@ -79,7 +79,7 @@ class FourBitAsciiCompressorTest extends BaseTest {
 		AsciiCompressor compressor = new FourBitAsciiCompressor(true);
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{'Z'}));
-		assertEquals("Character 'Z' (code point 90) is not defined in the supported characters array. String: \"Z\"", e.getMessage());
+		assertEquals("Character 'Z' with code point 90 is not defined in the supported characters array. Source string is (maybe incomplete): \"Z\"", e.getMessage());
 	}
 
 	@Test

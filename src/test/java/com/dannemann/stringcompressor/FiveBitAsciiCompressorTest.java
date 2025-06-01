@@ -80,7 +80,7 @@ class FiveBitAsciiCompressorTest extends BaseTest {
 		AsciiCompressor compressor = new FiveBitAsciiCompressor(true);
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{(byte) 'Ç'}));
-		assertEquals("Only ASCII characters are supported. Invalid 'ￇ' (code point -57) in \"Ç\"", e.getMessage());
+		assertEquals("Only ASCII characters are supported. Invalid 'ￇ' with code point -57 in string (maybe incomplete): \"Ç\"", e.getMessage());
 	}
 
 	@Test
@@ -88,7 +88,7 @@ class FiveBitAsciiCompressorTest extends BaseTest {
 		AsciiCompressor compressor = new FiveBitAsciiCompressor(true);
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{'9'}));
-		assertEquals("Character '9' (code point 57) is not defined in the supported characters array. String: \"9\"", e.getMessage());
+		assertEquals("Character '9' with code point 57 is not defined in the supported characters array. Source string is (maybe incomplete): \"9\"", e.getMessage());
 	}
 
 	@Test
