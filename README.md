@@ -128,7 +128,7 @@ SixBitBinarySearch binary = new SixBitBinarySearch(compressedData, false); // fa
 int index = binary.search("key");
 ```
 It is important to note that ```compressedData``` does not need to be completely filled. It could have 70 million entries, 
-for example, and the binary search would still work. This is because the compressed data array typically has extra space 
+for example, and the binary search would still work. This is because the array of compressed data typically has extra space 
 to accommodate new entries (usually with some incremental ID implementation to avoid adding in the middle, but always at 
 the end of the array), so unused slots (nulls) are placed at the end.
 
