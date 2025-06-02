@@ -10,15 +10,15 @@ byte[] c;
 
 // 4‑bit compressor -> 50% compression rate
 // Max of 16 different chars. Default charset: `0-9`, `;`, `#`, `-`, `+`, `.`, `,`
-c = new FourBitAsciiCompressor().compress(data); /** c is 50 megabytes. */
+c = new FourBitAsciiCompressor().compress(data); // c is 50 MB.
 
 // 5‑bit compressor -> 38% compression rate
 // Max of 32 different chars. Default charset: `A-Z`, space, `.`, `,`, `\`, `-`, `@`
-c = new FiveBitAsciiCompressor().compress(data); /** c is 62 megabytes. */
+c = new FiveBitAsciiCompressor().compress(data); // c is 62 MB.
 
 // 6‑bit compressor -> 25% compression rate
 // Max of 64 different chars. Default charset: `A-Z`, `0-9`, and many punctuation marks.
-c = new SixBitAsciiCompressor().compress(data); /** c is 75 megabytes. */
+c = new SixBitAsciiCompressor().compress(data); // c is 75 MB.
 ```
 
 ## Downloads
