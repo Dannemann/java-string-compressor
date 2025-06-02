@@ -64,10 +64,6 @@ public class ManagedBulkCompressor {
 
 	// Unsafe methods. Can cause confusion.
 
-	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destination, byte[][] source) {
-		new ManagedBulkCompressor(compressor, destination).compressAndAddAll(source);
-	}
-
 	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destination, String[] source) {
 		new ManagedBulkCompressor(compressor, destination).compressAndAddAll(source);
 	}
