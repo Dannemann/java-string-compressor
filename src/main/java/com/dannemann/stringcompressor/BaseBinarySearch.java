@@ -1,5 +1,10 @@
 package com.dannemann.stringcompressor;
 
+/**
+ * @see FourBitBinarySearch
+ * @see FiveBitBinarySearch
+ * @see SixBitBinarySearch
+ */
 public abstract class BaseBinarySearch {
 
 	protected final byte[][] compressedData;
