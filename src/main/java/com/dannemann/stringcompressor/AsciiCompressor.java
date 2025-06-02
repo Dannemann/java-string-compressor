@@ -9,6 +9,9 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
 /**
  * The base ASCII compressor.
  * @author Jean Dannemann Carone
+ * @see FourBitAsciiCompressor
+ * @see FiveBitAsciiCompressor
+ * @see SixBitAsciiCompressor
  */
 public abstract class AsciiCompressor {
 
