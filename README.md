@@ -57,7 +57,7 @@ To compress a string, you can easily use either `FourBitAsciiCompressor`, `FiveB
 
 ### Creating a compressor object
 ```java
-AsciiCompressor compressor = new SixBitAsciiCompressor();
+var compressor = new SixBitAsciiCompressor();
 ```
 
 #### Defining your custom character set
@@ -67,7 +67,7 @@ If you need a custom character set, use constructors with parameter `supportedCh
 ```java
 // Follows ASCII character ordering.
 byte[] myCustom4BitCharset = {'!', '"', '#', '$', '%', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '@'};
-AsciiCompressor compressor = new FourBitAsciiCompressor(myCustom4BitCharset);
+var compressor = new FourBitAsciiCompressor(myCustom4BitCharset);
 ```
 **Important:** The order in which you list characters in this array matters, as it defines the lexicographic
 order the binary search will follow. It's good practice to define your custom charset in standard ASCII order, like the example above.
