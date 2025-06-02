@@ -116,25 +116,41 @@ The most common approach is to store each compressed string ordered in memory us
 a B+Tree if you need frequent insertions (coming in the next release).
 The frequency of reads and writes + business requirements will tell the best media and data structure to use.
 
-If the data is ordered before compression and stored in-memory in a `byte[][]`, you can use the full power of the binary search directly in the compressed data
-through `FourBitBinarySearch`, `FiveBitBinarySearch`, and `SixBitBinarySearch`.
+If the data is ordered before compression and stored in-memory in a `byte[][]`, you can use the full power of the binary 
+search directly in the compressed data through `FourBitBinarySearch`, `FiveBitBinarySearch`, and `SixBitBinarySearch`.
 
 ### Binary search
 Executing a binary search in compressed data is simple as:
 ```java
 byte[][] compressedData = new byte[100000000][]; // Data for 100 million customers.
-
-SixBitBinarySearch binary = new SixBitBinarySearch(compressedData, false);
+// ...
+SixBitBinarySearch binary = new SixBitBinarySearch(compressedData, false); // false == exact-match search.
 int index = binary.search("key");
 ```
-But this is not a realistic use case. Let's walk through a real-world scenario:
+It is important to note that ```compressedData``` does not need to be completely filled. It could have 70 million entries, 
+for example, and the binary search would still work. This is because the compressed data array typically has extra space 
+to accommodate new entries (usually with some incremental ID implementation to avoid adding in the middle, but always at 
+the end of the array), so unused slots (nulls) are placed at the end.
 
-Imagine the company you are working with have 70 million customers. You can't create an array with that exact number of
-elements because otherwise you will have no space to add further customers to your data pool (usually with some incremental 
-ID implementation to avoid adding in the middle, but always at the end of the array). In this case, we can extend the size 
-to accommodate incoming customers by making the array bigger, like in the example above with: 
-```byte[][] compressedData = new byte[100000000][]; // Data for 100 million customers.```
+A more realistic approach is to organize your data with a unique prefix (usually an ID) and search for it. For example,
+imagine each customer data in ```compressedData``` is organized like this:
+```java
+// ID # FullName # PhoneNumber # Address
 
+"63821623849863628763#John Doe#(555) 555-1234#123 Main Street Anytown, CA 91234-5678"
+```
+We could find it like this:
+```java
+SixBitBinarySearch binary = new SixBitBinarySearch(compressedData, true); // true == prefix search.
+int index = binary.search("63821623849863628763#");
+
+if (index >= 0) {
+    byte[] found = compressedData[index];
+    String decompressed = compressor.decompress(found);	
+}
+```
+
+In case you used a custom character set to compress
 
 ### B+Tree
 
