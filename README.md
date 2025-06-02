@@ -127,9 +127,9 @@ byte[][] compressedData = new byte[100000000][]; // Data for 100 million custome
 SixBitBinarySearch binary = new SixBitBinarySearch(compressedData, false); // false == exact-match search.
 int index = binary.search("key");
 ```
-It is important to note that ```compressedData``` does not need to be completely filled. It could have 70 million entries, 
-for example, and the binary search would still work. This is because the array of compressed data typically has extra space 
-to accommodate new entries (usually with some incremental ID implementation to avoid adding in the middle, but always at 
+It is important to note that ```compressedData``` does not need to be completely filled. It could have 70 million entries 
+and the binary search would still work. This is because the array of compressed data typically has extra space to 
+accommodate new entries (usually with some incremental ID implementation to avoid adding in the middle, but always at 
 the end of the array), so unused slots (nulls) are placed at the end.
 
 A more realistic approach is to organize your data with a unique prefix (usually an ID) and search for it. For example,
