@@ -19,7 +19,7 @@ class SixBitBinarySearchTest extends BaseTest {
 	// -----------------------------------------------------------------------------------------------------------------
 	// Automated search tests:
 
-	private static final AsciiCompressor COMPRESSOR = new SixBitAsciiCompressor(true, true);
+	private static final SixBitAsciiCompressor COMPRESSOR = new SixBitAsciiCompressor(true, true);
 
 	@Test
 	void searchSmallStringsTest() {

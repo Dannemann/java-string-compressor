@@ -17,7 +17,7 @@ import static com.dannemann.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_
 @State(Scope.Benchmark)
 public class SixBitAsciiCompressorBenchmark extends BaseBenchmark {
 
-	AsciiCompressor compressor;
+	SixBitAsciiCompressor compressor;
 	byte[] toCompress;
 	byte[] toDecompress;
 

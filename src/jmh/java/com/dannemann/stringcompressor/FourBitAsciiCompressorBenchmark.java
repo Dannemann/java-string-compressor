@@ -17,7 +17,7 @@ import static com.dannemann.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT
 @State(Scope.Benchmark)
 public class FourBitAsciiCompressorBenchmark extends BaseBenchmark {
 
-	AsciiCompressor compressor;
+	FourBitAsciiCompressor compressor;
 	byte[] toCompress;
 	byte[] toDecompress;
 

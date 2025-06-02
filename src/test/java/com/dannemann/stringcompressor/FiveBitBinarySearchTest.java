@@ -19,7 +19,7 @@ class FiveBitBinarySearchTest extends BaseTest {
 	// -----------------------------------------------------------------------------------------------------------------
 	// Automated search tests:
 
-	private static final AsciiCompressor COMPRESSOR = new FiveBitAsciiCompressor(true, true);
+	private static final FiveBitAsciiCompressor COMPRESSOR = new FiveBitAsciiCompressor(true, true);
 
 	@Test
 	void searchSmallStringsTest() {

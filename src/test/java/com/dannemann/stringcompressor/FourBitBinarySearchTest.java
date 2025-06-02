@@ -19,7 +19,7 @@ class FourBitBinarySearchTest extends BaseTest {
 	// -----------------------------------------------------------------------------------------------------------------
 	// Automated search tests:
 
-	private static final AsciiCompressor COMPRESSOR = new FourBitAsciiCompressor(true, true);
+	private static final FourBitAsciiCompressor COMPRESSOR = new FourBitAsciiCompressor(true, true);
 
 	@Test
 	void searchSmallStringsTest() {

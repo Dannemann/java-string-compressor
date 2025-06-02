@@ -17,7 +17,7 @@ import static com.dannemann.stringcompressor.FiveBitAsciiCompressor.DEFAULT_5BIT
 @State(Scope.Benchmark)
 public class FiveBitAsciiCompressorBenchmark extends BaseBenchmark {
 
-	AsciiCompressor compressor;
+	FiveBitAsciiCompressor compressor;
 	byte[] toCompress;
 	byte[] toDecompress;
 

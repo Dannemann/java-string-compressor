@@ -25,8 +25,8 @@ class SixBitAsciiCompressorTest extends BaseTest {
 		byte[] inputStr = AsciiCompressor.getBytes("HELLO, COMPRESSOR");
 
 		// Creates a compressor with the default supported character set (see SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET).
-		AsciiCompressor compressor = new SixBitAsciiCompressor();
-//		AsciiCompressor customCompressor = new SixBitAsciiCompressor(new byte[]{/* custom charset */}, true, true);
+		SixBitAsciiCompressor compressor = new SixBitAsciiCompressor();
+//		SixBitAsciiCompressor customCompressor = new SixBitAsciiCompressor(new byte[]{/* custom charset */}, true, true);
 
 		byte[] compressed = compressor.compress(inputStr);
 		byte[] decompressed = compressor.decompress(compressed);
@@ -77,7 +77,7 @@ class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	void notAsciiCharCompressTest() {
-		AsciiCompressor compressor = new SixBitAsciiCompressor(true);
+		SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(true);
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{(byte) 'Ç'}));
 		assertEquals("Only ASCII characters are supported. Invalid 'ￇ' with code point -57 in string (maybe incomplete): \"Ç\"", e.getMessage());
@@ -85,7 +85,7 @@ class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	void invalidCharCompressTest() {
-		AsciiCompressor compressor = new SixBitAsciiCompressor(true);
+		SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(true);
 		CharacterNotSupportedException e = assertThrows(
 			CharacterNotSupportedException.class, () -> compressor.compress(new byte[]{'|'}));
 		assertEquals("Character '|' with code point 124 is not defined in the supported characters array. Source string is (maybe incomplete): \"|\"", e.getMessage());
@@ -93,7 +93,7 @@ class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	void compressDecompressSmallStringTest() {
-		final AsciiCompressor compressor = new SixBitAsciiCompressor(true, true);
+		final SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(true, true);
 		for (int length = 0; length <= 100; length++)
 			for (int i = 0; i <= 500000; i++) {
 				final byte[] str = generateRandomStringBytes(length, DEFAULT_6BIT_CHARSET);
@@ -105,7 +105,7 @@ class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	void compressDecompressBigStringTest() {
-		final AsciiCompressor compressor = new SixBitAsciiCompressor(true, true);
+		final SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(true, true);
 		for (int length = 2000; length <= 3000; length++)
 			for (int i = 0; i <= 10000; i++) {
 				final byte[] str = generateRandomStringBytes(length, DEFAULT_6BIT_CHARSET);
@@ -117,7 +117,7 @@ class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	void compressDecompressSmallStringLowercaseTest() {
-		final AsciiCompressor compressor = new SixBitAsciiCompressor(DEFAULT_6BIT_CHARSET_LOWERCASE, true, true);
+		final SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(DEFAULT_6BIT_CHARSET_LOWERCASE, true, true);
 		for (int length = 0; length <= 100; length++)
 			for (int i = 0; i <= 50000; i++) {
 				final byte[] str = generateRandomStringBytes(length, DEFAULT_6BIT_CHARSET_LOWERCASE);
@@ -129,7 +129,7 @@ class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	void compressDecompressBigStringLowercaseTest() {
-		final AsciiCompressor compressor = new SixBitAsciiCompressor(DEFAULT_6BIT_CHARSET_LOWERCASE, true, true);
+		final SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(DEFAULT_6BIT_CHARSET_LOWERCASE, true, true);
 		for (int length = 2000; length <= 3000; length++)
 			for (int i = 0; i <= 1000; i++) {
 				final byte[] str = generateRandomStringBytes(length, DEFAULT_6BIT_CHARSET_LOWERCASE);
@@ -141,13 +141,13 @@ class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	void edgeCasesTest() {
-		AsciiCompressor compressor1 = new SixBitAsciiCompressor(true, false);
+		SixBitAsciiCompressor compressor1 = new SixBitAsciiCompressor(true, false);
 		assertEquals(0, compressor1.compress(new byte[0]).length);
 		assertEquals(0, compressor1.compress(new byte[]{}).length);
 		assertEquals(0, compressor1.compress(getBytes("")).length);
 		assertEquals(0, compressor1.compress("".getBytes(ISO_8859_1)).length);
 		assertEquals(0, compressor1.compress("").length);
-		AsciiCompressor compressor2 = new SixBitAsciiCompressor(true, true);
+		SixBitAsciiCompressor compressor2 = new SixBitAsciiCompressor(true, true);
 		assertEquals(0, compressor2.compress(new byte[0]).length);
 		assertEquals(0, compressor2.compress(new byte[]{}).length);
 		assertEquals(0, compressor2.compress(getBytes("")).length);
@@ -160,7 +160,7 @@ class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	void ignoreInvalidCharTest() {
-		AsciiCompressor compressor = new SixBitAsciiCompressor();
+		SixBitAsciiCompressor compressor = new SixBitAsciiCompressor();
 		byte[] compressed = compressor.compress(new byte[]{'A', (byte) 'Ç', 'B', 'C'});
 		byte[] decompressed = compressor.decompress(compressed);
 		assertEquals("AGBC", getString(decompressed));
@@ -168,7 +168,7 @@ class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	void ignoreInvalidCharsTest() {
-		AsciiCompressor compressor = new SixBitAsciiCompressor();
+		SixBitAsciiCompressor compressor = new SixBitAsciiCompressor();
 		for (int i = 0; i < 3000; i++)
 			for (int asciiCode = 0; asciiCode < 128; asciiCode++) {
 				byte[] input = new byte[]{'A', (byte) asciiCode, 'B', 'C', 'D', (byte) 'Ç'};
@@ -180,7 +180,7 @@ class SixBitAsciiCompressorTest extends BaseTest {
 
 	@Test
 	void compressionRateTest() {
-		final AsciiCompressor compressor = new SixBitAsciiCompressor(true);
+		final SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(true);
 		final int hundredMb = 100 * 1024 * 1024;
 		final byte[] input = new byte[hundredMb];
 		Arrays.fill(input, (byte) 'A');
