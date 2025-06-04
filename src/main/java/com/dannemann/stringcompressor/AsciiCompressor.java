@@ -145,9 +145,9 @@ public abstract class AsciiCompressor {
 	 * <p>Important: The order in which you list characters in this array matters, as it defines the lexicographic
 	 * order the binary search will follow. It's good practice to define your custom charset in standard ASCII order.</p>
 	 * @author Jean Dannemann Carone
-	 * @see FourBitBinarySearch
-	 * @see FiveBitBinarySearch
-	 * @see SixBitBinarySearch
+	 * @see com.dannemann.stringcompressor.search.FourBitBinarySearch
+	 * @see com.dannemann.stringcompressor.search.FiveBitBinarySearch
+	 * @see com.dannemann.stringcompressor.search.SixBitBinarySearch
 	 */
 	public byte[] getSupportedCharset() {
 		return supportedCharset;
