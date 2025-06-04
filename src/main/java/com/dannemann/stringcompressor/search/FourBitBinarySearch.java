@@ -1,9 +1,11 @@
-package com.dannemann.stringcompressor;
+package com.dannemann.stringcompressor.search;
 
-import static com.dannemann.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET;
+import com.dannemann.stringcompressor.FourBitAsciiCompressor;
+
+import static com.dannemann.stringcompressor.FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET;
 
 /**
- * <p>Performs binary search on data compressed by {@link SixBitAsciiCompressor}. The data must have been sorted prior
+ * <p>Performs binary search on data compressed by {@link FourBitAsciiCompressor}. The data must have been sorted prior
  * to compression.</p>
  * <p>If {@code prefixSearch} is {@code true}, the method returns the first element whose prefix matches the specified
  * key. Otherwise, it looks for an exact match. When multiple elements share the same prefix, the first matching element
@@ -13,22 +15,22 @@ import static com.dannemann.stringcompressor.SixBitAsciiCompressor.DEFAULT_6BIT_
  * placed at the end.</p>
  * <p>Note that character ordering depends on the sequence defined in your custom charset (via
  * {@code supportedCharset}), which is passed to the compressor constructor (see
- * {@link SixBitAsciiCompressor#SixBitAsciiCompressor(byte[])}). If no custom charset is provided, compressors use a
+ * {@link FourBitAsciiCompressor#FourBitAsciiCompressor(byte[])}). If no custom charset is provided, compressors use a
  * default charset ordered by ASCII.</p>
  * @author Jean Dannemann Carone
- * @see SixBitAsciiCompressor#DEFAULT_6BIT_CHARSET
+ * @see FourBitAsciiCompressor#DEFAULT_4BIT_CHARSET
  */
-public final class SixBitBinarySearch extends BaseBinarySearch {
+public final class FourBitBinarySearch extends BaseBinarySearch {
 
 	/**
-	 * Creates a binary search object for data compressed with the default character set {@link SixBitAsciiCompressor#DEFAULT_6BIT_CHARSET}.
+	 * Creates a binary search object for data compressed with the default character set {@link FourBitAsciiCompressor#DEFAULT_4BIT_CHARSET}.
 	 * @param compressedData The mass of compressed strings to search through.
 	 * @param prefixSearch If {@code true}, searches for elements starting with the provided key prefix (must be unique).
 	 * @author Jean Dannemann Carone
-	 * @see SixBitBinarySearch#SixBitBinarySearch(byte[][], boolean, byte[])
+	 * @see FourBitBinarySearch#FourBitBinarySearch(byte[][], boolean, byte[])
 	 */
-	public SixBitBinarySearch(byte[][] compressedData, boolean prefixSearch) {
-		super(compressedData, prefixSearch, DEFAULT_6BIT_CHARSET);
+	public FourBitBinarySearch(byte[][] compressedData, boolean prefixSearch) {
+		super(compressedData, prefixSearch, DEFAULT_4BIT_CHARSET);
 	}
 
 	/**
@@ -38,13 +40,13 @@ public final class SixBitBinarySearch extends BaseBinarySearch {
 	 * @param charset Character set used to compress {@code compressedData}.
 	 * @author Jean Dannemann Carone
 	 */
-	public SixBitBinarySearch(byte[][] compressedData, boolean prefixSearch, byte[] charset) {
+	public FourBitBinarySearch(byte[][] compressedData, boolean prefixSearch, byte[] charset) {
 		super(compressedData, prefixSearch, charset);
 	}
 
 	/**
 	 * <p>Performs a binary search on the provided compressed data array to locate the specified key.</p>
-	 * <p>The compressed data is expected to be produced by {@link SixBitAsciiCompressor} and must be sorted before
+	 * <p>The compressed data is expected to be produced by {@link FourBitAsciiCompressor} and must be sorted before
 	 * compression for this search to work correctly. The search is performed directly on the compressed form without
 	 * decompressing the entire dataset, enabling fast lookups in large in-memory compressed collections.</p>
 	 * <p>The method returns the index of the matching element if found; otherwise, it returns
@@ -72,24 +74,33 @@ public final class SixBitBinarySearch extends BaseBinarySearch {
 			if (compStr == null)
 				cmp = 1;
 			else {
-				final int cLenMinus = compStr.length - 1;
-				int buffer = 0;
-				int bits = 0;
+				final int odd;
+				final int dLen;
+				int cLenMinus = compStr.length - 1;
 
-				for (int i = 0, j = 0; i < cLenMinus && j < keyLen; i++) {
-					buffer = buffer << 8 | compStr[i] & 0xFF;
-					bits += 8;
+				if (cLenMinus >= 0) {
+					odd = compStr[cLenMinus];
+					dLen = odd == 1 ? (--cLenMinus << 1) + 1 : cLenMinus << 1;
+				} else {
+					odd = 0;
+					dLen = 0;
+				}
 
-					if (bits >= 6 &&
-						(cmp = charset[buffer >>> (bits -= 6) & 0x3F] - key[j++]) != 0 ||
-						bits >= 6 && j < keyLen &&
-						(cmp = charset[buffer >>> (bits -= 6) & 0x3F] - key[j++]) != 0)
+				int j = 0;
+
+				for (int i = 0; i < cLenMinus && j < keyLen; i++) {
+					final byte bite = compStr[i];
+
+					if ((cmp = charset[(bite & 0xF0) >> 4] - key[j++]) != 0 ||
+						j < keyLen &&
+						(cmp = charset[bite & 0x0F] - key[j++]) != 0)
 						break;
 				}
 
-				if (cmp == 0) {
-					final int dLen = cLenMinus >= 0 ? cLenMinus * 8 / 6 - (compStr[cLenMinus] & 1) : 0;
+				if (cmp == 0 && odd == 1 && j < keyLen)
+					cmp = charset[compStr[cLenMinus]] - key[j];
 
+				if (cmp == 0) {
 					if (prefixSearch && keyLen <= dLen)
 						return mid;
 

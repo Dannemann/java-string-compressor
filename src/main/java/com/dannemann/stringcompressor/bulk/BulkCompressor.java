@@ -1,5 +1,6 @@
-package com.dannemann.stringcompressor;
+package com.dannemann.stringcompressor.bulk;
 
+import com.dannemann.stringcompressor.AsciiCompressor;
 import com.dannemann.stringcompressor.util.TriConsumer;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public record BulkCompressor(AsciiCompressor compressor, byte[][] destination) {
 			destination[i] = compressed;
 			if (callback != null)
 				callback.accept(adjustedIndex, string, compressed);
-			if (!compressor.preserveOriginal)
+			if (!compressor.isPreserveOriginal())
 				source[adjustedIndex] = null;
 		});
 	}
@@ -57,7 +58,7 @@ public record BulkCompressor(AsciiCompressor compressor, byte[][] destination) {
 			destination[i] = compressed;
 			if (callback != null)
 				callback.accept(adjustedIndex, string, compressed);
-			if (!compressor.preserveOriginal)
+			if (!compressor.isPreserveOriginal())
 				source[adjustedIndex] = null;
 		});
 	}
@@ -74,7 +75,7 @@ public record BulkCompressor(AsciiCompressor compressor, byte[][] destination) {
 			destination[i] = compressed;
 			if (callback != null)
 				callback.accept(adjustedIndex, string, compressed);
-			if (!compressor.preserveOriginal)
+			if (!compressor.isPreserveOriginal())
 				source.set(adjustedIndex, null);
 		});
 	}

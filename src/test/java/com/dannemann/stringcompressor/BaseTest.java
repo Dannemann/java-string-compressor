@@ -14,7 +14,7 @@ import static com.dannemann.stringcompressor.AsciiCompressor.getString;
 /**
  * @author Jean Dannemann Carone
  */
-abstract class BaseTest {
+public abstract class BaseTest {
 
 	protected static final Random RANDOM = new Random();
 

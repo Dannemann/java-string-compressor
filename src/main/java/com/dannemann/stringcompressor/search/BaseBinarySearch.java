@@ -1,4 +1,4 @@
-package com.dannemann.stringcompressor;
+package com.dannemann.stringcompressor.search;
 
 /**
  * @see FourBitBinarySearch

@@ -1,5 +1,6 @@
-package com.dannemann.stringcompressor;
+package com.dannemann.stringcompressor.bulk;
 
+import com.dannemann.stringcompressor.AsciiCompressor;
 import com.dannemann.stringcompressor.exception.BulkCompressionException;
 import com.dannemann.stringcompressor.util.TriConsumer;
 
@@ -60,16 +61,6 @@ public class ManagedBulkCompressor {
 
 	public int getCurrentIndex() {
 		return currentIndex;
-	}
-
-	// Unsafe methods. Can cause confusion.
-
-	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destination, String[] source) {
-		new ManagedBulkCompressor(compressor, destination).compressAndAddAll(source);
-	}
-
-	static void compressAndAddAll(AsciiCompressor compressor, byte[][] destination, List<String> source) {
-		new ManagedBulkCompressor(compressor, destination).compressAndAddAll(source);
 	}
 
 }

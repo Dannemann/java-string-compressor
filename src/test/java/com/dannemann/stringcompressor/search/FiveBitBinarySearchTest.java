@@ -1,5 +1,8 @@
-package com.dannemann.stringcompressor;
+package com.dannemann.stringcompressor.search;
 
+import com.dannemann.stringcompressor.BaseTest;
+import com.dannemann.stringcompressor.FiveBitAsciiCompressor;
+import com.dannemann.stringcompressor.bulk.ManagedBulkCompressor;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -27,8 +30,8 @@ class FiveBitBinarySearchTest extends BaseTest {
 			for (int i = 0; i <= 30_000; i++) {
 				final List<String> source = generateRandomUniqueOrderedStringList(500, length, length + 1, DEFAULT_5BIT_CHARSET);
 				final byte[][] destination = new byte[700][];
-				ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, destination, source);
 				final FiveBitBinarySearch bs = new FiveBitBinarySearch(destination, false);
+				new ManagedBulkCompressor(COMPRESSOR, destination).compressAndAddAll(source);
 				for (int j = 0, len = source.size(); j < len; j++)
 					assertEquals(j, bs.search(getBytes(source.get(j))));
 			}
@@ -38,8 +41,8 @@ class FiveBitBinarySearchTest extends BaseTest {
 	void searchBigArrayTest() {
 		final List<String> source = generateRandomUniqueOrderedStringList(2_000_000, 0, 100, DEFAULT_5BIT_CHARSET);
 		final byte[][] destination = new byte[4_000_000][];
-		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, destination, source);
 		final FiveBitBinarySearch bs = new FiveBitBinarySearch(destination, false);
+		new ManagedBulkCompressor(COMPRESSOR, destination).compressAndAddAll(source);
 		for (int i = 0, len = source.size(); i < len; i++)
 			assertEquals(i, bs.search(getBytes(source.get(i))));
 	}
@@ -48,8 +51,8 @@ class FiveBitBinarySearchTest extends BaseTest {
 	void searchBigStringsTest() {
 		final List<String> source = generateRandomUniqueOrderedStringList(50_000, 4500, 5000, DEFAULT_5BIT_CHARSET);
 		final byte[][] destination = new byte[70_000][];
-		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, destination, source);
 		final FiveBitBinarySearch bs = new FiveBitBinarySearch(destination, false);
+		new ManagedBulkCompressor(COMPRESSOR, destination).compressAndAddAll(source);
 		for (int i = 0, len = source.size(); i < len; i++)
 			assertEquals(i, bs.search(getBytes(source.get(i))));
 	}
@@ -72,11 +75,11 @@ class FiveBitBinarySearchTest extends BaseTest {
 	private static final String NULL_REF = null;
 
 	static {
-		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_EMPTY_WORD, EMPTY_WORD_ARRAY);
-		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_WORD, WORD_ARRAY);
-		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_TWO_WORDS, TWO_WORDS_ARRAY);
-		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_WORDS, WORDS_ARRAY);
-		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_SPECIAL, SPECIAL_ARRAY);
+		new ManagedBulkCompressor(COMPRESSOR, COMPRESSED_EMPTY_WORD).compressAndAddAll(EMPTY_WORD_ARRAY);
+		new ManagedBulkCompressor(COMPRESSOR, COMPRESSED_WORD).compressAndAddAll(WORD_ARRAY);
+		new ManagedBulkCompressor(COMPRESSOR, COMPRESSED_TWO_WORDS).compressAndAddAll(TWO_WORDS_ARRAY);
+		new ManagedBulkCompressor(COMPRESSOR, COMPRESSED_WORDS).compressAndAddAll(WORDS_ARRAY);
+		new ManagedBulkCompressor(COMPRESSOR, COMPRESSED_SPECIAL).compressAndAddAll(SPECIAL_ARRAY);
 	}
 
 	static int fiveBitBinarySearch(byte[][] compressedData, String input) {
@@ -179,7 +182,7 @@ class FiveBitBinarySearchTest extends BaseTest {
 	private static final byte[][] COMPRESSED_CLIENT_DATA = new byte[CLIENT_DATA_ARRAY.length][];
 
 	static {
-		ManagedBulkCompressor.compressAndAddAll(COMPRESSOR, COMPRESSED_CLIENT_DATA, CLIENT_DATA_ARRAY);
+		new ManagedBulkCompressor(COMPRESSOR, COMPRESSED_CLIENT_DATA).compressAndAddAll(CLIENT_DATA_ARRAY);
 	}
 
 	@Test
