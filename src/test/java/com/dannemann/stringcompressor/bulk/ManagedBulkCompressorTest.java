@@ -43,7 +43,7 @@ class ManagedBulkCompressorTest extends BaseTest {
 			final int batchSize = RANDOM.nextInt(500, 1000);
 			final int numberOfBatches = RANDOM.nextInt(500, 1000);
 			final int totalElements = batchSize * numberOfBatches;
-			final List<byte[]> fullSource = new ArrayList<>();
+			final List<byte[]> fullSource = new ArrayList<>(totalElements);
 			final byte[][] destination = new byte[totalElements * 2][]; // Half empty.
 			final FourBitAsciiCompressor compressor = new FourBitAsciiCompressor(true, true);
 			final ManagedBulkCompressor managed = new ManagedBulkCompressor(compressor, destination);
@@ -82,7 +82,7 @@ class ManagedBulkCompressorTest extends BaseTest {
 			final int batchSize = RANDOM.nextInt(500, 1000);
 			final int numberOfBatches = RANDOM.nextInt(500, 1000);
 			final int totalElements = batchSize * numberOfBatches;
-			final List<String> fullSource = new ArrayList<>();
+			final List<String> fullSource = new ArrayList<>(totalElements);
 			final byte[][] destination = new byte[totalElements * 2][]; // Half empty.
 			final FiveBitAsciiCompressor compressor = new FiveBitAsciiCompressor(true, true);
 			final ManagedBulkCompressor managed = new ManagedBulkCompressor(compressor, destination);
@@ -121,7 +121,7 @@ class ManagedBulkCompressorTest extends BaseTest {
 			final int batchSize = RANDOM.nextInt(500, 1000);
 			final int numberOfBatches = RANDOM.nextInt(500, 1000);
 			final int totalElements = batchSize * numberOfBatches;
-			final List<String> fullSource = new ArrayList<>();
+			final List<String> fullSource = new ArrayList<>(totalElements);
 			final byte[][] destination = new byte[totalElements * 2][]; // Half empty.
 			final SixBitAsciiCompressor compressor = new SixBitAsciiCompressor(true, true);
 			final ManagedBulkCompressor managed = new ManagedBulkCompressor(compressor, destination);
