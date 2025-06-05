@@ -154,11 +154,17 @@ public FiveBitBinarySearch(byte[][] compressedData, boolean prefixSearch, byte[]
 ```
 
 ### B+Tree
-
 Coming in the next release.
 
-### Bulk / Batch compression
+### Other
+Do not forget to check the JavaDocs with further information about each member.
+Also check the test directory for additional examples.
 
+### Logging
+If you need logging, search for libraries like ZeroLog, ChronicleLog, Log4j 2 Async Loggers, and other similar tools
+(we did not test any of those). You will need a fast log library, or it can become a bottleneck.
+
+### Bulk / Batch compression
 In some rare cases you need to fetch your data in batches from a remote location or another third party actor.
 java-string-compressor provides both, `BulkCompressor` and `ManagedBulkCompressor` specifically for this task.
 They help you automatize the process of adding each batch to the correct position in the destination array where the
@@ -169,7 +175,6 @@ the target `byte[][]`. In the other hand, `ManagedBulkCompressor` encapsulates a
 from handle array positions and bounds. This is why we recommend `ManagedBulkCompressor` (which uses a `BulkCompressor` internally).
 
 Both bulk compressors loop through the data in parallel by calling `IntStream.range().parallel()`.
-
 ```java
 byte[][] compressedData = new byte[100000000][]; // Storage for a max of 100 million customers.
 // ...
@@ -177,11 +182,3 @@ ManagedBulkCompressor managed = new ManagedBulkCompressor(compressor, compressed
 // ...loop...
     managed.compressAndAddAll(batch); // batch is the list of strings to be compressed.
 ```
-
-### Logging
-If you need logging, search for libraries like ZeroLog, ChronicleLog, Log4j 2 Async Loggers, and other similar tools
-(we did not test any of those). You will need a fast log library, or it can become a bottleneck.
-
-### Other
-Do not forget to check the JavaDocs with further information about each member.
-Also check the test directory for additional examples.
