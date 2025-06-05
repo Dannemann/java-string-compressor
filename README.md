@@ -111,12 +111,12 @@ But the overloaded version `compressor.compress(String)` already calls it automa
 
 ### Where to store the compressed data?
 In its purest form, a `String` is just a byte array (`byte[]`), and a compressed `String` couldn't be different. 
-You can store it anywhere you would store a `byte[]`.
-The most common approach is to store each compressed string ordered in memory using a `byte[][]` (for binary search) or 
-a B+Tree if you need frequent insertions (coming in the next release).
-The frequency of reads and writes + business requirements will tell the best media and data structure to use.
+You can store it anywhere you would store a `byte[]`. If you are compressing millions of different entries, a very common 
+approach is to store each compressed string ordered in memory using a `byte[][]` (for binary search) or a B+Tree if you 
+need frequent insertions (coming in the next release). The frequency of reads and writes + business requirements will 
+tell the best media and data structure to use.
 
-If the data is ordered before compression and stored in-memory in a `byte[][]`, you can use the full power of the binary 
+If the data is ordered before compression and stored in-memory in a `byte[][]` as mentioned above, you can use the full power of the binary 
 search directly in the compressed data through `FourBitBinarySearch`, `FiveBitBinarySearch`, and `SixBitBinarySearch`.
 
 ### Binary search
@@ -146,11 +146,12 @@ int index = binary.search("63821623849863628763#");
 
 if (index >= 0) {
     byte[] found = compressedData[index];
-    String decompressed = compressor.decompress(found);	
-}
+    String decompressed = compressor.decompress(found);
 ```
-
-In case you used a custom character set to compress
+In case you used are using a custom character set to compress the data, you need to pass it through the binary search constructor:
+```java
+public FiveBitBinarySearch(byte[][] compressedData, boolean prefixSearch, byte[] charset)
+```
 
 ### B+Tree
 
@@ -158,6 +159,7 @@ Coming in the next release.
 
 ### Bulk / Batch compression
 
+In some rare cases you need to fetch your data in batches from a remote location or another third party actor.
 java-string-compressor provides both, `BulkCompressor` and `ManagedBulkCompressor` specifically for this task.
 They help you automatize the process of adding each batch to the correct position in the destination array where the
 compressed data will be stored. Both currently supports `byte[][]` as destination for the compressed data. 
@@ -168,67 +170,18 @@ from handle array positions and bounds. This is why we recommend `ManagedBulkCom
 
 Both bulk compressors loop through the data in parallel by calling `IntStream.range().parallel()`.
 
-Let's take `compactedData` from the previous example and show how we can populate it with data from all customers:
-
 ```java
-byte[][] compactedData = new byte[100000000][]; // Data for 100 million customers.
-
-
-
-
-
-
-
-byte[] compressed = compressor.compress(input);
-byte[] decompressed = compressor.decompress(compressed);
-String string = new String(decompressed, StandardCharsets.ISO_8859_1);
+byte[][] compressedData = new byte[100000000][]; // Storage for a max of 100 million customers.
+// ...
+ManagedBulkCompressor managed = new ManagedBulkCompressor(compressor, compressedData);
+// ...loop...
+    managed.compressAndAddAll(batch); // batch is the list of strings to be compressed.
 ```
 
-
-`BulkCompressor` is a "lower-level" utility where 
-
-
-
+### Logging
+If you need logging, search for libraries like ZeroLog, ChronicleLog, Log4j 2 Async Loggers, and other similar tools
+(we did not test any of those). You will need a fast log library, or it can become a bottleneck.
 
 ### Other
-Do not forget to check our JavaDocs with further information about each member.
-
-
-
-
-
-
-
-
-
-
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-
-
-
-
-
-
-
-
-if you need logging , check ZeroLog, ChronicleLog and similar tools
+Do not forget to check the JavaDocs with further information about each member.
+Also check the test directory for additional examples.
