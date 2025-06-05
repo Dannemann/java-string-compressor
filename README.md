@@ -77,7 +77,7 @@ order the binary search will follow. It's good practice to define your custom ch
 #### Catching invalid characters (useful for testing and debugging)
 It’s useful to validate the input and throw errors when invalid characters are found.
 You can enable character validation by using any constructor with `throwException` parameter.
-Validations are not recommended for production because you will likely be allocating massive amounts of gigabytes, and 
+Validations are not recommended for production because you will likely be allocating massive amounts of data, and 
 you don't want a single invalid character to halt the entire process.
 It’s better to occasionally display an incorrect character than to abort the entire operation.
 ```java
