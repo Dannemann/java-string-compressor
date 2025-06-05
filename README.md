@@ -179,5 +179,5 @@ byte[][] compressedData = new byte[100000000][]; // Storage for a max of 100 mil
 // ...
 ManagedBulkCompressor managed = new ManagedBulkCompressor(compressor, compressedData);
 // ...loop...
-    managed.compressAndAddAll(batch); // batch is the list of strings to be compressed.
+    managed.compressAndAddAll(batch); // batch is the list of strings/bytes to be compressed.
 ```
