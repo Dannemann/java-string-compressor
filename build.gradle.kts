@@ -25,6 +25,20 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks.named("build") {
+    doLast {
+        copy {
+            from("$rootDir/publishing/java-string-compressor-1.0.0.pom")
+            into(layout.buildDirectory.dir("libs"))
+        }
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
 }
