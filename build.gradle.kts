@@ -33,7 +33,7 @@ java {
 tasks.named("build") {
     doLast {
         copy {
-            from("$rootDir/publishing/java-string-compressor-1.2.0.pom")
+            from("$rootDir/publishing/java-string-compressor-$version.pom")
             into(layout.buildDirectory.dir("libs"))
         }
     }
