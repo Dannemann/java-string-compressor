@@ -28,11 +28,11 @@ c = new SixBitAsciiCompressor().compress(data); // c is 75 MB.
 <dependency>
     <groupId>io.github.dannemann</groupId>
     <artifactId>java-string-compressor</artifactId>
-    <version>1.0.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 ```java
-implementation("io.github.dannemann:java-string-compressor:1.0.0")
+implementation("io.github.dannemann:java-string-compressor:1.2.0")
 ```
 Or download the latest JAR from: https://github.com/Dannemann/java-string-compressor/releases
 
