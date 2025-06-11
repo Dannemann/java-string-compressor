@@ -1,14 +1,9 @@
-./gradlew clean build javadocJar sourcesJar sign
-
-
-gpg --armor --detach-sign --output java-string-compressor-1.0.0.jar.asc java-string-compressor-1.0.0.jar
-gpg --armor --detach-sign --output java-string-compressor-1.0.0-sources.jar.asc java-string-compressor-1.0.0-sources.jar
-gpg --armor --detach-sign --output java-string-compressor-1.0.0-javadoc.jar.asc java-string-compressor-1.0.0-javadoc.jar
-gpg --armor --detach-sign --output java-string-compressor-1.0.0.pom.asc java-string-compressor-1.0.0.pom
-
+gpg --armor --detach-sign --output java-string-compressor-1.2.0.jar.asc java-string-compressor-1.2.0.jar
+gpg --armor --detach-sign --output java-string-compressor-1.2.0-sources.jar.asc java-string-compressor-1.2.0-sources.jar
+gpg --armor --detach-sign --output java-string-compressor-1.2.0-javadoc.jar.asc java-string-compressor-1.2.0-javadoc.jar
+gpg --armor --detach-sign --output java-string-compressor-1.2.0.pom.asc java-string-compressor-1.2.0.pom
 
 for f in *.jar *.pom; do
   md5sum "$f"  | awk '{print $1}' > "$f.md5"
   sha1sum "$f" | awk '{print $1}' > "$f.sha1"
 done
-

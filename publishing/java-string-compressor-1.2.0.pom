@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.github.dannemann</groupId>
   <artifactId>java-string-compressor</artifactId>
-  <version>1.0.0</version>
+  <version>1.2.0</version>
   <name>java-string-compressor</name>
   <description>Ultra-fast, zero-allocation string compression library. Up to 50% memory reduction.</description>
   <url>https://github.com/Dannemann/java-string-compressor</url>
