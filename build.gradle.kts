@@ -55,5 +55,6 @@ jmh {
     threads = 1
     timeUnit = "ms"
     resultFormat = "TEXT"
-    resultsFile = file("$projectDir/benchmarks/results-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".txt")
+    resultsFile = file(
+        "$projectDir/benchmarks/results-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".txt")
 }
