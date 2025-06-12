@@ -52,8 +52,7 @@ But if you need both letters and numbers, 6 bits are sufficient.
 This way, we can remove those unnecessary bits and store only the ones we need. 
 This is exactly what this library does.
 
-It is an alternative to Huffman Coding, as it compresses small texts, lets you binary-search directly on the compressed 
-data, and provides a simpler compress/decompress process.
+It is an alternative to Huffman Coding, as it compresses small texts and lets you binary-search directly on the compressed data.
 
 To compress a string, you can easily use either `FourBitAsciiCompressor`, `FiveBitAsciiCompressor`, or `SixBitAsciiCompressor`.
 
