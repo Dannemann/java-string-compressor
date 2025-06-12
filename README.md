@@ -49,7 +49,7 @@ represent them, and we only need 4 bits (`0000` to `1111`) to represent 16 chara
 If your data only contains letters (A-Z, like customer names), a set of 32 different characters is sufficient, which can be 
 represented by 5 bits.
 But if you need both letters and numbers, 6 bits are sufficient.
-This way we can remove those unnecessary bits and store only the ones we need. 
+This way, we can remove those unnecessary bits and store only the ones we need. 
 This is exactly what this library does. 
 
 Another important feature is searching. This library not only supports compression, but also binary searching on the 
