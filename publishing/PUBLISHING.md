@@ -14,6 +14,7 @@ for f in *.jar *.pom; do
     md5sum "$f"  | awk '{print $1}' > "$f.md5"
     sha1sum "$f" | awk '{print $1}' > "$f.sha1"
 done
+
 ```
 Copy all generated files to `io/github/dannemann/java-string-compressor/<VERSION>/` and compress it.</br>
 Name it: `java-string-compressor-<VERSION>.zip`
