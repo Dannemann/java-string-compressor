@@ -112,7 +112,7 @@ public abstract class AsciiCompressor {
 	/**
 	 * <p>Fastest way to get bytes from an ASCII String.</p>
 	 * <p>If {@code string} is null, returns null.</p>
-	 * <p>This method effectively do: {@code string.getBytes(ISO_8859_1)}<br/>
+         * <p>This method effectively does: {@code string.getBytes(ISO_8859_1)}<br/>
 	 * <a href="https://cl4es.github.io/2021/02/23/Faster-Charset-Decoding.html">To understand why, click here.</a></p>
 	 * @param string The target string.
 	 * @return The resultant byte array.
@@ -125,7 +125,7 @@ public abstract class AsciiCompressor {
 	/**
 	 * <p>Fastest way to create an ASCII String from a byte array.</p>
 	 * <p>If {@code bytes} is null, returns null.</p>
-	 * <p>This method effectively do: {@code new String(bytes, ISO_8859_1)}<br/>
+         * <p>This method effectively does: {@code new String(bytes, ISO_8859_1)}<br/>
 	 * <a href="https://cl4es.github.io/2021/10/17/Faster-Charset-Encoding.html">To understand why, click here.</a></p>
 	 * @param bytes String bytes.
 	 * @return The resultant String.
