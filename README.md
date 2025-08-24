@@ -42,7 +42,7 @@ It is very useful when you need large datasets allocated in memory for quick acc
 We achieve this by removing all unnecessary bits from each character. But how?
 
 An ASCII character is represented by 8 bits: `00000000` to `11111111`. 
-This gives us 128 different slots to represent characters.
+This gives us 256 different slots to represent characters.
 However, sometimes we need only a small subset of those characters rather than the entire set.
 For example, if your data only contains numbers (0-9) and a few punctuation marks, 16 different characters can be enough to 
 represent them, and we only need 4 bits (`0000` to `1111`) to represent 16 characters.
