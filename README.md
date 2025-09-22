@@ -99,7 +99,7 @@ Once the compressor is instantiated, the compress and decompress process is stra
    byte[] compressed = compressor.compress(input);
    byte[] decompressed = compressor.decompress(compressed);
    String string = new String(decompressed, StandardCharsets.ISO_8859_1);
-// String string = AsciiCompressor.getString(decompressed); // Same as above. Recommended.
+// String string = AsciiCompressor.getString(decompressed); // Same as above. <-- Recommended.
 ```
 We recommend using `AsciiCompressor.getString(byte[])` because the method can be updated whenever a more efficient way to encode a `String` is found.
 
@@ -144,7 +144,8 @@ int index = binary.search("63821623849863628763#");
 
 if (index >= 0) {
     byte[] found = compressedData[index];
-    String decompressed = compressor.decompress(found);
+    byte[] decompressed = compressor.decompress(found);
+    String string = AsciiCompressor.getString(decompressed);
 ```
 If you are using a custom character set to compress the data, you need to pass it to the binary search constructor:
 ```java
