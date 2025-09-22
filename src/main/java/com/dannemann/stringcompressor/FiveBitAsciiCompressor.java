@@ -109,7 +109,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 
 		encode(str, len);
 
-		final int compressedLen = len * 5 + 7 >>> 3;
+		final int compressedLen = (int) (len * 5L + 7 >> 3);
 		final byte[] compressed = new byte[compressedLen + (-len >>> 31)];
 		int buffer = 0;
 		int bitsInBuffer = 0;
@@ -155,7 +155,7 @@ public class FiveBitAsciiCompressor extends AsciiCompressor {
 			return new byte[0];
 
 		final int cLenMinus = compressedLen - 1;
-		final int dLen = cLenMinus * 8 / 5 - (compressed[cLenMinus] & 1);
+		final int dLen = (int) (cLenMinus * 8L / 5) - (compressed[cLenMinus] & 1);
 		final byte[] decompressed = new byte[dLen];
 		int buffer = 0;
 		int bitsInBuffer = 0;

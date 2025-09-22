@@ -106,7 +106,7 @@ public class FourBitAsciiCompressor extends AsciiCompressor {
 
 		if ((len & 1) == 1) {
 			compressed[halfLen] = str[len - 1];
-			compressed[halfLen + 1] = 1;
+			compressed[halfLen + 1] |= 0x01;
 		}
 
 		return compressed;

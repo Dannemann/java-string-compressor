@@ -21,8 +21,8 @@ dependencies {
     jmh("org.openjdk.jmh:jmh-generator-annprocess:1.37")
     jmhAnnotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.37")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.4")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.13.4")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
 }
 
 java {
@@ -30,13 +30,17 @@ java {
     withSourcesJar()
 }
 
-tasks.named("build") {
+tasks.build {
     doLast {
         copy {
             from("$rootDir/publishing/java-string-compressor-$version.pom")
             into(layout.buildDirectory.dir("libs"))
         }
     }
+}
+
+tasks.javadoc {
+    (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:all,-missing", "-quiet")
 }
 
 tasks.test {
