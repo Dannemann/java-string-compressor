@@ -62,11 +62,11 @@ var compressor = new SixBitAsciiCompressor();
 ```
 
 #### Defining your custom character set
-Each compressor has a set of default supported characters which are defined in fields 
+Each compressor has a set of default supported characters, which are defined in fields 
 `FourBitAsciiCompressor.DEFAULT_4BIT_CHARSET`, `FiveBitAsciiCompressor.DEFAULT_5BIT_CHARSET`, and `SixBitAsciiCompressor.DEFAULT_6BIT_CHARSET`.
 If you need a custom character set, use constructors with parameter `supportedCharset`:
 ```java
-// Follows ASCII character ordering.
+// Follow ASCII character ordering.
 byte[] myCustom4BitCharset = {'!', '"', '#', '$', '%', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '@'};
 var compressor = new FourBitAsciiCompressor(myCustom4BitCharset);
 ```
@@ -114,7 +114,7 @@ approach is to store each compressed string ordered in memory using a `byte[][]`
 need frequent insertions (coming in the next release). The frequency of reads and writes plus business requirements will 
 determine the best storage medium and data structure to use.
 
-If the data is ordered before compression and stored in memory in a `byte[][]` as mentioned above, you can use the full power of binary 
+If the data is ordered before compression and stored in memory in a `byte[][]` after compression as mentioned above, you can use the full power of binary 
 search directly on the compressed data through `FourBitBinarySearch`, `FiveBitBinarySearch`, and `SixBitBinarySearch`.
 
 ### Binary search
@@ -179,5 +179,12 @@ byte[][] compressedData = new byte[100000000][]; // Storage for a max of 100 mil
 // ...
 ManagedBulkCompressor managed = new ManagedBulkCompressor(compressor, compressedData);
 // ...loop...
-    managed.compressAndAddAll(batch); // batch is the list of strings/bytes to be compressed.
+    managed.compressAndAddAll(batch); // batch is the list of strings/bytes to be compressed and added to compressedData at the correct position.
 ```
+
+## Consulting
+
+For consulting, custom software development, or professional support related to this project, feel free to get in touch:
+
+* [LinkedIn](https://www.linkedin.com/in/jeandannemann)
+* [Efecade](https://efecade.com/#contact)
