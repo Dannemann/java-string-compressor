@@ -171,7 +171,7 @@ If you need logging, consider libraries like ZeroLog, ChronicleLog, Log4j 2 Asyn
 (we have not tested any of these). You will need a fast logging library, or it can become a bottleneck.
 
 ### Bulk / Batch compression
-In some cases you may need to fetch your data in batches from a remote location or another third-party service.
+In some cases, you may need to fetch your data in batches from a remote location or another third-party service.
 java-string-compressor provides both `BulkCompressor` and `ManagedBulkCompressor` specifically for this task.
 They help you automate the process of adding each batch to the correct position in the destination array where the
 compressed data will be stored. Both currently support `byte[][]` as the destination for the compressed data. 
