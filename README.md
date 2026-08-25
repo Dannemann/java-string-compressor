@@ -36,6 +36,13 @@ implementation("io.github.dannemann:java-string-compressor:1.2.0")
 ```
 Or download the latest JAR from: https://github.com/Dannemann/java-string-compressor/releases
 
+## Consulting
+
+For consulting, custom software development, or professional support related to this project or others, feel free to get in touch:
+
+* [LinkedIn](https://www.linkedin.com/in/jeandannemann)
+* [Efecade](https://efecade.com/#contact)
+
 ## Documentation
 This library exists to quickly compress massive volumes of strings. 
 It is very useful when you need large datasets allocated in memory for quick access or compacted for storage.
