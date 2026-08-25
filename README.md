@@ -182,9 +182,11 @@ ManagedBulkCompressor managed = new ManagedBulkCompressor(compressor, compressed
     managed.compressAndAddAll(batch); // batch is the list of strings/bytes to be compressed and added to compressedData at the correct position.
 ```
 
+---
+
 ## Consulting
 
-For consulting, custom software development, or professional support related to this project, feel free to get in touch:
+For consulting, custom software development, or professional support related to this project or others, feel free to get in touch:
 
 * [LinkedIn](https://www.linkedin.com/in/jeandannemann)
 * [Efecade](https://efecade.com/#contact)
